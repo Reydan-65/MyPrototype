@@ -20,4 +20,10 @@ public class AssetAddress
 
     // Projectiles
     public const string ProjectilePath = "Prefabs/Projectile/BaseProjectile";
+
+    // Shrine Item
+    public static string ShrineItemPath = "ShrineItem";
+
+    // UpgradeStat Item
+    public static string UpgradeStatItemPath = "UpgradeStatItem";
 }

@@ -27,6 +27,7 @@ namespace CodeBase.GamePlay.UI
             buyItemButton.onClick.RemoveListener(OnBuyButtonClicked);
 
         }
+
         public void Initialize(ProductDescription description)
         {
             if (description == null) return;

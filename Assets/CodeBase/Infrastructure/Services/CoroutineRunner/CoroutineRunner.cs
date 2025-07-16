@@ -19,5 +19,13 @@ namespace CodeBase.Infrastructure.Services
         {
             return monoCoroutineRunner.StartCoroutine(coroutine);
         }
+
+        public void StopCoroutine(Coroutine coroutine)
+        {
+            if (coroutine != null)
+            {
+                monoCoroutineRunner.StopCoroutine(coroutine);
+            }
+        }
     }
 }

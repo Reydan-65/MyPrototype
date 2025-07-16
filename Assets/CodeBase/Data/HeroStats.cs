@@ -1,10 +1,13 @@
 using CodeBase.GamePlay.Turrets;
+using UnityEngine.Events;
 
 namespace CodeBase.Data
 {
     [System.Serializable]
     public class HeroStats
     {
+        public event UnityAction Changed;
+
         public int Damage;
         public float MaxHitPoints;
         public float MovementSpeed;
@@ -49,6 +52,48 @@ namespace CodeBase.Data
             DashRange = data.DashRange;
             TurretType = data.TurretType;
             ShootingRate = data.ShootingRate;
+        }
+
+        public void AddStats(HeroStats bonusStats)
+        {
+            bool changed = false;
+
+            if (bonusStats.Damage != 0)
+            {
+                Damage += bonusStats.Damage;
+                changed = true;
+            }
+
+            if (bonusStats.MaxHitPoints != 0)
+            {
+                MaxHitPoints += bonusStats.MaxHitPoints;
+                changed = true;
+            }
+
+            if (bonusStats.MovementSpeed != 0)
+            {
+                MovementSpeed += bonusStats.MovementSpeed;
+                changed = true;
+            }
+
+            if (bonusStats.DashRange != 0)
+            {
+                DashRange += bonusStats.DashRange;
+                changed = true;
+            }
+
+            if (bonusStats.ShootingRate != 0)
+            {
+                ShootingRate += bonusStats.ShootingRate;
+                changed = true;
+            }
+
+            if (changed) Changed?.Invoke();
+        }
+
+        public void IsChanged()
+        {
+            Changed?.Invoke();
         }
     }
 }

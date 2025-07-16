@@ -7,12 +7,21 @@ namespace CodeBase.GamePlay.UI.Services
 {
     public interface IUIFactory : IService
     {
-        Transform UIRoot { get; set; }
         Task WarmUp();
-        Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config);
+
+        Transform UIRoot { get; set; }
+        void CreateUIRoot();
+
         Task<MainMenuPresenter> CreateMainMenuWindowAsync(WindowConfig config);
+        Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config);
+
         Task<ShopPresenter> CreateShopWindowAsync(WindowConfig config);
         Task<ShopItem> CreateShopItemAsync();
-        void CreateUIRoot();
+
+        Task<ShrinePresenter> CreateShrineWindowAsync(WindowConfig config);
+        Task<ShrineItem> CreateShrineItemAsync();
+
+        Task<UpgradeStatsPresenter> CreateUpgradeStatsWindowAsync(WindowConfig config);
+        Task<UpgradeStatsItem> CreateUpgradeStatsItemAsync();
     }
 }

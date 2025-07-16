@@ -11,6 +11,7 @@ namespace CodeBase.Infrastructure.Services
         bool Enable { get; set; }
         bool HealInput { get; }
         bool DashInput { get; }
+        bool UseInput { get; }
         Vector2 MovementAxis { get; }
         bool RunInput { get; }
     }

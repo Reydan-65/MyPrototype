@@ -29,6 +29,12 @@ namespace CodeBase.GamePlay.UI.Services
 
             if (id == WindowID.ShopWindow)
                 factory.CreateShopWindowAsync(config);
+
+            if (id == WindowID.ShrineWindow)
+                factory.CreateShrineWindowAsync(config);
+
+            if (id == WindowID.UpgradeStatsWindow)
+                factory.CreateUpgradeStatsWindowAsync(config);
         }
     }
 }

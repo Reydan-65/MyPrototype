@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 91459b3a96329f14d99c0d042108374f
   m_SerializeEntries:
+  - m_GUID: 0456d19de7e1de04db8ae287d0bf295c
+    m_Address: ShrineItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 053f2815b89012d41a9a9f08a336cfc6
     m_Address: HeroFemale
     m_ReadOnly: 0
@@ -34,6 +39,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 325fe47e65d5cc84589099944bfe3824
     m_Address: KeyLoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67eecb9da54c3504d94c32b9083c79c6
+    m_Address: UpgradeStatsWindow
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -64,6 +74,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb6b5eb156fe054459de55c9c9a53a83
     m_Address: HeroMale
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0d12388c3944ea4abced2559a94fed8
+    m_Address: ShrineWindow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c97e8e87d45132e4cb21bde99b6719fe
+    m_Address: UpgradeStatItem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

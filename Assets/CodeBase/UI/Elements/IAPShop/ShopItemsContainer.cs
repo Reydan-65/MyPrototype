@@ -40,10 +40,7 @@ namespace CodeBase.GamePlay.UI
 
         private void UpdateAvailableItems()
         {
-            for (int i = 0; i < unavailableObjects.Length; i++)
-            {
-                unavailableObjects[i].SetActive(!service.IsInitialized);
-            }
+            ClearContainer();
 
             if (service.IsInitialized == false) return;
 
@@ -55,6 +52,14 @@ namespace CodeBase.GamePlay.UI
             ProductDescription[] descriptions = service.GetProductDescription().ToArray();
 
             CreateShopItemsAsync(descriptions);
+        }
+
+        private void ClearContainer()
+        {
+            for (int i = 0; i < unavailableObjects.Length; i++)
+            {
+                unavailableObjects[i].SetActive(!service.IsInitialized);
+            }
         }
 
         public async void CreateShopItemsAsync(ProductDescription[] descriptions)

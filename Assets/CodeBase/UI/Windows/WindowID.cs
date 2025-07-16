@@ -6,7 +6,9 @@
         MainMenuWindow = 1,
         VictoryWindow = 2,
         LoseWindow = 3,
-        ShopWindow = 4
+        ShopWindow = 4,
+        ShrineWindow,
+        UpgradeStatsWindow
     }
 
 }

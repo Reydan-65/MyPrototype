@@ -39,21 +39,21 @@ namespace CodeBase.GamePlay.UI.Services
             await assetProvider.Load<GameObject>(configProvider.GetWindowConfig(WindowID.LoseWindow).PrefabReference);
         }
 
-        public async Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config)
-        {
-            return await CreateWindowAsync<LevelResultWindow, LevelResultPresenter>(config);
-        }
-
         public async Task<MainMenuPresenter> CreateMainMenuWindowAsync(WindowConfig config)
         {
             return await CreateWindowAsync<MainMenuWindow, MainMenuPresenter>(config);
         }
 
+        public async Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config)
+        {
+            return await CreateWindowAsync<LevelResultWindow, LevelResultPresenter>(config);
+        }
+
+        #region Shop
         public async Task<ShopPresenter> CreateShopWindowAsync(WindowConfig config)
         {
             return await CreateWindowAsync<ShopWindow, ShopPresenter>(config);
         }
-
         public async Task<ShopItem> CreateShopItemAsync()
         {
             GameObject prefab = await assetProvider.Load<GameObject>(AssetAddress.ShopItemPath);
@@ -75,7 +75,67 @@ namespace CodeBase.GamePlay.UI.Services
 
             return shopItem;
         }
+        #endregion
 
+        #region Shrine
+        public async Task<ShrinePresenter> CreateShrineWindowAsync(WindowConfig config)
+        {
+            return await CreateWindowAsync<ShrineWindow, ShrinePresenter>(config);
+        }
+
+        public async Task<ShrineItem> CreateShrineItemAsync()
+        {
+            GameObject prefab = await assetProvider.Load<GameObject>(AssetAddress.ShrineItemPath);
+            if (prefab == null) return null;
+
+            GameObject shrineElementGameObject = container.Instantiate(prefab);
+            if (shrineElementGameObject == null) return null;
+
+            RectTransform rectTransform = shrineElementGameObject.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                rectTransform.localScale = Vector3.one;
+                rectTransform.anchoredPosition = Vector2.zero;
+                rectTransform.sizeDelta = prefab.GetComponent<RectTransform>().sizeDelta;
+            }
+
+            var shrineElement = shrineElementGameObject.GetComponent<ShrineItem>();
+            if (shrineElement == null) return null;
+
+            return shrineElement;
+        }
+        #endregion
+
+        #region UpgradeStats
+        public async Task<UpgradeStatsPresenter> CreateUpgradeStatsWindowAsync(WindowConfig config)
+        {
+            return await CreateWindowAsync<UpgradeStatsWindow, UpgradeStatsPresenter>(config);
+        }
+
+        public async Task<UpgradeStatsItem> CreateUpgradeStatsItemAsync()
+        {
+            GameObject prefab = await assetProvider.Load<GameObject>(AssetAddress.UpgradeStatItemPath);
+            if (prefab == null) return null;
+
+            GameObject upgradeStatsItemGameObject = container.Instantiate(prefab);
+            if (upgradeStatsItemGameObject == null) return null;
+
+            RectTransform rectTransform = upgradeStatsItemGameObject.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                rectTransform.localScale = Vector3.one;
+                rectTransform.anchoredPosition = Vector2.zero;
+                rectTransform.sizeDelta = prefab.GetComponent<RectTransform>().sizeDelta;
+            }
+
+            var upgradeStatsItem = upgradeStatsItemGameObject.GetComponent<UpgradeStatsItem>();
+            if (upgradeStatsItem == null) return null;
+
+            return upgradeStatsItem;
+        }
+        #endregion
+
+        #region Root
         public void CreateUIRoot()
         {
             UIRoot = new GameObject(UIRootGameObjectName).transform;
@@ -96,5 +156,6 @@ namespace CodeBase.GamePlay.UI.Services
 
             return presenter;
         }
+        #endregion
     }
 }
