@@ -32,9 +32,7 @@ namespace CodeBase.GamePlay.UI
         private void OnDestroy()
         {
             if (progressProvider?.PlayerProgress?.HeroStats != null)
-            {
                 progressProvider.PlayerProgress.HeroStats.Changed -= UpdateAvailableElements;
-            }
         }
 
         public void Initialize(UpgradeStatsWindow window)

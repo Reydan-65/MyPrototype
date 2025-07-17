@@ -10,7 +10,6 @@ namespace CodeBase.GamePlay.Hero
         [SerializeField] private float restoreDelay;
 
         private float restoreTimer;
-        private bool invulnerability;
 
         public void Initialize(float max)
         {
@@ -42,10 +41,7 @@ namespace CodeBase.GamePlay.Hero
             InvokeChangedEvent();
         }
 
-        public void SetInvulnerability(bool enable)
-        {
-            invulnerability = enable;
-        }
+        
 
         public void LoadProgress(PlayerProgress progress)
         {

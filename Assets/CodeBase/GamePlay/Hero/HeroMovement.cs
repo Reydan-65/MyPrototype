@@ -15,12 +15,24 @@ namespace CodeBase.GamePlay.Hero
         [SerializeField] private float groundCheckDistance = 0.2f;
         [SerializeField] private LayerMask groundLayer;
 
-        private float movementSpeed;
-        private float dashRange;
-        private HeroHealth heroHealth;
-        private Vector3 directionControl;
+        private DashController dashController;
         private GravityHandler gravityHandler;
+        private HeroHealth heroHealth;
+        
+        private float movementSpeed;
+        private Vector3 directionControl;
         public Vector3 DirectionControl => directionControl;
+
+        [Header("Dash Settings")]
+        [SerializeField] private float dashDuration = 0.2f;
+        [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
+        [SerializeField] private float dashCooldown = 1f;
+
+        private float dashRange;
+        private float dashCooldownTimer;
+        private bool isDashing;
+        private float dashTimer;
+        private Vector3 dashDirection;
 
         private IInputService inputService;
         private ICursorService cursorService;
@@ -49,13 +61,30 @@ namespace CodeBase.GamePlay.Hero
         {
             this.movementSpeed = movementSpeed;
             this.dashRange = dashRange;
+
+            dashController = new DashController(
+                characterController,
+                heroHealth,
+                this.dashRange,
+                dashDuration,
+                dashCooldown,
+                dashSpeedCurve);
         }
 
         private void Update()
         {
-            gravityHandler.UpdateGravity();
+            if (dashController == null) return;
 
-            MoveCharacter();
+            float deltaTime = Time.deltaTime;
+
+            gravityHandler.UpdateGravity();
+            dashController.UpdateCooldown(deltaTime);
+
+            if (dashController.IsDashing)
+                dashController.UpdateDash(deltaTime, gravityHandler.VerticalVelocity);
+            else
+                MoveCharacter();
+
             RotateView();
         }
 
@@ -66,14 +95,18 @@ namespace CodeBase.GamePlay.Hero
 
             if (inputService != null && heroHealth != null)
             {
-                if (inputService.DashInput && heroHealth.Current > 0)
-                {
-                    heroHealth.SetInvulnerability(true);
-                    characterController.Move(moveDirection * Time.deltaTime * dashRange);
-                }
+                if (CanDash())
+                    dashController.StartDash(moveDirection);
             }
 
             characterController.Move(moveDirection * Time.deltaTime);
+        }
+
+        private bool CanDash()
+        {
+            return inputService != null &&
+                   inputService.DashInput &&
+                   directionControl.magnitude > 0.1f;
         }
 
         private void RotateView()

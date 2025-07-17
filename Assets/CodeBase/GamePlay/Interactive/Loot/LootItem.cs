@@ -26,6 +26,8 @@ namespace CodeBase.GamePlay.Interactive
 
         protected virtual void OnTriggerEnter(Collider other)
         {
+            if (gameFactory == null) return;
+
             if (other.gameObject == gameFactory.HeroObject)
             {
                 OnPickup();

@@ -37,7 +37,7 @@ namespace CodeBase.GamePlay.UI
         {
             this.window = window;
 
-            currentStats = HeroStats.GetStats();
+            currentStats = progressProvider.PlayerProgress.HeroStats;
             newStats = new HeroStats();
             newStats.CopyFrom(currentStats);
 

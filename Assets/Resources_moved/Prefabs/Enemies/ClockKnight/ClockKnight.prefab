@@ -142,9 +142,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1
-  m_Height: 2
+  m_Height: 3
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!114 &22207734096046627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,11 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22f38396ed84da2458f9e0a6b2b851a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 3
-  stopDistance: 1.9
   agent: {fileID: 6953867043949644791}
-  combatMoveRadius: 5
-  combatMoveInterval: 2
 --- !u!114 &236070567235972049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,8 +211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 903754f1fa166d0418b8dc891742d6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max: 200
-  current: 200
 --- !u!114 &5393049309492791072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,7 +321,6 @@ GameObject:
   - component: {fileID: 7275225283326884843}
   - component: {fileID: 6005850597124518990}
   - component: {fileID: 8412132591867281540}
-  - component: {fileID: 857472896786142887}
   m_Layer: 0
   m_Name: 4.4
   m_TagString: Untagged
@@ -403,28 +396,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &857472896786142887
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8051620802565759313}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -5570197797731065986, guid: 5322c5652e91874478d1dfe14b15036f, type: 3}
 --- !u!1 &8391575827461812539
 GameObject:
   m_ObjectHideFlags: 0

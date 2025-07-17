@@ -10,6 +10,7 @@ namespace CodeBase.GamePlay
 
         protected float max;
         protected float current;
+        protected bool invulnerability;
 
         public float Max => max;
         public float Current => current;
@@ -29,6 +30,11 @@ namespace CodeBase.GamePlay
             }
 
             InvokeChangedEvent();
+        }
+
+        public void SetInvulnerability(bool enable)
+        {
+            invulnerability = enable;
         }
 
         protected void InvokeChangedEvent()
