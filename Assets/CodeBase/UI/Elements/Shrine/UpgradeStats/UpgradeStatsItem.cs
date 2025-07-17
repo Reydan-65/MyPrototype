@@ -23,7 +23,7 @@ namespace CodeBase.GamePlay.UI
             StatName = statName;
             statNameText.text = statName;
             currentValueText.text = currentValue;
-            bonusValueText.text = currentValue;
+            bonusValueText.text = "+"+bonusValue;
             priceValueText.text = priceValue;
 
             upgradeButton.onClick.RemoveListener(() => onUpgrade?.Invoke());

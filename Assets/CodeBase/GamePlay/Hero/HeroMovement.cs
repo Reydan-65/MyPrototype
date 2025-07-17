@@ -45,6 +45,12 @@ namespace CodeBase.GamePlay.Hero
             this.cursorService = cursorService;
         }
 
+        public void Initialize(float movementSpeed, float dashRange)
+        {
+            this.movementSpeed = movementSpeed;
+            this.dashRange = dashRange;
+        }
+
         private void Update()
         {
             gravityHandler.UpdateGravity();
@@ -104,8 +110,7 @@ namespace CodeBase.GamePlay.Hero
 
         public void LoadProgress(PlayerProgress progress)
         {
-            movementSpeed = progress.HeroStats.MovementSpeed;
-            dashRange = progress.HeroStats.DashRange;
+            Initialize(progress.HeroStats.MovementSpeed, progress.HeroStats.DashRange);
         }
     }
 }

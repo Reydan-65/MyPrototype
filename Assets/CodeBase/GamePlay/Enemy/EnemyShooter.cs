@@ -24,7 +24,8 @@ namespace CodeBase.GamePlay.Enemies
 
         private void OnDestroy()
         {
-            gameFactory.HeroCreated -= OnHeroCreated;
+            if (gameFactory != null)
+                gameFactory.HeroCreated -= OnHeroCreated;
         }
 
         private void OnHeroCreated()

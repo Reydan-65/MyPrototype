@@ -30,7 +30,7 @@ namespace CodeBase.GamePlay.Enemies
 
         private void Update()
         {
-            if (gameFactory.HeroObject == null) return;
+            if (gameFactory == null || gameFactory.HeroObject == null) return;
 
             bool isInRange = Vector3.Distance(followToHero.transform.position,
                                     gameFactory.HeroObject.transform.position) <= viewDistance;

@@ -1254,6 +1254,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   closeButton: {fileID: 9189239908088599007}
   titleText: {fileID: 7472437520007696502}
+  acceptButton: {fileID: 7539497914761782796}
+  cancelButton: {fileID: 134663408103205638}
+  statsContainer: {fileID: 2992569635184051262}
 --- !u!114 &2992569635184051262
 MonoBehaviour:
   m_ObjectHideFlags: 0

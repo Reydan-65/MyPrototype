@@ -2,7 +2,6 @@
 using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
-using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -10,43 +9,51 @@ namespace CodeBase.GamePlay.UI
 {
     public class UpgradeStatsContainer : MonoBehaviour
     {
-        private const int BonusMaxHitPoints = 5;
-        private const int BonusDamage = 1;
-        private const float BonusShootingRate = -0.05f;
-        private const float BonusMovementSpeed = 0.1f;
-        private const float BonusDashRange = 0.1f;
+        private const int BonusMaxHitPoints = 2;
+        private const float BonusShootingRate = -0.01f;
+        private const float BonusMovementSpeed = 0.02f;
+        private const float BonusDashRange = 2f;
 
         [SerializeField] private Transform parent;
 
+        private UpgradeStatsWindow window;
+        private bool isInitialized;
+
         private IUIFactory factory;
         private IProgressProvider progressProvider;
-        private IProgressSaver progressSaver;
 
         [Inject]
-        public void Construct(IUIFactory factory, IProgressProvider progressProvider, IProgressSaver progressSaver)
+        public void Construct(IUIFactory factory, IProgressProvider progressProvider)
         {
             this.factory = factory;
             this.progressProvider = progressProvider;
-            this.progressSaver = progressSaver;
-        }
-
-        private void Start()
-        {
-            progressProvider.PlayerProgress.HeroStats.Changed += UpdateAvailableElements;
-            UpdateAvailableElements();
         }
 
         private void OnDestroy()
         {
-            progressProvider.PlayerProgress.HeroStats.Changed -= UpdateAvailableElements;
+            if (progressProvider?.PlayerProgress?.HeroStats != null)
+            {
+                progressProvider.PlayerProgress.HeroStats.Changed -= UpdateAvailableElements;
+            }
         }
 
-        private void UpdateAvailableElements()
+        public void Initialize(UpgradeStatsWindow window)
+        {
+            if (isInitialized) return;
+
+            this.window = window;
+            isInitialized = true;
+
+            progressProvider.PlayerProgress.HeroStats.Changed -= UpdateAvailableElements;
+            progressProvider.PlayerProgress.HeroStats.Changed += UpdateAvailableElements;
+
+            UpdateAvailableElements();
+        }
+
+        public void UpdateAvailableElements()
         {
             ClearContainer();
-
-            HeroStats stats = HeroStats.GetStats();
-            CreateUpgradeStatsElementAsync(stats);
+            CreateUpgradeStatsElementAsync(window.GetNewStats());
         }
 
         private void ClearContainer()
@@ -55,19 +62,17 @@ namespace CodeBase.GamePlay.UI
                 Destroy(child.gameObject);
         }
 
-        public async void CreateUpgradeStatsElementAsync(HeroStats stats)
+        private async void CreateUpgradeStatsElementAsync(HeroStats stats)
         {
             if (parent == null) return;
 
-            await CreateStatElementAsync("HEALTH", stats.MaxHitPoints.ToString(), BonusMaxHitPoints.ToString(), 1.ToString(),
+            await CreateStatElementAsync("HEALTH", stats.MaxHitPoints.ToString(), BonusMaxHitPoints.ToString(), "1",
                 () => UpgradeStat(ref stats.MaxHitPoints, BonusMaxHitPoints));
-            await CreateStatElementAsync("DAMAGE", stats.Damage.ToString(), BonusDamage.ToString(), 1.ToString(),
-                () => UpgradeStat(ref stats.Damage, BonusDamage));
-            await CreateStatElementAsync("FIRE RATE", stats.ShootingRate.ToString(), BonusShootingRate.ToString(), 1.ToString(),
+            await CreateStatElementAsync("FIRE RATE", stats.ShootingRate.ToString("F2"), Mathf.Abs(BonusShootingRate).ToString("F2"), "1",
                 () => UpgradeStat(ref stats.ShootingRate, BonusShootingRate));
-            await CreateStatElementAsync("SPEED", stats.MovementSpeed.ToString(), BonusMovementSpeed.ToString(), 1.ToString(),
+            await CreateStatElementAsync("SPEED", stats.MovementSpeed.ToString("F2"), BonusMovementSpeed.ToString("F2"), "1",
                 () => UpgradeStat(ref stats.MovementSpeed, BonusMovementSpeed));
-            await CreateStatElementAsync("DASH RANGE", stats.DashRange.ToString(), BonusDashRange.ToString(), 1.ToString(),
+            await CreateStatElementAsync("DASH RANGE", (stats.DashRange / 100).ToString("F2"), (BonusDashRange / 100).ToString("F2"), "1",
                 () => UpgradeStat(ref stats.DashRange, BonusDashRange));
         }
 
@@ -86,19 +91,20 @@ namespace CodeBase.GamePlay.UI
             element.Initialize(statName, currentValue, bonusValue, priceValue, () =>
             {
                 upgradeAction.Invoke();
+                window.UpdateStatsDisplay();
             });
         }
 
         private void UpgradeStat(ref int stat, int bonusValue)
         {
             stat += bonusValue;
-            progressProvider.PlayerProgress.HeroStats.IsChanged();
+            window.UpdateStatsDisplay();
         }
 
         private void UpgradeStat(ref float stat, float bonusValue)
         {
             stat += bonusValue;
-            progressProvider.PlayerProgress.HeroStats.IsChanged();
+            window.UpdateStatsDisplay();
         }
     }
 }

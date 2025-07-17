@@ -11,7 +11,7 @@ namespace CodeBase.GamePlay.UI
         private void Start()
         {
             health.Changed += OnHitPointsChanged;
-
+            
             OnHitPointsChanged();
         }
 

@@ -18,7 +18,7 @@ namespace CodeBase.GamePlay.Interactive
         public override void Interact(GameObject user)
         {
             base.Interact(user);
-            Debug.Log($"Shrine used by {user.name}!");
+            
             windowsProvider.Open(WindowID.ShrineWindow);
         }
     }

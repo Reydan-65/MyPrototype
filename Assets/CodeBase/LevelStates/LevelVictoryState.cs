@@ -39,7 +39,6 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             inputService.Enable = false;
             //gameFactory.VirtualJoystick.gameObject.SetActive(false);
 
-            UpdateHeroStats();
             UpdateCurrentLevelIndex();
 
             progressSaver.SaveProgress();
@@ -53,13 +52,6 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
             //if (progressProvider.PlayerProgress.CurrentLevelIndex > configsProvider.LevelAmount - 1)
             //    progressProvider.PlayerProgress.CurrentLevelIndex = configsProvider.LevelAmount - 1;
-        }
-
-        private void UpdateHeroStats()
-        {
-            progressProvider.PlayerProgress.HeroStats.Damage += 2;
-            progressProvider.PlayerProgress.HeroStats.MaxHitPoints += 5;
-            progressProvider.PlayerProgress.HeroStats.MovementSpeed += 0.1f;
         }
     }
 }

@@ -10,22 +10,12 @@ namespace CodeBase.GamePlay.Hero
         [SerializeField] private float restoreDelay;
 
         private float restoreTimer;
-        private bool isInitialized;
         private bool invulnerability;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            if (!isInitialized)
-                Initialize(max);
-        }
 
         public void Initialize(float max)
         {
             this.max = max;
             current = max;
-            isInitialized = true;
             InvokeChangedEvent();
         }
 
@@ -59,8 +49,9 @@ namespace CodeBase.GamePlay.Hero
 
         public void LoadProgress(PlayerProgress progress)
         {
-            current = progress.HeroStats.MaxHitPoints;
             max = progress.HeroStats.MaxHitPoints;
+            current = max;
+            InvokeChangedEvent();
         }
     }
 }

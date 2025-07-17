@@ -14,13 +14,12 @@ namespace CodeBase.Infrastructure.Services.ConfigProvider
         private const string LevelsConfigPath = "Configs/Levels";
         private const string WindowsConfigPath = "Configs/Windows";
         private const string ProjectilesConfigPath = "Configs/Projectiles";
-        private const string TurretsConfigPath = "Configs/Turrets";
 
         private Dictionary<EnemyID, EnemyConfig> enemies;
         private Dictionary<ProjectileType, ProjectileConfig> projectiles;
         private Dictionary<string, LevelConfig> levels;
         private Dictionary<WindowID, WindowConfig> windows;
-        private Dictionary<int, ProductConfig> products;
+        //private Dictionary<int, ProductConfig> products;
         private LevelConfig[] levelList;
 
         public int LevelAmount => levelList.Length;

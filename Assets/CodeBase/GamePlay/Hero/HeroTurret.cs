@@ -16,6 +16,11 @@ namespace CodeBase.GamePlay.Hero
             this.inputService = inputService;
         }
 
+        public void Initialize(float value)
+        {
+            shootingRate = value;
+        }
+
         protected override void Update()
         {
             base.Update();
@@ -28,7 +33,7 @@ namespace CodeBase.GamePlay.Hero
         public void LoadProgress(PlayerProgress progress)
         {
             turretType = progress.HeroStats.TurretType;
-            shootingRate = progress.HeroStats.ShootingRate;
+            Initialize(progress.HeroStats.ShootingRate);
         }
     }
 }
