@@ -1,6 +1,7 @@
 using CodeBase.Data;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace CodeBase.GamePlay.UI
 
         [SerializeField] private Button acceptButton;
         [SerializeField] private Button cancelButton;
+        [SerializeField] private TextMeshProUGUI cancelButtonText;
 
         private UpgradeStatsContainer statsContainer;
         private UpgradeStatsPresenter statsPresenter;
@@ -59,6 +61,11 @@ namespace CodeBase.GamePlay.UI
         {
             if (statsContainer != null)
                 statsContainer.UpdateAvailableElements();
+        }
+
+        public void SetCancelButtonText(string text)
+        {
+            cancelButtonText.text = text;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace CodeBase.GamePlay.Enemies
 
             foreach (var turret in turrets)
             {
-                if (turret.ReadyToFire && IsTargetInShootingRange())
+                if (turret.CanFire() && IsTargetInShootingRange())
                     turret.Fire();
             }
         }

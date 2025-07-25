@@ -10,6 +10,7 @@ namespace CodeBase.GamePlay.UI
     public class UpgradeStatsContainer : MonoBehaviour
     {
         private const int BonusMaxHitPoints = 2;
+        private const int BonusMaxEnergy = 1;
         private const float BonusShootingRate = -0.01f;
         private const float BonusMovementSpeed = 0.02f;
         private const float BonusDashRange = 2f;
@@ -66,6 +67,8 @@ namespace CodeBase.GamePlay.UI
 
             await CreateStatElementAsync("HEALTH", stats.MaxHitPoints.ToString(), BonusMaxHitPoints.ToString(), "1",
                 () => UpgradeStat(ref stats.MaxHitPoints, BonusMaxHitPoints));
+            await CreateStatElementAsync("ENERGY", stats.MaxEnergy.ToString(), BonusMaxEnergy.ToString(), "1",
+                () => UpgradeStat(ref stats.MaxEnergy, BonusMaxEnergy));
             await CreateStatElementAsync("FIRE RATE", stats.ShootingRate.ToString("F2"), Mathf.Abs(BonusShootingRate).ToString("F2"), "1",
                 () => UpgradeStat(ref stats.ShootingRate, BonusShootingRate));
             await CreateStatElementAsync("SPEED", stats.MovementSpeed.ToString("F2"), BonusMovementSpeed.ToString("F2"), "1",

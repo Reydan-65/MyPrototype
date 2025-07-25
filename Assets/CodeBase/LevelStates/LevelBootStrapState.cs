@@ -6,6 +6,8 @@ using CodeBase.GamePlay.Enemies;
 using CodeBase.Configs;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using CodeBase.GamePlay.UI.Services;
+using CodeBase.GamePlay.UI;
 
 namespace CodeBase.Infrastructure.Services.LevelStates
 {
@@ -16,7 +18,9 @@ namespace CodeBase.Infrastructure.Services.LevelStates
         private IInputService inputService;
         private ICursorService cursorService;
         private IProgressSaver progressSaver;
-        private IConfigsProvider configProvider;
+        private IConfigsProvider configsProvider;
+        private IWindowsProvider windowsProvider;
+        private IEnemySpawnManager enemySpawnManager;
 
         public LevelBootStrapState(
             IGameFactory gameFactory,
@@ -24,17 +28,19 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             IInputService inputService,
             ICursorService cursorService,
             IProgressSaver progressSaver,
-            IConfigsProvider configProvider)
+            IConfigsProvider configProvider,
+            IWindowsProvider windowsProvider)
         {
             this.gameFactory = gameFactory;
             this.levelStateSwitcher = levelStateSwitcher;
             this.inputService = inputService;
             this.cursorService = cursorService;
             this.progressSaver = progressSaver;
-            this.configProvider = configProvider;
+            this.configsProvider = configProvider;
+            this.windowsProvider = windowsProvider;
         }
 
-        public async void Enter()
+        public async void EnterAsync()
         {
             //Debug.Log("LEVEL: Init");
 
@@ -42,17 +48,9 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
             await gameFactory.WarmUp();
 
-            string sceneName = SceneManager.GetActiveScene().name;
-            LevelConfig levelConfig = configProvider.GetLevelConfig(sceneName);
+            SpawnEnemies();
 
-            EnemySpawner[] enemySpawners = GameObject.FindObjectsByType<EnemySpawner>(0);
-
-            for (int i = 0; i < enemySpawners.Length; i++)
-            {
-                enemySpawners[i].Spawn();
-            }
-
-            await gameFactory.CreateHeroAsync(levelConfig.HeroSpawnPoint, Quaternion.identity);
+            await SpawnHero();
 
             FollowCamera followCamera = await gameFactory.CreateFollowCameraAsync();
             followCamera.SetTarget(gameFactory.HeroObject.transform);
@@ -63,9 +61,26 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
             progressSaver.LoadProgress();
 
+            windowsProvider.Open(WindowID.HUDWindow);
+
             inputService.Enable = true;
 
             levelStateSwitcher.Enter<LevelResearchState>();
+        }
+
+        private static void SpawnEnemies()
+        {
+            EnemySpawner[] enemySpawners = GameObject.FindObjectsByType<EnemySpawner>(0);
+
+            for (int i = 0; i < enemySpawners.Length; i++)
+                enemySpawners[i].Spawn();
+        }
+
+        private async System.Threading.Tasks.Task SpawnHero()
+        {
+            string sceneName = SceneManager.GetActiveScene().name;
+            LevelConfig levelConfig = configsProvider.GetLevelConfig(sceneName);
+            await gameFactory.CreateHeroAsync(levelConfig.HeroSpawnPoint, Quaternion.identity);
         }
     }
 }

@@ -10,13 +10,14 @@ namespace CodeBase.GamePlay.Enemies
 {
     public class EnemyDeath : MonoBehaviour
     {
-        [SerializeField] private Health health;
         [SerializeField] private EnemyFollowToHero followToHero;
         [SerializeField] private GameObject visualModel;
         [SerializeField] private HealthBar healthBar;
 
+        private EnemyHealth enemyHealth;
         private EnemyInventory inventory;
         private ILootService lootService;
+        private IHealth health;
 
         [Inject]
         public void Construct(ILootService lootService)
@@ -24,12 +25,18 @@ namespace CodeBase.GamePlay.Enemies
             this.lootService = lootService;
 
             inventory = GetComponent<EnemyInventory>();
-            health.Die += OnDie;
+            enemyHealth = GetComponent<EnemyHealth>();
+
+            health = enemyHealth.GetComponent<IHealth>();
+
+            if (health != null)
+                health.Depleted += OnDie;
         }
 
         private void OnDestroy()
         {
-            health.Die -= OnDie;
+            if (health != null)
+                health.Depleted -= OnDie;
         }
 
         private async void OnDie()

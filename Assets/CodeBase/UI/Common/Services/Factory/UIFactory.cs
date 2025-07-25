@@ -26,6 +26,10 @@ namespace CodeBase.GamePlay.UI.Services
         }
 
         public Transform UIRoot { get; set; }
+        public HUDPresenter HUDPresenter { get; set; }
+        public HUDWindow HUDWindow { get; set; }
+        public LevelResultPresenter LevelResultPresenter { get; set; }
+        public LevelResultWindow LevelResultWindow { get; set; }
 
         public async Task WarmUp()
         {
@@ -36,7 +40,8 @@ namespace CodeBase.GamePlay.UI.Services
                 WindowID.VictoryWindow,
                 WindowID.LoseWindow,
                 WindowID.ShrineWindow,
-                WindowID.UpgradeStatsWindow
+                WindowID.UpgradeStatsWindow,
+                WindowID.HUDWindow
             };
 
             foreach (var windowConfig in windowConfigs)
@@ -52,8 +57,20 @@ namespace CodeBase.GamePlay.UI.Services
             await CreateWindowAsync<MainMenuWindow, MainMenuPresenter>(config);
 
         // Level Result
-        public async Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config) =>
-            await CreateWindowAsync<LevelResultWindow, LevelResultPresenter>(config);
+        public async Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config)
+        {
+            LevelResultPresenter = await CreateWindowAsync<LevelResultWindow, LevelResultPresenter>(config);
+            LevelResultWindow = LevelResultPresenter.GetWindow();
+            return LevelResultPresenter;
+        }
+
+        // HUD
+        public async Task<HUDPresenter> CreateHUDWindowAsync(WindowConfig config)
+        {
+            HUDPresenter = await CreateWindowAsync<HUDWindow, HUDPresenter>(config);
+            HUDWindow = HUDPresenter.GetWindow();
+            return HUDPresenter;
+        }
 
         // Shop
         public async Task<ShopPresenter> CreateShopWindowAsync(WindowConfig config) =>
@@ -81,7 +98,8 @@ namespace CodeBase.GamePlay.UI.Services
             GameObject prefab = await assetProvider.Load<GameObject>(config.PrefabReference);
             TWindow window = container.Instantiate(prefab).GetComponent<TWindow>();
             window.transform.SetParent(UIRoot);
-            window.SetTitle(config.Title);
+            if (config.Title != null)
+                window.SetTitle(config.Title);
             TPresenter presenter = container.CreateAndInject<TPresenter>();
             presenter.SetWindow(window);
             return presenter;
@@ -93,7 +111,7 @@ namespace CodeBase.GamePlay.UI.Services
             if (prefab == null) return null;
             GameObject itemObject = container.Instantiate(prefab);
             if (itemObject == null) return null;
-            SetupRectTransform(itemObject,prefab);
+            SetupRectTransform(itemObject, prefab);
             return itemObject.GetComponent<T>();
         }
 

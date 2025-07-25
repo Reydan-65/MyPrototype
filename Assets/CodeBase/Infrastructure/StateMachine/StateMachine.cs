@@ -38,7 +38,7 @@ namespace CodeBase.Infrastructure.StateMachine
 
             currentState = state;
 
-            if (currentState is IEnterableState enterableState) enterableState.Enter();
+            if (currentState is IEnterableState enterableState) enterableState.EnterAsync();
         }
 
         public void Exit<TState>() where TState : class, IState

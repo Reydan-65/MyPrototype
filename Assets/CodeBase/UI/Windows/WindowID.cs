@@ -7,8 +7,9 @@
         VictoryWindow = 2,
         LoseWindow = 3,
         ShopWindow = 4,
-        ShrineWindow,
-        UpgradeStatsWindow
+        ShrineWindow = 5,
+        UpgradeStatsWindow = 6,
+        HUDWindow = 7
     }
 
 }

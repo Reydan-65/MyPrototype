@@ -1,3 +1,4 @@
+using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
 using UnityEngine;
@@ -9,12 +10,16 @@ namespace CodeBase.GamePlay.Enemies
         [SerializeField] private EnemyID enemyID;
 
         private IGameFactory gameFactory;
+        private IEnemySpawnManager enemySpawnManager;
         private EnemyLootDistributor lootDistributor;
 
         [Inject]
-        public void Construct(IGameFactory gameFactory)
+        public void Construct(
+            IGameFactory gameFactory,
+            IEnemySpawnManager enemySpawnManager)
         {
             this.gameFactory = gameFactory;
+            this.enemySpawnManager = enemySpawnManager;
         }
 
         private void Awake()
@@ -31,6 +36,8 @@ namespace CodeBase.GamePlay.Enemies
 
             if (enemy.TryGetComponent(out EnemyInventory inventory))
                 lootDistributor?.DistributeLoot(inventory);
+
+            enemySpawnManager.RegisterEnemy(enemy);
         }
 
 #if UNITY_EDITOR

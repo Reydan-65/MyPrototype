@@ -78,7 +78,7 @@ namespace CodeBase.Infrastructure.Services
         {
             if (config.ID == SmallCoinsPackID)
             {
-                progressProvider.PlayerProgress.HeroInventoryData.AddCoin(config.Quantity);
+                progressProvider.PlayerProgress.HeroInventoryData.AddItem(LootItemID.Coin, config.Quantity);
             }
 
             if (config.ID == FemaleSkinID)

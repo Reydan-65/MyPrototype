@@ -9,11 +9,11 @@ namespace CodeBase.Infrastructure.Services.LevelStates
         public LevelBattleState(IGameFactory gameFactory, ILevelStateSwitcher levelStateSwitcher)
         : base(gameFactory, levelStateSwitcher) { }
 
-        public void Enter()
+        public void EnterAsync()
         {
             activePersuersCount = 0;
 
-            gameFactory.HeroHealth.Die += OnHeroDie;
+            gameFactory.HeroHealth.Depleted += OnHeroDie;
 
             SubscribeToEnemyEvents(persuer =>
             {
@@ -28,7 +28,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         public void Exit()
         {
-            gameFactory.HeroHealth.Die -= OnHeroDie;
+            gameFactory.HeroHealth.Depleted -= OnHeroDie;
 
             SubscribeToEnemyEvents(persuer =>
             {

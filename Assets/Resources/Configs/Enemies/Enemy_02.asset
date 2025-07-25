@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9efa66fb95f974245b659c3bdaa28338, type: 3}
-  m_Name: Boxer
+  m_Name: Enemy_02
   m_EditorClassIdentifier: 
   PrefabReference:
-    m_AssetGUID: f470e8f304d967f4d914fbaedca0a8e4
+    m_AssetGUID: fbba971b3e919a7468f69234a590d25b
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  EnemyID: 0
-  MaxHitPoints: 100
-  MovementSpeed: 4
+  EnemyID: 1
+  MaxHitPoints: 250
+  MovementSpeed: 2.5
   StopDistance: 4
   CombatMoveRadius: 5
   CombatMoveInterval: 2
   TurretType: 1
-  ShootingRate: 0.5
+  ShootingRate: 1
   ShootingRange: 6
   ShootingAngle: 10

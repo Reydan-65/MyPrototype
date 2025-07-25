@@ -3,38 +3,38 @@ using UnityEngine.Events;
 
 namespace CodeBase.GamePlay
 {
-    public abstract class Health : MonoBehaviour
+    public abstract class Resource : MonoBehaviour, IResource
     {
         public event UnityAction Changed;
-        public event UnityAction Die;
+        public event UnityAction Depleted;
 
         protected float max;
         protected float current;
-        protected bool invulnerability;
+        protected bool isImmune;
 
         public float Max => max;
         public float Current => current;
 
         protected virtual void Awake() { }
 
-        public void ApplyDamage(float damage)
+        public virtual void ChangeValue(float amount)
         {
-            if (current == 0 || damage == 0) return;
+            if (current == 0 || amount == 0) return;
 
-            current -= damage;
+            current -= amount;
 
             if (current <= 0)
             {
                 current = 0;
-                Die?.Invoke();
+                Depleted?.Invoke();
             }
 
             InvokeChangedEvent();
         }
 
-        public void SetInvulnerability(bool enable)
+        public void SetImmune(bool enable)
         {
-            invulnerability = enable;
+            isImmune = enable;
         }
 
         protected void InvokeChangedEvent()

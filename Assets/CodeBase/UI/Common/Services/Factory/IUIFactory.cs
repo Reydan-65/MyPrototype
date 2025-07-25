@@ -10,10 +10,16 @@ namespace CodeBase.GamePlay.UI.Services
         Task WarmUp();
 
         Transform UIRoot { get; set; }
+        HUDPresenter HUDPresenter { get; set; }
+        HUDWindow HUDWindow { get; set; }
+        LevelResultPresenter LevelResultPresenter { get; set; }
+        LevelResultWindow LevelResultWindow { get; set; }
+
         void CreateUIRoot();
 
         Task<MainMenuPresenter> CreateMainMenuWindowAsync(WindowConfig config);
         Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config);
+        Task<HUDPresenter> CreateHUDWindowAsync(WindowConfig config);
 
         Task<ShopPresenter> CreateShopWindowAsync(WindowConfig config);
         Task<ShopItem> CreateShopItemAsync();

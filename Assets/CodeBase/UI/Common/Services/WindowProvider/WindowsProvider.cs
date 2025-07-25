@@ -35,6 +35,9 @@ namespace CodeBase.GamePlay.UI.Services
 
             if (id == WindowID.UpgradeStatsWindow)
                 factory.CreateUpgradeStatsWindowAsync(config);
+
+            if (id == WindowID.HUDWindow)
+                factory.CreateHUDWindowAsync(config);
         }
     }
 }

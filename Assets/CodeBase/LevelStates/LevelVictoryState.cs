@@ -32,7 +32,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             this.configsProvider = configsProvider;
         }
 
-        public void Enter()
+        public void EnterAsync()
         {
             UnityEngine.Debug.Log("LEVEL: Victory State");
 

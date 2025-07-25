@@ -40,12 +40,14 @@ namespace CodeBase.Infrastructure
             container.RegisterSingle<ISceneLoader, SceneLoader>();
             container.RegisterSingle<IInputService, InputService>();
             container.RegisterSingle<ICursorService, CursorService>();
+            container.RegisterSingle<IEnemySpawnManager, EnemySpawnManager>();
             container.RegisterSingle<IGameFactory, GameFactory>();
             container.RegisterSingle<IUIFactory, UIFactory>();
+            container.RegisterSingle<ILootService, LootService>();
             container.RegisterSingle<IWindowsProvider, WindowsProvider>();
             //container.RegisterSingle<IAdsService, AdsService>();
             container.RegisterSingle<IIApService, IApService>();
-            container.RegisterSingle<ILootService, LootService>();
+            container.RegisterSingle<IHealingService, HealingService>();
         }
     }
 }

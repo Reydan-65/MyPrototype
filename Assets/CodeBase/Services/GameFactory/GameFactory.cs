@@ -4,6 +4,7 @@ using CodeBase.GamePlay.Enemies;
 using CodeBase.GamePlay.Hero;
 using CodeBase.GamePlay.Interactive;
 using CodeBase.GamePlay.Projectile;
+using CodeBase.GamePlay.UI;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.ConfigProvider;
@@ -24,23 +25,27 @@ namespace CodeBase.Infrastructure.Services.Factory
         private IAssetProvider assetProvider;
         private IProgressSaver progressSaver;
         private IConfigsProvider configProvider;
+        private IEnemySpawnManager enemySpawnManager;
 
         public GameFactory(
             DIContainer container,
             IAssetProvider assetProvider,
             IProgressSaver progressSaver,
-            IConfigsProvider configProvider)
+            IConfigsProvider configProvider,
+            IEnemySpawnManager enemySpawnManager)
         {
             this.container = container;
             this.assetProvider = assetProvider;
             this.progressSaver = progressSaver;
             this.configProvider = configProvider;
+            this.enemySpawnManager = enemySpawnManager;
         }
 
         public GameObject HeroObject { get; private set; }
         public VirtualJoystick VirtualJoystick { get; private set; }
         public FollowCamera FollowCamera { get; private set; }
         public HeroHealth HeroHealth { get; private set; }
+        public HeroEnergy HeroEnergy { get; private set; }
         public HeroInventory HeroInventory { get; private set; }
         public List<GameObject> EnemiesObject { get; private set; } = new List<GameObject>();
         public List<GameObject> ProjectilesObject { get; private set; } = new List<GameObject>();
@@ -79,11 +84,14 @@ namespace CodeBase.Infrastructure.Services.Factory
             HeroObject.transform.SetPositionAndRotation(position, rotation);
 
             HeroHealth = HeroObject.GetComponent<HeroHealth>();
+            HeroEnergy = HeroObject.GetComponent<HeroEnergy>();
 
             var progress = progressSaver.GetProgress();
 
             HeroHealth.Initialize(progress.HeroStats.MaxHitPoints);
-            HeroHealth.SetInvulnerability(false);
+            HeroEnergy.Initialize(progress.HeroStats.MaxEnergy);
+
+            HeroHealth.SetImmune(false);
 
             HeroInventoryData inventoryData = progress.HeroInventoryData;
             HeroInventory = HeroObject.GetComponent<HeroInventory>();
@@ -92,7 +100,6 @@ namespace CodeBase.Infrastructure.Services.Factory
             progressSaver.AddObject(HeroObject);
 
             HeroCreated?.Invoke();
-
             return HeroObject;
         }
         #endregion
@@ -156,6 +163,10 @@ namespace CodeBase.Infrastructure.Services.Factory
             GameObject enemyPrefab = await assetProvider.Load<GameObject>(enemyConfig.PrefabReference);
             GameObject enemy = container.Instantiate(enemyPrefab);
 
+            EnemyHealth health = enemy.GetComponent<EnemyHealth>();
+            enemy.GetComponentInChildren<HealthBar>().SetResource(health);
+            enemy.GetComponentInChildren<HealthText>().SetResource(health);
+
             enemy.transform.position = position;
 
             var installers = enemy.GetComponentsInChildren<IEnemyConfigInstaller>();
@@ -163,6 +174,8 @@ namespace CodeBase.Infrastructure.Services.Factory
                 installers[i].InstallEnemyConfig(enemyConfig);
 
             EnemiesObject.Add(enemy);
+
+            enemySpawnManager.RegisterEnemy(enemy);
 
             return enemy;
         }

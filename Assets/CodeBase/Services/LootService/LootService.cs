@@ -44,6 +44,7 @@ namespace CodeBase.Infrastructure.Services
             {
                 lootItem.SetColliderEnabled(false);
                 lootItem.transform.position = spawnPosition;
+
                 await AnimateLootDrop(lootItem);
 
                 lock (activeLootItems)

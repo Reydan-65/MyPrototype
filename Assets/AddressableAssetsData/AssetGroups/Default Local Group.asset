@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 91459b3a96329f14d99c0d042108374f
   m_SerializeEntries:
-  - m_GUID: 0456d19de7e1de04db8ae287d0bf295c
-    m_Address: ShrineItem
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 053f2815b89012d41a9a9f08a336cfc6
     m_Address: HeroFemale
     m_ReadOnly: 0
@@ -62,6 +57,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9eb56437ee41f9a4382b210c100f2aef
+    m_Address: HUD
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a88be8a6fe2e02c4493ad47d4211aa80
     m_Address: ShopWindow
     m_ReadOnly: 0
@@ -93,12 +93,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f470e8f304d967f4d914fbaedca0a8e4
-    m_Address: Boxer
+    m_Address: Enemy_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fbba971b3e919a7468f69234a590d25b
-    m_Address: ClockKnight
+    m_Address: Enemy_02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

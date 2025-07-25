@@ -34,7 +34,7 @@ namespace CodeBase.Infrastructure.Services.GameStates
             this.iApService = iApService;
         }
 
-        public async void Enter()
+        public async void EnterAsync()
         {
             await Unity.Services.Core.UnityServices.InitializeAsync();
 

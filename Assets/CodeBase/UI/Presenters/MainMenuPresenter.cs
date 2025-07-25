@@ -15,7 +15,7 @@ namespace CodeBase.GamePlay.UI
         private IGameStateSwitcher gameStateSwitcher;
         private IProgressProvider progressProvider;
         private IConfigsProvider configProvider;
-        private IWindowsProvider windowsProvider;
+        //private IWindowsProvider windowsProvider;
         private IProgressSaver progressSaver;
 
         private HeroPreviewLogic heroPreviewLogic;
@@ -26,13 +26,13 @@ namespace CodeBase.GamePlay.UI
             IGameStateSwitcher gameStateSwitcher,
             IProgressProvider progressProvider,
             IConfigsProvider configProvider,
-            IWindowsProvider windowsProvider,
+            //IWindowsProvider windowsProvider,
             IProgressSaver progressSaver)
         {
             this.gameStateSwitcher = gameStateSwitcher;
             this.progressProvider = progressProvider;
             this.configProvider = configProvider;
-            this.windowsProvider = windowsProvider;
+            //this.windowsProvider = windowsProvider;
             this.progressSaver = progressSaver;
 
             heroPreviewLogic = Object.FindObjectOfType<HeroPreviewLogic>();
@@ -107,11 +107,11 @@ namespace CodeBase.GamePlay.UI
             gameStateSwitcher.Enter<LoadNextLevelState>();
         }
 
-        private void OnShopButtonClicked()
-        {
-            window.Close();
-            windowsProvider.Open(WindowID.ShopWindow);
-        }
+        //private void OnShopButtonClicked()
+        //{
+        //    window.Close();
+        //    windowsProvider.Open(WindowID.ShopWindow);
+        //}
 
         private void OnResetButtonClicked()
         {

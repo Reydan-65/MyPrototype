@@ -22,7 +22,7 @@ namespace CodeBase.Infrastructure.Services.GameStates
             this.assetProvider = assetProvider;
         }
 
-        public void Enter()
+        public void EnterAsync()
         {
             assetProvider.CleanUp();
             

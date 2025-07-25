@@ -45,6 +45,7 @@ namespace CodeBase.GamePlay.UI
 
             window.AcceptButtonClicked += OnAcceptButtonClicked;
             window.CancelButtonClicked += OnCancelButtonClicked;
+            window.SetCancelButtonText("CLOSE");
             window.Closed += OnClosed;
             window.CleanUped += OnCleanUp;
         }
@@ -63,6 +64,7 @@ namespace CodeBase.GamePlay.UI
             progressProvider.PlayerProgress.HeroStats.IsChanged();
 
             gameFactory.HeroObject.GetComponent<HeroHealth>().Initialize(currentStats.MaxHitPoints);
+            gameFactory.HeroObject.GetComponent<HeroEnergy>().Initialize(currentStats.MaxEnergy);
             gameFactory.HeroObject.GetComponent<HeroTurret>().Initialize(currentStats.ShootingRate);
             gameFactory.HeroObject.GetComponent<HeroMovement>().Initialize(currentStats.MovementSpeed, currentStats.DashRange);
 
@@ -77,6 +79,7 @@ namespace CodeBase.GamePlay.UI
             {
                 newStats.CopyFrom(currentStats);
                 window.UpdateStatsDisplay();
+                window.SetCancelButtonText("CANCEL");
             }
             OnClosed();
         }
@@ -84,6 +87,7 @@ namespace CodeBase.GamePlay.UI
         private bool AreStatsEqual(HeroStats a, HeroStats b)
         {
             return a.MaxHitPoints == b.MaxHitPoints &&
+                   a.MaxEnergy == b.MaxEnergy &&
                    a.ShootingRate == b.ShootingRate &&
                    a.DashRange == b.DashRange &&
                    a.MovementSpeed == b.MovementSpeed;

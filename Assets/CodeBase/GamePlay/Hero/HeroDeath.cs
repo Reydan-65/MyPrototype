@@ -6,8 +6,8 @@ namespace CodeBase.GamePlay.Hero
     {
         [SerializeField] private HeroHealth health;
 
-        private void Start() => health.Die += OnDie;
-        private void OnDestroy() => health.Die -= OnDie;
+        private void Start() => health.Depleted += OnDie;
+        private void OnDestroy() => health.Depleted -= OnDie;
         private void OnDie() => Destroy(gameObject);
     }
 }

@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 3618783582013603310}
   - component: {fileID: 349487294579183193}
   m_Layer: 0
-  m_Name: ClockKnight
+  m_Name: Enemy_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,9 +142,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1
-  m_Height: 3
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &22207734096046627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6c1e83e29b07d4ca8b1131b8257c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: {fileID: 1621535211686248797}
   followToHero: {fileID: 7524185320277853043}
   visualModel: {fileID: 8051620802565759313}
   healthBar: {fileID: 8377540854881806264}
@@ -466,10 +465,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5589165389883980756}
     m_Modifications:
-    - target: {fileID: -3850323708301219104, guid: 3d8ec73a837b09848bcec7013dabe3a6, type: 3}
-      propertyPath: health
-      value: 
-      objectReference: {fileID: 1621535211686248797}
     - target: {fileID: 1390501954944538058, guid: 3d8ec73a837b09848bcec7013dabe3a6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -554,9 +549,13 @@ PrefabInstance:
       propertyPath: health
       value: 
       objectReference: {fileID: 1621535211686248797}
-    - target: {fileID: 4611066551807263849, guid: 3d8ec73a837b09848bcec7013dabe3a6, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
+    - target: {fileID: 6161942229009702777, guid: 3d8ec73a837b09848bcec7013dabe3a6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6161942229009702777, guid: 3d8ec73a837b09848bcec7013dabe3a6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7009476831823508409, guid: 3d8ec73a837b09848bcec7013dabe3a6, type: 3}
       propertyPath: m_Name

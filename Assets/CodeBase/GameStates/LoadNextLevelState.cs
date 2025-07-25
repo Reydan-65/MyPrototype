@@ -22,7 +22,7 @@ namespace CodeBase.Infrastructure.Services.GameStates
             this.configProvider = configProvider;
         }
 
-        public void Enter()
+        public void EnterAsync()
         {
             int levelIndex = progressProvider.PlayerProgress.CurrentLevelIndex;
             levelIndex = Mathf.Clamp(levelIndex, 0, configProvider.LevelAmount - 1);

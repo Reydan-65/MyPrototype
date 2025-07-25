@@ -9,6 +9,7 @@ namespace CodeBase.Data
         public event UnityAction Changed;
 
         public float MaxHitPoints;
+        public float MaxEnergy;
         public float MovementSpeed;
         public float DashRange;
         public TurretType TurretType;
@@ -19,6 +20,7 @@ namespace CodeBase.Data
         public static HeroStats GetDefaultStats()
         {
             stats.MaxHitPoints = 100;
+            stats.MaxEnergy = 100;
             stats.MovementSpeed = 5;
             stats.DashRange = 50;
             stats.TurretType = TurretType.BulletLauncher;
@@ -30,6 +32,7 @@ namespace CodeBase.Data
         public void SetDefaultStats()
         {
             MaxHitPoints = 100;
+            MaxEnergy = 100;
             MovementSpeed = 5;
             DashRange = 50;
             TurretType = TurretType.BulletLauncher;
@@ -44,6 +47,7 @@ namespace CodeBase.Data
         public void CopyFrom(HeroStats data)
         {
             MaxHitPoints= data.MaxHitPoints;
+            MaxEnergy= data.MaxEnergy;
             MovementSpeed = data.MovementSpeed;
             DashRange = data.DashRange;
             TurretType = data.TurretType;
@@ -57,6 +61,12 @@ namespace CodeBase.Data
             if (bonusStats.MaxHitPoints != 0)
             {
                 MaxHitPoints += bonusStats.MaxHitPoints;
+                changed = true;
+            }
+
+            if (bonusStats.MaxEnergy != 0)
+            {
+                MaxEnergy += bonusStats.MaxEnergy;
                 changed = true;
             }
 

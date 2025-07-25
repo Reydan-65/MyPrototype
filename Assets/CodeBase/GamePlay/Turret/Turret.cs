@@ -28,18 +28,19 @@ namespace CodeBase.GamePlay.Turrets
             else timer += Time.deltaTime;
         }
 
-        protected virtual bool CanFire() => timer >= shootingRate;
+        public bool CanFire() => timer >= shootingRate;
 
         public void Fire()
         {
             timer = 0;
-            
+
             GameObject projectile = gameFactory.CreateProjectileObjectFromPrefab(ProjectileType.Capsule);
 
             if (projectile == null) return;
 
             projectile.GetComponent<ProjectileCollisionHandler>().SetParent(transform.root);
             projectile.transform.SetPositionAndRotation(firePoint.transform.position, firePoint.transform.rotation);
+            projectile.tag = "ToDestroy";
         }
     }
 }

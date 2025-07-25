@@ -9,21 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9efa66fb95f974245b659c3bdaa28338, type: 3}
-  m_Name: ClockKnight
+  m_Script: {fileID: 11500000, guid: 7c637081698cd7a428fd1ae891da92ba, type: 3}
+  m_Name: HUD
   m_EditorClassIdentifier: 
+  WindowID: 7
+  Title: 
   PrefabReference:
-    m_AssetGUID: fbba971b3e919a7468f69234a590d25b
+    m_AssetGUID: 9eb56437ee41f9a4382b210c100f2aef
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  EnemyID: 1
-  MaxHitPoints: 250
-  MovementSpeed: 2.5
-  StopDistance: 4
-  CombatMoveRadius: 5
-  CombatMoveInterval: 2
-  TurretType: 1
-  ShootingRate: 1
-  ShootingRange: 6
-  ShootingAngle: 10

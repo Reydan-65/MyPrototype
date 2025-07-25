@@ -3,6 +3,7 @@ using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace CodeBase.GamePlay.Hero
 {
@@ -18,7 +19,8 @@ namespace CodeBase.GamePlay.Hero
         private DashController dashController;
         private GravityHandler gravityHandler;
         private HeroHealth heroHealth;
-        
+        private HeroEnergy heroEnergy;
+
         private float movementSpeed;
         private Vector3 directionControl;
         public Vector3 DirectionControl => directionControl;
@@ -27,12 +29,9 @@ namespace CodeBase.GamePlay.Hero
         [SerializeField] private float dashDuration = 0.2f;
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
         [SerializeField] private float dashCooldown = 1f;
+        [SerializeField] private int dashCost = 30;
 
         private float dashRange;
-        private float dashCooldownTimer;
-        private bool isDashing;
-        private float dashTimer;
-        private Vector3 dashDirection;
 
         private IInputService inputService;
         private ICursorService cursorService;
@@ -40,6 +39,8 @@ namespace CodeBase.GamePlay.Hero
         private void Awake()
         {
             heroHealth = GetComponent<HeroHealth>();
+            heroEnergy = GetComponent<HeroEnergy>();
+
             gravityHandler = new GravityHandler(
                 characterController,
                 gravity,
@@ -96,15 +97,30 @@ namespace CodeBase.GamePlay.Hero
             if (inputService != null && heroHealth != null)
             {
                 if (CanDash())
+                {
+                    heroEnergy.Consume(dashCost);
                     dashController.StartDash(moveDirection);
+                }
             }
 
             characterController.Move(moveDirection * Time.deltaTime);
         }
 
+        public bool TryDash()
+        {
+            if (!CanDash()) return false;
+
+            heroEnergy.Consume(dashCost);
+            dashController.StartDash(inputService.MovementAxis);
+
+            return true;
+        }
+
         private bool CanDash()
         {
-            return inputService != null &&
+            return dashController.CanDash &&
+                   heroEnergy.Current >= dashCost &&
+                   inputService != null &&
                    inputService.DashInput &&
                    directionControl.magnitude > 0.1f;
         }
@@ -115,7 +131,7 @@ namespace CodeBase.GamePlay.Hero
 
             if (inputService.AimInput)
             {
-                Vector3 cursorWorldPos = cursorService.GetWorldPositionOnPlane(viewTransform.position,Vector3.up);
+                Vector3 cursorWorldPos = cursorService.GetWorldPositionOnPlane(viewTransform.position, Vector3.up);
                 Vector3 lookDirection = cursorWorldPos - viewTransform.position;
                 lookDirection.y = 0;
 

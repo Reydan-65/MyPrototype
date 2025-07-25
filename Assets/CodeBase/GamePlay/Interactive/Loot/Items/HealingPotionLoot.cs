@@ -1,15 +1,18 @@
+using CodeBase.Data;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Interactive
 {
     public class HealingPotionLoot : LootItem
     {
-        [SerializeField] private float healingPercentValue;
+        [SerializeField] private float amountHeal = 15;
 
         protected override void OnPickup()
         {
-            if (gameFactory?.HeroHealth != null)
-                gameFactory.HeroHealth.ApplyDamage(-1 * gameFactory.HeroHealth.Max * healingPercentValue);
+            if (progressProvider?.PlayerProgress?.HeroInventoryData != null)
+            {
+                progressProvider.PlayerProgress.HeroInventoryData.AddHealingItem(LootItemID.HealingPotion, 1, amountHeal);
+            }
         }
     }
 }

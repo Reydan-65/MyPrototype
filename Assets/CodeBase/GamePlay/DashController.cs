@@ -5,7 +5,7 @@ namespace CodeBase.GamePlay
     public class DashController
     {
         private CharacterController characterController;
-        private Health health;
+        private IHealth health;
         private float dashRange;
         private float dashDuration;
         private float dashCooldown;
@@ -21,7 +21,7 @@ namespace CodeBase.GamePlay
 
         public DashController(
             CharacterController characterController,
-            Health health,
+            IHealth health,
             float dashRange,
             float dashDuration,
             float dashCooldown,

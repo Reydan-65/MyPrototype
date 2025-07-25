@@ -30,7 +30,8 @@ namespace CodeBase.GamePlay
 
         private void OnDestroy()
         {
-            progressProvider.PlayerProgress.HeroInventoryData.KeyPickuped -= OnKeyPickuped;
+            if (progressProvider != null && progressProvider.PlayerProgress.HeroInventoryData != null)
+                progressProvider.PlayerProgress.HeroInventoryData.KeyPickuped -= OnKeyPickuped;
         }
 
         private void OnKeyPickuped()

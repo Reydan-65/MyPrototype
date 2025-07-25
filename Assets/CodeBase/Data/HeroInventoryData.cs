@@ -7,6 +7,7 @@ namespace CodeBase.Data
     public class HeroInventoryData
     {
         public event Action<int> CoinValueChanged;
+        public event Action<int> HealingPotionValueChanged;
         public event Action KeyPickuped;
 
         [SerializeField] private int coinAmount;
@@ -17,7 +18,18 @@ namespace CodeBase.Data
             set
             {
                 coinAmount = value;
-                CoinValueChanged?.Invoke(this.coinAmount);
+                CoinValueChanged?.Invoke(coinAmount);
+            }
+        }
+
+        [SerializeField] private int healingPotionAmount;
+        public int HealingPotionAmount
+        {
+            get => healingPotionAmount;
+            set
+            {
+                healingPotionAmount = value;
+                HealingPotionValueChanged?.Invoke(healingPotionAmount);
             }
         }
 
@@ -39,30 +51,76 @@ namespace CodeBase.Data
         public void SetDefaultInventoryData()
         {
             CoinAmount = 0;
+            healingPotionAmount = 0;
             hasKey = false;
         }
 
         public void CopyFrom(HeroInventoryData data)
         {
             CoinAmount = data.CoinAmount;
+            HealingPotionAmount = data.HealingPotionAmount;
             HasKey = data.HasKey;
         }
 
-        public void AddCoin(int coinAmount)
+        public void AddItem(LootItemID id, int amount)
         {
-            this.coinAmount += coinAmount;
-            CoinValueChanged?.Invoke(this.coinAmount);
+            if (id == LootItemID.None) return;
+            if (id == LootItemID.HealingPotion) return;
 
-            //Debug.Log($"Coins changed: {this.coinAmount}");
+            if (id == LootItemID.Coin)
+            {
+                coinAmount += amount;
+                CoinValueChanged?.Invoke(coinAmount);
+
+                //Debug.Log($"Coins changed: {this.coinAmount}");
+            }
+
+
+            if (id == LootItemID.Key)
+            {
+
+            }
         }
 
-        public bool SpendCoins(int coinAmount)
+        public void AddHealingItem(LootItemID id, int amount, float healingValue)
         {
-            if (this.coinAmount < 0 || this.coinAmount < coinAmount)
-                return false;
+            if (id == LootItemID.None) return;
+            if (id == LootItemID.Coin) return;
+            if (id == LootItemID.Key) return;
 
-            this.coinAmount -= coinAmount;
-            return true;
+            if (id == LootItemID.HealingPotion)
+            {
+                healingPotionAmount += amount;
+                HealingPotionValueChanged?.Invoke(healingPotionAmount);
+
+                //Debug.Log($"Healing Potion changed: {this.healingPotionAmount}");
+            }
+        }
+
+        public void ConsumeItem(LootItemID id, int amount)
+        {
+            if (id == LootItemID.None) return;
+
+            if (id == LootItemID.Coin)
+            {
+                coinAmount -= amount;
+                CoinValueChanged?.Invoke(coinAmount);
+
+                //Debug.Log($"Coins changed: {this.coinAmount}");
+            }
+
+            if (id == LootItemID.HealingPotion)
+            {
+                healingPotionAmount -= amount;
+                HealingPotionValueChanged?.Invoke(healingPotionAmount);
+
+                //Debug.Log($"Healing Potion changed: {this.healingPotionAmount}");
+            }
+
+            if (id == LootItemID.Key)
+            {
+
+            }
         }
     }
 }

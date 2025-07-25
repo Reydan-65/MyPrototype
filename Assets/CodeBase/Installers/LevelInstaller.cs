@@ -29,21 +29,25 @@ namespace CodeBase.Infrastructure
         private void RegisterLevelStateMachine()
         {
             container.RegisterSingle<ILevelStateSwitcher, LevelStateMachine>();
+
             container.RegisterSingle<LevelBootStrapState>();
             container.RegisterSingle<LevelResearchState>();
             container.RegisterSingle<LevelVictoryState>();
             container.RegisterSingle<LevelLostState>();
             container.RegisterSingle<LevelBattleState>();
+            container.RegisterSingle<LevelRespawnState>();
         }
 
         private void UnregisterLevelStateMachine()
         {
             container.UnregisterSingle<ILevelStateSwitcher>();
+
             container.UnregisterSingle<LevelBootStrapState>();
             container.UnregisterSingle<LevelResearchState>();
             container.UnregisterSingle<LevelVictoryState>();
             container.UnregisterSingle<LevelLostState>();
             container.UnregisterSingle<LevelBattleState>();
+            container.UnregisterSingle<LevelRespawnState>();
         }
     }
 }

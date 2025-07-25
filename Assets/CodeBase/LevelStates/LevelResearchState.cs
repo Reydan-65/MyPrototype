@@ -29,14 +29,14 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             this.progressProvider = progressProvider;
         }
 
-        public void Enter()
+        public void EnterAsync()
         {
             activePersuersCount = 0;
 
             levelConfig = configProvider.GetLevelConfig(SceneManager.GetActiveScene().name);
             inventoryData = progressProvider.PlayerProgress.HeroInventoryData;
 
-            gameFactory.HeroHealth.Die += OnHeroDie;
+            gameFactory.HeroHealth.Depleted += OnHeroDie;
 
             SubscribeToEnemyEvents(persuer =>
             {
@@ -53,7 +53,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         public void Exit()
         {
-            gameFactory.HeroHealth.Die -= OnHeroDie;
+            gameFactory.HeroHealth.Depleted -= OnHeroDie;
 
             SubscribeToEnemyEvents(persuer =>
             {

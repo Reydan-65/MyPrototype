@@ -33,7 +33,7 @@ namespace CodeBase.GamePlay.Projectile
                 {
                     if (ShouldProcessCollision(hit.collider))
                     {
-                        if (hit.transform.root.TryGetComponent(out Health health))
+                        if (hit.transform.root.TryGetComponent(out IHealth health))
                             health.ApplyDamage((int)damage);
 
                         DestroyProjectile();

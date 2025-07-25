@@ -1,3 +1,5 @@
+using CodeBase.Data;
+
 namespace CodeBase.GamePlay.Interactive
 {
     public class CoinLoot : LootItem
@@ -5,7 +7,9 @@ namespace CodeBase.GamePlay.Interactive
         protected override void OnPickup()
         {
             if (progressProvider?.PlayerProgress?.HeroInventoryData != null)
-                progressProvider.PlayerProgress.HeroInventoryData.AddCoin(1);
+            {
+                progressProvider.PlayerProgress.HeroInventoryData.AddItem(LootItemID.Coin, 1);
+            }
         }
     }
 }

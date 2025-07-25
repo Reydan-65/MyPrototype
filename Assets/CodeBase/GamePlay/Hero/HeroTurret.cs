@@ -21,14 +21,12 @@ namespace CodeBase.GamePlay.Hero
             shootingRate = value;
         }
 
-        protected override void Update()
-        {
-            base.Update();
+        //protected override void Update()
+        //{
+        //    base.Update();
         
-            if (inputService != null && CanFire()) Fire();
-        }
-
-        protected override bool CanFire() => timer >= shootingRate && inputService.AttackInput;
+        //    if (inputService != null && CanFire()) Fire();
+        //}
 
         public void LoadProgress(PlayerProgress progress)
         {

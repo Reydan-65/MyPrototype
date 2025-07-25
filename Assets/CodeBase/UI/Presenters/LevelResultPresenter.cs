@@ -32,6 +32,8 @@ namespace CodeBase.GamePlay.UI
             window.CleanUped -= OnCleanUped;
         }
 
+        public LevelResultWindow GetWindow() => window;
+
         private void OnMenuButtonClicked()
         {
             gameStateSwitcher.Enter<LoadMainMenuState>();
