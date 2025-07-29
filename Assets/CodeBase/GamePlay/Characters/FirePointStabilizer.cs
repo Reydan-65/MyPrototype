@@ -30,9 +30,14 @@ namespace CodeBase.GamePlay
                 {
                     float currentYRotation = firePoints[i].eulerAngles.y;
                     firePoints[i].rotation = Quaternion.Euler(0, currentYRotation, 0);
-                    firePoints[i].localRotation = Quaternion.Euler(0, currentYRotation, 0);
                 }
             }
+        }
+
+        public void ResetLocalRotation()
+        {
+            for (int i = 0; i < firePoints.Length; i++)
+                firePoints[i].localRotation = Quaternion.identity;
         }
     }
 }

@@ -18,4 +18,5 @@ MonoBehaviour:
   MovementSpeed: 10
   MaxDistance: 7
   Distance: 10
-  Damage: 20
+  MinDamage: 10
+  MaxDamage: 20

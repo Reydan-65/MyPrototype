@@ -114,9 +114,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   dashCooldown: 1
   dashCost: 30
-  visualModel: {fileID: 8556842015186860106}
-  maxTiltAngle: 15
-  tiltSmoothness: 5
 --- !u!114 &5209597418074006291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +211,8 @@ MonoBehaviour:
   firePoints:
   - {fileID: 5918733957088649607}
   visualModel: {fileID: 8556842015186860106}
+  stabilizeYPosition: 0
+  stabilizeRotation: 0
 --- !u!114 &6489300321348906554
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -62,7 +62,7 @@ namespace CodeBase.GamePlay.Projectile
 
         public void InstallProjectileConfig(ProjectileConfig config)
         {
-            damage = config.Damage;
+            damage = config.GetDamageSpread();
             destroySFX = config.DestroySFXPrefab;
         }
     }

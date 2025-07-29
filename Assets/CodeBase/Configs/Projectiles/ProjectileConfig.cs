@@ -19,6 +19,13 @@ namespace CodeBase.Configs
 
         [Header("Offensive")]
         public float Distance;
-        public float Damage;
+        public float MinDamage;
+        public float MaxDamage;
+
+        public float GetDamageSpread()
+        {
+            float damage = Random.Range(MinDamage, MaxDamage);
+            return damage;
+        }
     }
 }

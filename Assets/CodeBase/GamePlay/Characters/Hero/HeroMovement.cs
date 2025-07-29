@@ -32,13 +32,11 @@ namespace CodeBase.GamePlay.Hero
 
         private float dashRange;
 
-        [Header("Visual Tilt Settings")]
-        [SerializeField] private Transform visualModel;
-        [SerializeField] private float maxTiltAngle = 15f;
-        [SerializeField] private float tiltSmoothness = 5f;
-
         private VisualModelTilt visualTilt;
+
+        [SerializeField] private Transform rotationReferenceForFirePoints;
         private FirePointStabilizer firePointStabilizer;
+
         private IInputService inputService;
         private ICursorService cursorService;
 
@@ -48,6 +46,9 @@ namespace CodeBase.GamePlay.Hero
             heroEnergy = GetComponent<HeroEnergy>();
             visualTilt = GetComponent<VisualModelTilt>();
             firePointStabilizer = GetComponent<FirePointStabilizer>();
+
+            if (firePointStabilizer != null && rotationReferenceForFirePoints == null)
+                rotationReferenceForFirePoints = transform;
 
             gravityHandler = new GravityHandler(
                 characterController,
@@ -97,6 +98,7 @@ namespace CodeBase.GamePlay.Hero
             RotateView();
 
             visualTilt.UpdateTilt(directionControl);
+            firePointStabilizer.ResetLocalRotation();
             firePointStabilizer.Stabilize();
         }
 
@@ -157,6 +159,8 @@ namespace CodeBase.GamePlay.Hero
                 Quaternion targetRotation = Quaternion.LookRotation(directionControl);
                 viewTransform.rotation = targetRotation;
             }
+
+
         }
 
         public void SetMovementDirection(Vector2 moveDirection)
