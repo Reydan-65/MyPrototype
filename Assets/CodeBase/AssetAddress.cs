@@ -2,10 +2,6 @@ public class AssetAddress
 {
     // Hero Skin
     public const string HeroMalePath = "HeroMale";
-    public const string HeroFemalePath = "HeroFemale";
-
-    // Virtual Joystick
-    //public const string VirtualJoystickPath = "VirtualJoystick";
 
     // Follow Camera
     public const string FollowCameraPath = "FollowCamera";

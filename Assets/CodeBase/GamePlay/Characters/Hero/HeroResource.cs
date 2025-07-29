@@ -18,10 +18,7 @@ namespace CodeBase.GamePlay.Hero
 
         protected virtual void Update()
         {
-            if (current >= max)
-            {
-                return;
-            }
+            if (current >= max) return;
 
             timeSinceLastChange += Time.deltaTime;
 

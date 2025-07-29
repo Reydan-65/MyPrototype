@@ -59,10 +59,8 @@ namespace CodeBase.GamePlay.Hero
 
         private void HandleShooting()
         {
-            if (turret != null && input.AttackInput && turret.CanFire())
-            {
+            if (turret != null && turret.CanFire() && input.AttackInput)
                 turret.Fire();
-            }
         }
 
         private void HandleHealing()

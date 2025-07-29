@@ -1,11 +1,13 @@
 using UnityEngine;
 
-namespace CodeBase.GamePlay.Hero
+namespace CodeBase.GamePlay
 {
     public class FirePointStabilizer : MonoBehaviour
     {
         [SerializeField] private Transform[] firePoints;
         [SerializeField] private Transform visualModel;
+        [SerializeField] private bool stabilizeYPosition = true;
+        [SerializeField] private bool stabilizeRotation = true;
 
         public void Stabilize()
         {
@@ -15,11 +17,21 @@ namespace CodeBase.GamePlay.Hero
             {
                 if (firePoints[i] == null) continue;
 
-                firePoints[i].position = new Vector3(firePoints[i].position.x,
-                                                     visualModel.position.y,
-                                                     firePoints[i].position.z);
+                if (stabilizeYPosition)
+                {
+                    firePoints[i].position = new Vector3(
+                        firePoints[i].position.x,
+                        visualModel.position.y,
+                        firePoints[i].position.z
+                    );
+                }
 
-                firePoints[i].rotation = Quaternion.Euler(0, firePoints[i].eulerAngles.y, 0);
+                if (stabilizeRotation)
+                {
+                    float currentYRotation = firePoints[i].eulerAngles.y;
+                    firePoints[i].rotation = Quaternion.Euler(0, currentYRotation, 0);
+                    firePoints[i].localRotation = Quaternion.Euler(0, currentYRotation, 0);
+                }
             }
         }
     }

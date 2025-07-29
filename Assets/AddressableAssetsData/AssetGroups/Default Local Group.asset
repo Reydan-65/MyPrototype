@@ -17,11 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 91459b3a96329f14d99c0d042108374f
   m_SerializeEntries:
-  - m_GUID: 053f2815b89012d41a9a9f08a336cfc6
-    m_Address: HeroFemale
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 19d91a39f663e9f46a976061cb8c90f3
     m_Address: FollowCamera
     m_ReadOnly: 0
@@ -84,11 +79,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c97e8e87d45132e4cb21bde99b6719fe
     m_Address: UpgradeStatItem
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dcd1cbafedfb7ff44a123b39cb905964
-    m_Address: VirtualJoystick
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

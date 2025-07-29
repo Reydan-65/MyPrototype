@@ -67,18 +67,9 @@ namespace CodeBase.Infrastructure.Services.Factory
         }
 
         #region Create Hero
-        private string GetHeroPathBasedOnSelectedSkin()
-        {
-            var progress = progressSaver.GetProgress();
-            bool useFemaleSkin = progress.HeroSkinID == HeroSkinID.Female &&
-                                 progress.PurchaseData.IsFemaleSkinUnlocked;
-
-            return useFemaleSkin ? AssetAddress.HeroFemalePath : AssetAddress.HeroMalePath;
-        }
-
         public async Task<GameObject> CreateHeroAsync(Vector3 position, Quaternion rotation)
         {
-            string heroPath = GetHeroPathBasedOnSelectedSkin();
+            string heroPath = AssetAddress.HeroMalePath;
 
             HeroObject = await InstantiateAndInject(heroPath);
             HeroObject.transform.SetPositionAndRotation(position, rotation);
