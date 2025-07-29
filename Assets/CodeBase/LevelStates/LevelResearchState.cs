@@ -63,7 +63,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         private void OnHeroDie()
         {
-            levelStateSwitcher.Enter<LevelLostState>();
+            levelStateSwitcher.Enter<LevelDeathState>();
         }
 
         private void CheckVictory()

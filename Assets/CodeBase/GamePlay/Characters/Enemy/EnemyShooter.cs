@@ -19,10 +19,15 @@ namespace CodeBase.GamePlay.Enemies
         public void Construct(IGameFactory gameFactory)
         {
             this.gameFactory = gameFactory;
-            this.gameFactory.HeroCreated += OnHeroCreated;
         }
 
-        private void OnDestroy()
+        private void OnEnable()
+        {
+            if (gameFactory != null)
+                gameFactory.HeroCreated += OnHeroCreated;
+        }
+
+        private void OnDisable()
         {
             if (gameFactory != null)
                 gameFactory.HeroCreated -= OnHeroCreated;
@@ -30,7 +35,7 @@ namespace CodeBase.GamePlay.Enemies
 
         private void OnHeroCreated()
         {
-            target = gameFactory.HeroObject.transform;
+            SetTarget(gameFactory.HeroObject.transform);
         }
 
         private void Update()
@@ -58,6 +63,11 @@ namespace CodeBase.GamePlay.Enemies
         {
             shootingRange = config.ShootingRange;
             shootingAngle = config.ShootingAngle;
+        }
+
+        public void SetTarget(Transform target)
+        {
+            this.target = target;
         }
 
 #if UNITY_EDITOR

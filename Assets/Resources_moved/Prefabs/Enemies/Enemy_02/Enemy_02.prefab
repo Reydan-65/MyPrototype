@@ -55,6 +55,8 @@ GameObject:
   - component: {fileID: 5991040816287930620}
   - component: {fileID: 3618783582013603310}
   - component: {fileID: 349487294579183193}
+  - component: {fileID: 9106075623858339550}
+  - component: {fileID: 1820290871860339992}
   m_Layer: 0
   m_Name: Enemy_02
   m_TagString: Untagged
@@ -309,6 +311,39 @@ MonoBehaviour:
   followToHero: {fileID: 7524185320277853043}
   shooter: {fileID: 3618783582013603310}
   rotationSpeed: 10
+--- !u!114 &9106075623858339550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446447108624254261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f207c7fcfcc3cec45b99b23d74b508a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualModel: {fileID: 7275225283326884843}
+  maxTiltAngle: 15
+  tiltSpeed: 8
+  returnSpeed: 12
+--- !u!114 &1820290871860339992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446447108624254261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8775446bcc11942b89403eb53087d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoints:
+  - {fileID: 4455469460302095874}
+  - {fileID: 5132768005684700571}
+  - {fileID: 2708289143632803713}
+  visualModel: {fileID: 7275225283326884843}
 --- !u!1 &8051620802565759313
 GameObject:
   m_ObjectHideFlags: 0

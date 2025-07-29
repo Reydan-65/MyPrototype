@@ -9,7 +9,7 @@ namespace CodeBase.Infrastructure
         private LevelBootStrapState levelBootStrappState;
         private LevelResearchState levelResearchState;
         private LevelVictoryState levelVictoryState;
-        private LevelLostState levelLostState;
+        private LevelDeathState levelDeathState;
         private LevelBattleState levelCombatState;
         private LevelRespawnState levelRespawnState;
 
@@ -19,7 +19,7 @@ namespace CodeBase.Infrastructure
             LevelBootStrapState levelBootStrappState,
             LevelResearchState levelResearchState,
             LevelVictoryState levelVictoryState,
-            LevelLostState levelLostState,
+            LevelDeathState levelDeathState,
             LevelBattleState levelCombatState,
             LevelRespawnState levelRespawnState)
         {
@@ -27,7 +27,7 @@ namespace CodeBase.Infrastructure
             this.levelBootStrappState = levelBootStrappState;
             this.levelResearchState = levelResearchState;
             this.levelVictoryState = levelVictoryState;
-            this.levelLostState = levelLostState;
+            this.levelDeathState = levelDeathState;
             this.levelCombatState = levelCombatState;
             this.levelRespawnState = levelRespawnState;
         }
@@ -39,7 +39,7 @@ namespace CodeBase.Infrastructure
             levelStateSwitcher.AddState(levelBootStrappState);
             levelStateSwitcher.AddState(levelResearchState);
             levelStateSwitcher.AddState(levelVictoryState);
-            levelStateSwitcher.AddState(levelLostState);
+            levelStateSwitcher.AddState(levelDeathState);
             levelStateSwitcher.AddState(levelCombatState);
             levelStateSwitcher.AddState(levelRespawnState);
 

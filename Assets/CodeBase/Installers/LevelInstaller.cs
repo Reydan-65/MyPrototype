@@ -33,7 +33,7 @@ namespace CodeBase.Infrastructure
             container.RegisterSingle<LevelBootStrapState>();
             container.RegisterSingle<LevelResearchState>();
             container.RegisterSingle<LevelVictoryState>();
-            container.RegisterSingle<LevelLostState>();
+            container.RegisterSingle<LevelDeathState>();
             container.RegisterSingle<LevelBattleState>();
             container.RegisterSingle<LevelRespawnState>();
         }
@@ -45,7 +45,7 @@ namespace CodeBase.Infrastructure
             container.UnregisterSingle<LevelBootStrapState>();
             container.UnregisterSingle<LevelResearchState>();
             container.UnregisterSingle<LevelVictoryState>();
-            container.UnregisterSingle<LevelLostState>();
+            container.UnregisterSingle<LevelDeathState>();
             container.UnregisterSingle<LevelBattleState>();
             container.UnregisterSingle<LevelRespawnState>();
         }

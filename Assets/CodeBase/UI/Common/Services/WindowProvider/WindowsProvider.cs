@@ -21,7 +21,7 @@ namespace CodeBase.GamePlay.UI.Services
 
             WindowConfig config = configsProvider.GetWindowConfig(id);
 
-            if (id == WindowID.VictoryWindow || id == WindowID.LoseWindow)
+            if (id == WindowID.VictoryWindow || id == WindowID.DeathWindow)
                 factory.CreateLevelResultWindowAsync(config);
 
             if (id == WindowID.MainMenuWindow)

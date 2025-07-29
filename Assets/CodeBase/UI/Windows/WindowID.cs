@@ -5,7 +5,7 @@
         Unknown = 0,
         MainMenuWindow = 1,
         VictoryWindow = 2,
-        LoseWindow = 3,
+        DeathWindow = 3,
         ShopWindow = 4,
         ShrineWindow = 5,
         UpgradeStatsWindow = 6,

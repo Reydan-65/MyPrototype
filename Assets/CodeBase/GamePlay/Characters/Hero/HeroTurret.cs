@@ -21,13 +21,6 @@ namespace CodeBase.GamePlay.Hero
             shootingRate = value;
         }
 
-        //protected override void Update()
-        //{
-        //    base.Update();
-        
-        //    if (inputService != null && CanFire()) Fire();
-        //}
-
         public void LoadProgress(PlayerProgress progress)
         {
             turretType = progress.HeroStats.TurretType;

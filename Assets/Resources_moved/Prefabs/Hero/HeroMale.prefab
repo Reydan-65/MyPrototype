@@ -9,16 +9,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8955569933420676633}
-  - component: {fileID: 3774595255591138506}
   - component: {fileID: 3479511151159679123}
   - component: {fileID: 8243511347691144081}
-  - component: {fileID: 8114282359483863248}
   - component: {fileID: 5209597418074006291}
   - component: {fileID: -5859663453411062179}
   - component: {fileID: -573779864271499771}
   - component: {fileID: 8642072746342765741}
   - component: {fileID: 4493650445885793566}
   - component: {fileID: 4278239428803355585}
+  - component: {fileID: 4758930162728397774}
+  - component: {fileID: 6489300321348906554}
   m_Layer: 0
   m_Name: HeroMale
   m_TagString: Untagged
@@ -42,27 +42,6 @@ Transform:
   - {fileID: 8556842015186860106}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &3774595255591138506
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2751160580884724760}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 0308cf4e83cf517488b60af58b290fe0, type: 3}
-  m_Controller: {fileID: 9100000, guid: 06ac38c26df21494db7ebc4a64cb2bef, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!143 &3479511151159679123
 CharacterController:
   m_ObjectHideFlags: 0
@@ -135,20 +114,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   dashCooldown: 1
   dashCost: 30
---- !u!114 &8114282359483863248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2751160580884724760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4516f137df35ac24fb139f4fb26cd6ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterController: {fileID: 3479511151159679123}
-  animator: {fileID: 3774595255591138506}
+  visualModel: {fileID: 8556842015186860106}
+  maxTiltAngle: 15
+  tiltSmoothness: 5
 --- !u!114 &5209597418074006291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +199,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 5918733957088649607}
+--- !u!114 &4758930162728397774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2751160580884724760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8775446bcc11942b89403eb53087d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoints:
+  - {fileID: 5918733957088649607}
+  visualModel: {fileID: 8556842015186860106}
+--- !u!114 &6489300321348906554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2751160580884724760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f207c7fcfcc3cec45b99b23d74b508a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualModel: {fileID: 8556842015186860106}
+  maxTiltAngle: 15
+  tiltSpeed: 8
+  returnSpeed: 12
 --- !u!1 &2823896480985476044
 GameObject:
   m_ObjectHideFlags: 0

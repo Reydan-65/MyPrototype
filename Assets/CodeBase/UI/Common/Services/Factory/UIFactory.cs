@@ -38,7 +38,7 @@ namespace CodeBase.GamePlay.UI.Services
                 WindowID.MainMenuWindow,
                 WindowID.ShopWindow,
                 WindowID.VictoryWindow,
-                WindowID.LoseWindow,
+                WindowID.DeathWindow,
                 WindowID.ShrineWindow,
                 WindowID.UpgradeStatsWindow,
                 WindowID.HUDWindow

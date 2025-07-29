@@ -3,7 +3,6 @@ using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace CodeBase.GamePlay.Hero
 {
@@ -33,6 +32,17 @@ namespace CodeBase.GamePlay.Hero
 
         private float dashRange;
 
+        [Header("Visual Tilt Settings")]
+        [SerializeField] private Transform visualModel;
+        [SerializeField] private float maxTiltAngle = 15f;
+        [SerializeField] private float tiltSmoothness = 5f;
+
+        private Quaternion targetTiltRotation = Quaternion.identity;
+        private Vector3 lastMovementDirection;
+
+        private VisualModelTilt visualTilt;
+        private FirePointStabilizer firePointStabilizer;
+
         private IInputService inputService;
         private ICursorService cursorService;
 
@@ -40,6 +50,8 @@ namespace CodeBase.GamePlay.Hero
         {
             heroHealth = GetComponent<HeroHealth>();
             heroEnergy = GetComponent<HeroEnergy>();
+            visualTilt = GetComponent<VisualModelTilt>();
+            firePointStabilizer = GetComponent<FirePointStabilizer>();
 
             gravityHandler = new GravityHandler(
                 characterController,
@@ -87,6 +99,38 @@ namespace CodeBase.GamePlay.Hero
                 MoveCharacter();
 
             RotateView();
+            UpdateVisualTilt();
+        
+            visualTilt.UpdateTilt(directionControl);
+            firePointStabilizer.Stabilize();
+        }
+
+        private void UpdateVisualTilt()
+        {
+            if (visualModel == null) return;
+
+            if (directionControl.magnitude <= 0.1f)
+            {
+                targetTiltRotation = Quaternion.identity;
+                visualModel.localRotation = Quaternion.Slerp(
+                    visualModel.localRotation,
+                    targetTiltRotation,
+                    tiltSmoothness * Time.deltaTime
+                );
+                return;
+            }
+
+            lastMovementDirection = directionControl;
+
+            Vector3 tiltAxis = Vector3.Cross(Vector3.up, lastMovementDirection).normalized;
+            float tiltAmount = Mathf.Clamp(lastMovementDirection.magnitude, 0, 1) * maxTiltAngle;
+            targetTiltRotation = Quaternion.AngleAxis(tiltAmount, tiltAxis);
+
+            visualModel.localRotation = Quaternion.Slerp(
+                visualModel.localRotation,
+                targetTiltRotation,
+                tiltSmoothness * Time.deltaTime
+            );
         }
 
         private void MoveCharacter()

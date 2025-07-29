@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CodeBase.Infrastructure.Services.LevelStates
 {
-    public class LevelLostState : LevelBaseState, IEnterableState
+    public class LevelDeathState : LevelBaseState, IEnterableState
     {
         private const float DELAY = 3f;
 
@@ -15,7 +15,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
         private ICoroutineRunner coroutineRunner;
         private IUIFactory uiFactory;
 
-        public LevelLostState(
+        public LevelDeathState(
             IGameFactory gameFactory,
             ILevelStateSwitcher levelStateSwitcher,
             IInputService inputService,
@@ -32,11 +32,11 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         public void EnterAsync()
         {
-            Debug.Log("LEVEL: Lost State");
+            Debug.Log("LEVEL: Death State");
 
             inputService.Enable = false;
             uiFactory.HUDWindow.Close();
-            //gameFactory.VirtualJoystick.gameObject.SetActive(false);
+            windowsProvider.Open(WindowID.DeathWindow);
 
             coroutineRunner.StartCoroutine(SwitchStateDelay());
         }

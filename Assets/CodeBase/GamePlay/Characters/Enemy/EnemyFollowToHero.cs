@@ -1,4 +1,5 @@
 using CodeBase.Configs;
+using CodeBase.GamePlay.Hero;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
 using UnityEngine;
@@ -9,6 +10,9 @@ namespace CodeBase.GamePlay.Enemies
     public class EnemyFollowToHero : MonoBehaviour, IEnemyConfigInstaller
     {
         [SerializeField] private NavMeshAgent agent;
+
+        private VisualModelTilt visualTilt;
+        private FirePointStabilizer firePointStabilizer;
 
         private float movementSpeed;
         private float stopDistance;
@@ -29,6 +33,9 @@ namespace CodeBase.GamePlay.Enemies
             agent.speed = movementSpeed;
             agent.stoppingDistance = stopDistance;
             agent.Warp(transform.position);
+
+            visualTilt = GetComponent<VisualModelTilt>();
+            firePointStabilizer = GetComponent<FirePointStabilizer>();
         }
 
         private void Update()
@@ -39,6 +46,9 @@ namespace CodeBase.GamePlay.Enemies
             else agent.destination = gameFactory.HeroObject.transform.position;
 
             if (agent.velocity.magnitude > 0.1f) lastDirection = agent.velocity.normalized;
+
+            visualTilt.UpdateTilt(lastDirection);
+            firePointStabilizer.Stabilize();
         }
 
         private bool IsInCombatMode()
@@ -66,7 +76,13 @@ namespace CodeBase.GamePlay.Enemies
             }
         }
 
-        public Vector3 GetMovementDirection() => lastDirection;
+        public Vector3 GetMovementDirection()
+        {
+            if (agent.velocity.magnitude > 0.1f)
+                return agent.velocity.normalized;
+            return lastDirection;
+        }
+
         public Vector3 GetDirectionToTarget() => (gameFactory.HeroObject.transform.position - transform.position).normalized;
 
         public void InstallEnemyConfig(EnemyConfig config)

@@ -1,11 +1,6 @@
-using Assets.CodeBase.GamePlay.Interactive;
 using CodeBase.Data;
-using CodeBase.GamePlay.Hero;
-using CodeBase.GamePlay.Interactive;
-using CodeBase.GamePlay.Turrets;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
-using CodeBase.Infrastructure.Services.Factory;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Hero

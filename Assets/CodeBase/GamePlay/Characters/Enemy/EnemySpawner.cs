@@ -37,6 +37,14 @@ namespace CodeBase.GamePlay.Enemies
             if (enemy.TryGetComponent(out EnemyInventory inventory))
                 lootDistributor?.DistributeLoot(inventory);
 
+            if (enemy.TryGetComponent(out EnemyShooter shooter))
+            {
+                if (gameFactory.HeroObject != null)
+                    shooter.SetTarget(gameFactory.HeroObject.transform);
+                else
+                    gameFactory.HeroCreated += () => shooter.SetTarget(gameFactory.HeroObject.transform);
+            }
+
             enemySpawnManager.RegisterEnemy(enemy);
         }
 
