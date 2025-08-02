@@ -42,6 +42,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 763d3feca19573e408072688ab8718f3
+    m_Address: PauseWindow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8bdd7a26d35a349489095953447498a5
     m_Address: HealingPotionLoot
     m_ReadOnly: 0

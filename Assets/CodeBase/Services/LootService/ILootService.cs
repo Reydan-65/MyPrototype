@@ -10,5 +10,6 @@ namespace CodeBase.Infrastructure.Services
         Task DropLoot(Vector3 position, LootItemID lootType, int count = 1);
         void CleanUp();
         void CleanUpPickedLoot();
+        void SetPauseVisualEffects(bool isActive);
     }
 }

@@ -1,9 +1,7 @@
-using CodeBase.Data;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
-using System.Collections;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Interactive
@@ -14,6 +12,9 @@ namespace CodeBase.GamePlay.Interactive
         public string UniqueID => uniqueID;
 
         private Collider lootCollider;
+        private Rotator rotator;
+        
+        public Rotator Rotator => rotator;
 
         protected IGameFactory gameFactory;
         protected IProgressProvider progressProvider;
@@ -31,6 +32,7 @@ namespace CodeBase.GamePlay.Interactive
 
             lootCollider = GetComponent<Collider>();
             transform.SetParent(null);
+            rotator = GetComponent<Rotator>();
         }
 
         protected virtual void OnTriggerEnter(Collider other)

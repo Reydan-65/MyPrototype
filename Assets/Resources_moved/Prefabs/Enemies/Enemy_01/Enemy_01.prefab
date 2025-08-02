@@ -125,10 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5589165389883980756}
   - component: {fileID: 6953867043949644791}
-  - component: {fileID: 4294421938139309186}
   - component: {fileID: 4075347835970725688}
-  - component: {fileID: 22207734096046627}
-  - component: {fileID: 1953796724916040953}
   - component: {fileID: 7524185320277853043}
   - component: {fileID: 236070567235972049}
   - component: {fileID: 1621535211686248797}
@@ -185,27 +182,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!95 &4294421938139309186
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7446447108624254261}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 74032ce02751818488e9d690ccba19de, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1be6e68b06893aa4585c1ec545e413a1, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!136 &4075347835970725688
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -229,33 +205,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &22207734096046627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7446447108624254261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 307f5d12f4e74ae4ab8e26430db934f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 4294421938139309186}
---- !u!114 &1953796724916040953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7446447108624254261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cd9e98ac3d608f4faf46c6b0f5771c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agent: {fileID: 6953867043949644791}
-  animator: {fileID: 22207734096046627}
 --- !u!114 &7524185320277853043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +345,8 @@ MonoBehaviour:
   firePoints:
   - {fileID: 9193807986003877390}
   visualModel: {fileID: 6661183017330611732}
+  stabilizeYPosition: 1
+  stabilizeRotation: 1
 --- !u!1001 &7244220144886614914
 PrefabInstance:
   m_ObjectHideFlags: 0

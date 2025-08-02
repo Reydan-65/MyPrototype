@@ -102,5 +102,15 @@ namespace CodeBase.Infrastructure.Services
                 }
             }
         }
+
+        public void SetPauseVisualEffects(bool isActive)
+        {
+            var lootItems = GameObject.FindObjectsOfType<LootItem>(true);
+
+            foreach (var lootItem in lootItems)
+            {
+                lootItem.Rotator.enabled = isActive;
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using CodeBase.Infrastructure.Services.Factory;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace CodeBase.Services.EntityActivityController
 {
@@ -13,22 +14,34 @@ namespace CodeBase.Services.EntityActivityController
 
         private IGameFactory gameFactory;
         private IInputService inputService;
+        private ILootService lootService;
 
         public EntityActivityController(
             IGameFactory gameFactory,
-            IInputService inputService)
+            IInputService inputService,
+            ILootService lootService)
         {
             this.gameFactory = gameFactory;
             this.inputService = inputService;
+            this.lootService = lootService;
         }
 
         public void SetEntitiesActive(bool isActive)
         {
             if (inputService != null)
-            {
                 inputService.Enable = isActive;
-            }
 
+            SetEnemyActiveState(isActive);
+            SetLootItemsActiveState(isActive);
+        }
+
+        private void SetLootItemsActiveState(bool isActive)
+        {
+            lootService?.SetPauseVisualEffects(isActive);
+        }
+
+        private void SetEnemyActiveState(bool isActive)
+        {
             if (gameFactory?.EnemiesObject == null) return;
 
             foreach (var enemy in gameFactory.EnemiesObject)
@@ -53,22 +66,22 @@ namespace CodeBase.Services.EntityActivityController
                         follower.enabled = false;
                     }
                 }
+
+                var persuer = enemy.GetComponent<EnemyHeroPersuer>();
+                if (persuer != null)
+                    persuer.enabled = isActive;
+
+                var agent = enemy.GetComponent<NavMeshAgent>();
+                if (agent != null)
+                    agent.enabled = isActive;
             }
         }
 
-        public async void MoveCameraToTarget(Transform target, float duration, System.Action onComplete = null)
+        public void MoveCameraToTarget(Transform target)
         {
-            if (gameFactory == null) return;
+            if (gameFactory == null || gameFactory.FollowCamera == null) return;
 
-            var originalTarget = gameFactory.FollowCamera.Target;
-
-            await gameFactory.FollowCamera.MoveToTarget(target, duration, new Vector3(5,0,0));
-
-            await Task.Delay((int)(duration * 1000));
-
-            await gameFactory.FollowCamera.MoveToTarget(originalTarget, duration);
-
-            onComplete?.Invoke();
+            gameFactory.FollowCamera.SetTarget(target);
         }
     }
 }

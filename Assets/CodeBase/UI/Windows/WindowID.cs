@@ -9,7 +9,8 @@
         ShopWindow = 4,
         ShrineWindow = 5,
         UpgradeStatsWindow = 6,
-        HUDWindow = 7
+        HUDWindow = 7,
+        PauseWindow = 8
     }
 
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Services
@@ -25,7 +26,7 @@ namespace CodeBase.Infrastructure.Services
         public bool AbilityInput => enable && Input.GetKeyDown(KeyCode.F);
         public bool HealInput => enable && Input.GetKeyDown(KeyCode.Q);
         public bool UseInput => enable && Input.GetKeyDown(KeyCode.E);
-        public bool EscapeInput => enable && Input.GetKeyDown(KeyCode.Escape);
+        public bool EscapeInput => Input.GetKeyDown(KeyCode.Escape);
 
         public bool Enable { get => enable; set => enable = value; }
     }

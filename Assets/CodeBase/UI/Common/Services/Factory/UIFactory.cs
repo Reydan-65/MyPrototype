@@ -33,6 +33,8 @@ namespace CodeBase.GamePlay.UI.Services
         public HUDWindow HUDWindow { get; set; }
         public ShrinePresenter ShrinePresenter { get; set; }
         public ShrineWindow ShrineWindow { get; set; }
+        public PausePresenter PausePresenter { get; set; }
+        public PauseWindow PauseWindow { get; set; }
         public LevelResultPresenter LevelResultPresenter { get; set; }
         public LevelResultWindow LevelResultWindow { get; set; }
 
@@ -76,6 +78,14 @@ namespace CodeBase.GamePlay.UI.Services
             HUDWindow = HUDPresenter.GetWindow();
             HUDWindowCreated?.Invoke();
             return HUDPresenter;
+        }
+
+        // Pause
+        public async Task<PausePresenter> CreatePauseWindowAsync(WindowConfig config)
+        {
+            PausePresenter = await CreateWindowAsync<PauseWindow, PausePresenter>(config);
+            PauseWindow = PausePresenter.GetWindow();
+            return PausePresenter;
         }
 
         // Shop

@@ -1,4 +1,5 @@
 ﻿using CodeBase.Infrastructure.DependencyInjection;
+using System;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Services
@@ -14,5 +15,6 @@ namespace CodeBase.Infrastructure.Services
         bool UseInput { get; }
         Vector2 MovementAxis { get; }
         bool RunInput { get; }
+        bool EscapeInput { get; }
     }
 }

@@ -38,6 +38,9 @@ namespace CodeBase.GamePlay.UI.Services
 
             if (id == WindowID.HUDWindow)
                 factory.CreateHUDWindowAsync(config);
+
+            if (id == WindowID.PauseWindow)
+                factory.CreatePauseWindowAsync(config);
         }
     }
 }

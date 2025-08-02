@@ -17,6 +17,8 @@ namespace CodeBase.GamePlay.UI.Services
         HUDWindow HUDWindow { get; set; }
         ShrinePresenter ShrinePresenter { get; set; }
         ShrineWindow ShrineWindow { get; set; }
+        PausePresenter PausePresenter { get; set; }
+        PauseWindow PauseWindow { get; set; }
         LevelResultPresenter LevelResultPresenter { get; set; }
         LevelResultWindow LevelResultWindow { get; set; }
 
@@ -25,6 +27,7 @@ namespace CodeBase.GamePlay.UI.Services
         Task<MainMenuPresenter> CreateMainMenuWindowAsync(WindowConfig config);
         Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config);
         Task<HUDPresenter> CreateHUDWindowAsync(WindowConfig config);
+        Task<PausePresenter> CreatePauseWindowAsync(WindowConfig config);
 
         Task<ShopPresenter> CreateShopWindowAsync(WindowConfig config);
         Task<ShopItem> CreateShopItemAsync();

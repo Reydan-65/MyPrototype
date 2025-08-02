@@ -242,6 +242,7 @@ GameObject:
   - component: {fileID: 3516518802221904918}
   - component: {fileID: 5850383889107603843}
   - component: {fileID: 6629328242232151803}
+  - component: {fileID: 1582642574610708482}
   m_Layer: 5
   m_Name: PauseWindow
   m_TagString: Untagged
@@ -332,6 +333,24 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1582642574610708482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5553975237588971416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a976d7e232db7ba4e89f5e4051b3982c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  closeButton: {fileID: 0}
+  titleText: {fileID: 7472437520007696502}
+  continueButton: {fileID: 5506018183661093745}
+  settingsButton: {fileID: 3437908841150217510}
+  mainMenuButton: {fileID: 3826207099685071066}
+  quitGameButton: {fileID: 4084271668425490713}
 --- !u!1 &5826886396937067669
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,6 +872,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30d97ed181103444a96645f90594f290, type: 3}
+--- !u!114 &5506018183661093745 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7873855071425971824, guid: 30d97ed181103444a96645f90594f290, type: 3}
+  m_PrefabInstance: {fileID: 2390500070114379009}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6599006318689548351 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8842996458765073726, guid: 30d97ed181103444a96645f90594f290, type: 3}
@@ -971,6 +1001,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30d97ed181103444a96645f90594f290, type: 3}
+--- !u!114 &3437908841150217510 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7873855071425971824, guid: 30d97ed181103444a96645f90594f290, type: 3}
+  m_PrefabInstance: {fileID: 4823472402512886614}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4055712420332865128 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8842996458765073726, guid: 30d97ed181103444a96645f90594f290, type: 3}
@@ -1094,6 +1135,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8842996458765073726, guid: 30d97ed181103444a96645f90594f290, type: 3}
   m_PrefabInstance: {fileID: 6191237865480996713}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4084271668425490713 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7873855071425971824, guid: 30d97ed181103444a96645f90594f290, type: 3}
+  m_PrefabInstance: {fileID: 6191237865480996713}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6367217331513241258
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1212,3 +1264,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8842996458765073726, guid: 30d97ed181103444a96645f90594f290, type: 3}
   m_PrefabInstance: {fileID: 6367217331513241258}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3826207099685071066 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7873855071425971824, guid: 30d97ed181103444a96645f90594f290, type: 3}
+  m_PrefabInstance: {fileID: 6367217331513241258}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

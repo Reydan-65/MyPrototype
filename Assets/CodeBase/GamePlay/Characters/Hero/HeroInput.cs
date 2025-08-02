@@ -1,6 +1,8 @@
 using CodeBase.Data;
+using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
+using System;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Hero
@@ -12,19 +14,25 @@ namespace CodeBase.GamePlay.Hero
         [SerializeField] private HeroEnergy energy;
         [SerializeField] private HeroTurret turret;
 
-        private IInputService input;
-        private ICursorService cursor;
-        private IHealingService healing;
+        private IInputService inputService;
+        private ICursorService cursorService;
+        private IHealingService healingService;
+        private IWindowsProvider windowsProvider;
+        private IUIFactory uiFactory;
 
         [Inject]
         public void Construct(
-            IInputService input,
-            ICursorService cursor,
-            IHealingService healing)
+            IInputService inputService,
+            ICursorService cursorService,
+            IHealingService healingService,
+            IWindowsProvider windowsProvider,
+            IUIFactory uiFactory)
         {
-            this.input = input;
-            this.cursor = cursor;
-            this.healing = healing;
+            this.inputService = inputService;
+            this.cursorService = cursorService;
+            this.healingService = healingService;
+            this.windowsProvider = windowsProvider;
+            this.uiFactory = uiFactory;
         }
 
         private void Update()
@@ -36,19 +44,33 @@ namespace CodeBase.GamePlay.Hero
             HandleShooting();
             HandleHealing();
             HandleDash();
+            HandlePause();
+        }
+
+        private void HandlePause()
+        {
+            if (uiFactory == null) return;
+
+            if (inputService.EscapeInput)
+            {
+                if (uiFactory.PauseWindow == null)
+                    windowsProvider.Open(UI.WindowID.PauseWindow);
+                else
+                    uiFactory.PausePresenter.ContinueGame();
+            }
         }
 
         private void HandleMovement()
         {
             if (movement != null)
-                movement.SetMovementDirection(input.MovementAxis);
+                movement.SetMovementDirection(inputService.MovementAxis);
         }
 
         private void HandleRotation()
         {
-            if (input.AimInput && cursor != null)
+            if (inputService.AimInput && cursorService != null)
             {
-                Vector3 cursorPos = cursor.GetWorldPositionOnPlane(transform.position, Vector3.up);
+                Vector3 cursorPos = cursorService.GetWorldPositionOnPlane(transform.position, Vector3.up);
                 Vector3 lookDir = cursorPos - transform.position;
                 lookDir.y = 0;
 
@@ -59,19 +81,19 @@ namespace CodeBase.GamePlay.Hero
 
         private void HandleShooting()
         {
-            if (turret != null && turret.CanFire() && input.AttackInput)
+            if (turret != null && turret.CanFire() && inputService.AttackInput)
                 turret.Fire();
         }
 
         private void HandleHealing()
         {
-            if (input.HealInput && healing != null)
-                healing.TryHeal(LootItemID.HealingPotion);
+            if (inputService.HealInput && healingService != null)
+                healingService.TryHeal(LootItemID.HealingPotion);
         }
 
         private void HandleDash()
         {
-            if (input.DashInput && movement != null && energy != null)
+            if (inputService.DashInput && movement != null && energy != null)
                 movement.TryDash();
         }
     }
