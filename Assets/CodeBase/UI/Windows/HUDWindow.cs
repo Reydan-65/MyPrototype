@@ -16,8 +16,21 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] private EnergyText energyText;
         public EnergyText EnergyText => energyText;
 
-        [SerializeField] private HealingPotionItem healingPotionItem;
-        public HealingPotionItem HealingPotionItem => healingPotionItem;
+        [SerializeField] private GameObject solution;
+        public GameObject Solution { get => solution; set => solution = value; }
+
+        private void Start()
+        {
+            SetSolutionActive(false);
+        }
+
+        public void SetSolutionActive(bool active)
+        {
+            if (solution == null) return;
+
+            if (solution.activeSelf != active)
+                solution.SetActive(active);
+        }
 
         protected override void OnClose()
         {

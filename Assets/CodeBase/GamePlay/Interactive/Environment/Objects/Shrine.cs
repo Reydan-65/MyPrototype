@@ -7,7 +7,7 @@ using CodeBase.Infrastructure.Services.Factory;
 
 namespace CodeBase.GamePlay.Interactive
 {
-    public class Shrine : Interactable
+    public class Shrine : Interactable, IInputInteractable
     {
         private IWindowsProvider windowsProvider;
         private IGameFactory gameFactory;
@@ -24,9 +24,9 @@ namespace CodeBase.GamePlay.Interactive
             this.enemySpawnManager = enemySpawnManager;
         }
 
-        public override void Interact(GameObject user)
+        public override void Interact()
         {
-            base.Interact(user);
+            base.Interact();
 
             enemySpawnManager.DestroyAllEnemies();
             enemySpawnManager.SpawnAllEnemies();
@@ -34,6 +34,14 @@ namespace CodeBase.GamePlay.Interactive
             ObjectsDestroyer.DestroyObjectsByTag("ToDestroy");
 
             windowsProvider.Open(WindowID.ShrineWindow);
+        }
+
+        protected override void OnHUDWindowCreated()
+        {
+            base.OnHUDWindowCreated();
+
+            if (interactableTracker != null)
+                interactableTracker.RegisterInteractable(this);
         }
     }
 }

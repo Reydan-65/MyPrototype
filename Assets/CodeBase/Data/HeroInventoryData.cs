@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CodeBase.Data
@@ -8,9 +9,12 @@ namespace CodeBase.Data
     {
         public event Action<int> CoinValueChanged;
         public event Action<int> HealingPotionValueChanged;
-        public event Action KeyPickuped;
+        public event Action<string> KeyAdded;
+        public event Action<string> KeyRemoved;
 
         [SerializeField] private int coinAmount;
+        [SerializeField] private int healingPotionAmount;
+        [SerializeField] private List<string> keys = new List<string>();
 
         public int CoinAmount
         {
@@ -22,7 +26,6 @@ namespace CodeBase.Data
             }
         }
 
-        [SerializeField] private int healingPotionAmount;
         public int HealingPotionAmount
         {
             get => healingPotionAmount;
@@ -33,38 +36,27 @@ namespace CodeBase.Data
             }
         }
 
-        [SerializeField] private bool hasKey;
-
-        public bool HasKey
-        {
-            get => hasKey;
-            set
-            {
-                if (hasKey != value)
-                {
-                    hasKey = value;
-                    KeyPickuped?.Invoke();
-                }
-            }
-        }
+        public List<string> Keys => keys;
+        public bool HasKey(string keyId) => keys.Contains(keyId);
 
         public void SetDefaultInventoryData()
         {
             CoinAmount = 0;
             healingPotionAmount = 0;
-            hasKey = false;
+            keys.Clear();
         }
 
         public void CopyFrom(HeroInventoryData data)
         {
             CoinAmount = data.CoinAmount;
             HealingPotionAmount = data.HealingPotionAmount;
-            HasKey = data.HasKey;
+            keys = new List<string>(data.Keys);
         }
 
         public void AddItem(LootItemID id, int amount)
         {
             if (id == LootItemID.None) return;
+            if (id == LootItemID.Key) return;
             if (id == LootItemID.HealingPotion) return;
 
             if (id == LootItemID.Coin)
@@ -75,11 +67,6 @@ namespace CodeBase.Data
                 //Debug.Log($"Coins changed: {this.coinAmount}");
             }
 
-
-            if (id == LootItemID.Key)
-            {
-
-            }
         }
 
         public void AddHealingItem(LootItemID id, int amount, float healingValue)
@@ -97,9 +84,25 @@ namespace CodeBase.Data
             }
         }
 
+        public void AddKey(string keyId)
+        {
+            if (!keys.Contains(keyId))
+            {
+                keys.Add(keyId);
+                KeyAdded?.Invoke(keyId);
+            }
+        }
+
+        public void RemoveKey(string keyId)
+        {
+            if (keys.Remove(keyId))
+                KeyRemoved?.Invoke(keyId);
+        }
+
         public void ConsumeItem(LootItemID id, int amount)
         {
             if (id == LootItemID.None) return;
+            if (id == LootItemID.Key) return;
 
             if (id == LootItemID.Coin)
             {
@@ -115,11 +118,6 @@ namespace CodeBase.Data
                 HealingPotionValueChanged?.Invoke(healingPotionAmount);
 
                 //Debug.Log($"Healing Potion changed: {this.healingPotionAmount}");
-            }
-
-            if (id == LootItemID.Key)
-            {
-
             }
         }
     }

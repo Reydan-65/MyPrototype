@@ -1,7 +1,7 @@
 ﻿using CodeBase.Data;
 using CodeBase.GamePlay.Interactive;
-using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
+using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -15,11 +15,14 @@ namespace CodeBase.Infrastructure.Services
         private const float DropAnimationDuration = 0.5f;
 
         private IGameFactory gameFactory;
+        private IProgressProvider progressProvider;
+
         private readonly List<LootItem> activeLootItems = new List<LootItem>();
 
-        public LootService(IGameFactory gameFactory)
+        public LootService(IGameFactory gameFactory, IProgressProvider progressProvider)
         {
             this.gameFactory = gameFactory;
+            this.progressProvider = progressProvider;
         }
 
         public async Task DropLoot(Vector3 position, LootItemID lootType, int count = 1)
@@ -82,6 +85,21 @@ namespace CodeBase.Infrastructure.Services
             }
 
             activeLootItems.Clear();
+        }
+
+        public void CleanUpPickedLoot()
+        {
+            var lootItems = GameObject.FindObjectsOfType<LootItem>(true);
+            var progress = progressProvider.PlayerProgress;
+
+            foreach (var lootItem in lootItems)
+            {
+                // Проверяем, был ли предмет уже подобран
+                if (progress.WasLootPicked(lootItem.UniqueID))
+                {
+                    Object.Destroy(lootItem.gameObject);
+                }
+            }
         }
     }
 }

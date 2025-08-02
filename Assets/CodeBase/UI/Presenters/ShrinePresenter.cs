@@ -28,6 +28,8 @@ namespace CodeBase.GamePlay.UI
             window.CleanUped -= OnCleanUp;
         }
 
+        public ShrineWindow GetWindow() => window;
+
         private void OnUpgradeStatsButtonClicked()
         {
             window.Close();

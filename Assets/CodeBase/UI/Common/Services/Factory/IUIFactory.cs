@@ -2,16 +2,21 @@
 using CodeBase.Infrastructure.DependencyInjection;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CodeBase.GamePlay.UI.Services
 {
     public interface IUIFactory : IService
     {
+        event UnityAction HUDWindowCreated;
+
         Task WarmUp();
 
         Transform UIRoot { get; set; }
         HUDPresenter HUDPresenter { get; set; }
         HUDWindow HUDWindow { get; set; }
+        ShrinePresenter ShrinePresenter { get; set; }
+        ShrineWindow ShrineWindow { get; set; }
         LevelResultPresenter LevelResultPresenter { get; set; }
         LevelResultWindow LevelResultWindow { get; set; }
 

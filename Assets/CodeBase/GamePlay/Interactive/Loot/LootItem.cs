@@ -1,14 +1,20 @@
+using CodeBase.Data;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
+using System.Collections;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Interactive
 {
     public abstract class LootItem : MonoBehaviour
     {
+        [SerializeField] private string uniqueID;
+        public string UniqueID => uniqueID;
+
         private Collider lootCollider;
+
         protected IGameFactory gameFactory;
         protected IProgressProvider progressProvider;
         protected IProgressSaver progressSaver;
@@ -22,12 +28,9 @@ namespace CodeBase.GamePlay.Interactive
             this.gameFactory = gameFactory;
             this.progressProvider = progressProvider;
             this.progressSaver = progressSaver;
-        }
 
-        private void Start()
-        {
-            transform.SetParent(null);
             lootCollider = GetComponent<Collider>();
+            transform.SetParent(null);
         }
 
         protected virtual void OnTriggerEnter(Collider other)
@@ -37,6 +40,7 @@ namespace CodeBase.GamePlay.Interactive
             if (other.gameObject == gameFactory.HeroObject)
             {
                 OnPickup();
+                progressProvider.PlayerProgress.AddPickedLoot(uniqueID);
                 progressSaver.SaveProgress();
                 Destroy(gameObject);
             }
@@ -46,7 +50,20 @@ namespace CodeBase.GamePlay.Interactive
 
         public void SetColliderEnabled(bool value)
         {
-            lootCollider.enabled = value;
+            if (lootCollider != null)
+                lootCollider.enabled = value;
+        }
+
+        public void GenerateID()
+        {
+            if (string.IsNullOrEmpty(uniqueID))
+            {
+                var pos = transform.position;
+                uniqueID = $"loot_{gameObject.name}_{pos.x:F1}_{pos.z:F1}";
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
         }
     }
 }

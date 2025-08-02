@@ -20,7 +20,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
         private IProgressSaver progressSaver;
         private IConfigsProvider configsProvider;
         private IWindowsProvider windowsProvider;
-        private IEnemySpawnManager enemySpawnManager;
+        private ILootService lootService;
 
         public LevelBootStrapState(
             IGameFactory gameFactory,
@@ -28,16 +28,18 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             IInputService inputService,
             ICursorService cursorService,
             IProgressSaver progressSaver,
-            IConfigsProvider configProvider,
-            IWindowsProvider windowsProvider)
+            IConfigsProvider configsProvider,
+            IWindowsProvider windowsProvider,
+            ILootService lootService)
         {
             this.gameFactory = gameFactory;
             this.levelStateSwitcher = levelStateSwitcher;
             this.inputService = inputService;
             this.cursorService = cursorService;
             this.progressSaver = progressSaver;
-            this.configsProvider = configProvider;
+            this.configsProvider = configsProvider;
             this.windowsProvider = windowsProvider;
+            this.lootService = lootService;
         }
 
         public async void EnterAsync()
@@ -60,7 +62,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             //await gameFactory.CreateJoystickAsync();
 
             progressSaver.LoadProgress();
-
+            lootService.CleanUpPickedLoot();
             windowsProvider.Open(WindowID.HUDWindow);
 
             inputService.Enable = true;

@@ -12,6 +12,8 @@ namespace CodeBase.GamePlay.Hero
 
         private HeroInventoryData inventoryData;
         public event UnityAction<int> OnCoinAmountChanged;
+        public event UnityAction<string> KeyAdded;
+        public event UnityAction<string> KeyRemoved;
 
         [Inject]
         public void Construct(IProgressProvider progressProvider)
@@ -26,6 +28,8 @@ namespace CodeBase.GamePlay.Hero
 
             inventoryData = progressProvider.PlayerProgress.HeroInventoryData;
             inventoryData.CoinValueChanged += OnCoinChanged;
+            inventoryData.KeyAdded += OnKeyAddedHandler;
+            inventoryData.KeyRemoved += OnKeyRemovedHandler;
             OnCoinChanged(inventoryData.CoinAmount);
         }
 
@@ -34,10 +38,24 @@ namespace CodeBase.GamePlay.Hero
             OnCoinAmountChanged?.Invoke(newValue);
         }
 
+        private void OnKeyAddedHandler(string keyId)
+        {
+            KeyAdded?.Invoke(keyId);
+        }
+
+        private void OnKeyRemovedHandler(string keyId)
+        {
+            KeyRemoved?.Invoke(keyId);
+        }
+
         private void OnDestroy()
         {
             if (inventoryData != null)
+            {
                 inventoryData.CoinValueChanged -= OnCoinChanged;
+                inventoryData.KeyAdded -= OnKeyAddedHandler;
+                inventoryData.KeyRemoved -= OnKeyRemovedHandler;
+            }
         }
 
         public void SyncWithData(HeroInventoryData newInventoryData)
@@ -45,12 +63,29 @@ namespace CodeBase.GamePlay.Hero
             if (newInventoryData == null || inventoryData== null) return;
 
             int oldCoins = inventoryData.CoinAmount;
-            bool oldKeyState = inventoryData.HasKey;
-
+            
             if (oldCoins != inventoryData.CoinAmount)
             {
                 OnCoinChanged(inventoryData.CoinAmount);
             }
+
+            foreach (var keyId in newInventoryData.Keys)
+            {
+                if (!inventoryData.HasKey(keyId))
+                {
+                    OnKeyAddedHandler(keyId);
+                }
+            }
+
+            foreach (var keyId in inventoryData.Keys)
+            {
+                if (!newInventoryData.HasKey(keyId))
+                {
+                    OnKeyRemovedHandler(keyId);
+                }
+            }
         }
+
+        public bool HasKey(string keyId) => inventoryData?.HasKey(keyId) ?? false;
     }
 }

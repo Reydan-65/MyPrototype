@@ -33,8 +33,6 @@ namespace CodeBase.GamePlay.Hero
         private float dashRange;
 
         private VisualModelTilt visualTilt;
-
-        [SerializeField] private Transform rotationReferenceForFirePoints;
         private FirePointStabilizer firePointStabilizer;
 
         private IInputService inputService;
@@ -46,9 +44,6 @@ namespace CodeBase.GamePlay.Hero
             heroEnergy = GetComponent<HeroEnergy>();
             visualTilt = GetComponent<VisualModelTilt>();
             firePointStabilizer = GetComponent<FirePointStabilizer>();
-
-            if (firePointStabilizer != null && rotationReferenceForFirePoints == null)
-                rotationReferenceForFirePoints = transform;
 
             gravityHandler = new GravityHandler(
                 characterController,
@@ -106,16 +101,7 @@ namespace CodeBase.GamePlay.Hero
         {
             Vector3 moveDirection = directionControl * movementSpeed;
             moveDirection.y = gravityHandler.VerticalVelocity.y;
-
-            if (inputService != null && heroHealth != null)
-            {
-                if (CanDash())
-                {
-                    heroEnergy.Consume(dashCost);
-                    dashController.StartDash(moveDirection);
-                }
-            }
-
+            
             characterController.Move(moveDirection * Time.deltaTime);
         }
 
@@ -124,7 +110,7 @@ namespace CodeBase.GamePlay.Hero
             if (!CanDash()) return false;
 
             heroEnergy.Consume(dashCost);
-            dashController.StartDash(inputService.MovementAxis);
+            dashController.StartDash(directionControl);
 
             return true;
         }
@@ -159,8 +145,6 @@ namespace CodeBase.GamePlay.Hero
                 Quaternion targetRotation = Quaternion.LookRotation(directionControl);
                 viewTransform.rotation = targetRotation;
             }
-
-
         }
 
         public void SetMovementDirection(Vector2 moveDirection)
@@ -168,7 +152,6 @@ namespace CodeBase.GamePlay.Hero
             directionControl.x = moveDirection.x;
             directionControl.z = moveDirection.y;
             directionControl.y = 0;
-
             directionControl.Normalize();
         }
 

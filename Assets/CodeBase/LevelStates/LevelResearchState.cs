@@ -68,12 +68,12 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         private void CheckVictory()
         {
-            if (Vector3.Distance(gameFactory.HeroObject.transform.position, levelConfig.FinishPoint) < FinishPoint.Radius
-                                 && inventoryData.HasKey)
-            {
-                levelStateSwitcher.Enter<LevelVictoryState>();
-                inventoryData.HasKey = false;
-            }
+            //if (Vector3.Distance(gameFactory.HeroObject.transform.position, levelConfig.FinishPoint) < FinishPoint.Radius
+            //                     && inventoryData.HasKey)
+            //{
+            //    levelStateSwitcher.Enter<LevelVictoryState>();
+            //    inventoryData.HasKey = false;
+            //}
         }
 
         private void OnPersuitTarget()

@@ -17,14 +17,14 @@ namespace CodeBase.GamePlay.UI
         public void Initialize(string statName,
             string currentValue,
             string bonusValue,
-            string priceValue,
+            int priceValue,
             System.Action onUpgrade)
         {
             StatName = statName;
             statNameText.text = statName;
             currentValueText.text = currentValue;
             bonusValueText.text = "+"+bonusValue;
-            priceValueText.text = priceValue;
+            priceValueText.text = priceValue.ToString();
 
             upgradeButton.onClick.RemoveListener(() => onUpgrade?.Invoke());
             upgradeButton.onClick.AddListener(() => onUpgrade?.Invoke());
@@ -38,6 +38,16 @@ namespace CodeBase.GamePlay.UI
         public void UpdatePriceValue(string newValue)
         {
             priceValueText.text = newValue;
+        }
+
+        public void SetInteractable(bool interactable)
+        {
+            upgradeButton.interactable = interactable;
+        }
+
+        public void SetPriceColor(Color color)
+        {
+            priceValueText.color = color;
         }
     }
 }

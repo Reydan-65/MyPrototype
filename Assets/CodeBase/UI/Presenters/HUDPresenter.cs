@@ -6,15 +6,11 @@ namespace CodeBase.GamePlay.UI
     public class HUDPresenter : WindowPresenterBase<HUDWindow>
     {
         private readonly IGameFactory gameFactory;
-        private IProgressProvider progressProvider;
         private HUDWindow window;
 
-        public HUDPresenter(
-            IGameFactory gameFactory,
-            IProgressProvider progressProvider)
+        public HUDPresenter(IGameFactory gameFactory)
         {
             this.gameFactory = gameFactory;
-            this.progressProvider = progressProvider;
             this.gameFactory.HeroCreated += OnHeroCreated;
         }
 

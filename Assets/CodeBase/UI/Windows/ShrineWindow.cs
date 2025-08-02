@@ -9,6 +9,7 @@ namespace CodeBase.GamePlay.UI
     public class ShrineWindow : WindowBase
     {
         public event UnityAction UpgradeStatsButtonClicked;
+        public event UnityAction ShrineWindowClosed;
 
         [SerializeField] private Button updateStatsButton;
 
@@ -30,7 +31,7 @@ namespace CodeBase.GamePlay.UI
         protected override void OnClose()
         {
             inputService.Enable = true;
-            
+            ShrineWindowClosed?.Invoke();
             Destroy(gameObject);
         }
     }

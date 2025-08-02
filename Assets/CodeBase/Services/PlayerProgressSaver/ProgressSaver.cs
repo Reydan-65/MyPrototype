@@ -51,26 +51,25 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
 
         public void LoadProgress()
         {
-            if (PlayerPrefs.HasKey(ProgressKey) == false)
-                progressProvider.PlayerProgress = PlayerProgress.GetDefaultProgress();
-            else
+            if (PlayerPrefs.HasKey(ProgressKey))
             {
-                progressProvider.PlayerProgress = JsonUtility.FromJson<PlayerProgress>(PlayerPrefs.GetString(ProgressKey));
-                Debug.Log($"PROGRESS LOADED: FROM SAVE!");
-            }
+                string json = PlayerPrefs.GetString(ProgressKey);
+                var tempProgress = JsonUtility.FromJson<PlayerProgress>(json);
 
-            foreach (IProgressLoadHandler loadHandler in progressLoadHandlers)
-            {
-                loadHandler?.LoadProgress(progressProvider.PlayerProgress);
+                progressProvider.PlayerProgress = new PlayerProgress();
+                progressProvider.PlayerProgress.CopyFrom(tempProgress);
             }
+            else
+                progressProvider.PlayerProgress = PlayerProgress.GetDefaultProgress();
+
+            foreach (var handler in progressLoadHandlers)
+                handler?.LoadProgress(progressProvider.PlayerProgress);
         }
 
         public void SaveProgress()
         {
             foreach (IProgressBeforeSaveHandler saveHandler in progressBeforeSaveHandlers)
-            {
                 saveHandler?.UpdateProgressBeforeSave(progressProvider.PlayerProgress);
-            }
 
             PlayerPrefs.SetString(ProgressKey, JsonUtility.ToJson(progressProvider.PlayerProgress));
 

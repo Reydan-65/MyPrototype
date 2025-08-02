@@ -1,14 +1,15 @@
-using CodeBase.Infrastructure.Scene;
+using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Scene;
 using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.Services.ConfigProvider;
 using CodeBase.Infrastructure.Services.Factory;
+using CodeBase.Infrastructure.Services.GameStateMachine;
 using CodeBase.Infrastructure.Services.GameStates;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
-using CodeBase.Infrastructure.Services.ConfigProvider;
-using CodeBase.Infrastructure.Services.GameStateMachine;
-using CodeBase.GamePlay.UI.Services;
+using CodeBase.Services.EntityActivityController;
 
 namespace CodeBase.Infrastructure
 {
@@ -48,6 +49,7 @@ namespace CodeBase.Infrastructure
             //container.RegisterSingle<IAdsService, AdsService>();
             container.RegisterSingle<IIApService, IApService>();
             container.RegisterSingle<IHealingService, HealingService>();
+            container.RegisterSingle<IEntityActivityController, EntityActivityController>();
         }
     }
 }

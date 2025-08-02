@@ -4,12 +4,15 @@ using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.ConfigProvider;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CodeBase.GamePlay.UI.Services
 {
     public class UIFactory : IUIFactory
     {
         private const string UIRootGameObjectName = "UIRoot";
+
+        public event UnityAction HUDWindowCreated;
 
         private DIContainer container;
         private IAssetProvider assetProvider;
@@ -28,6 +31,8 @@ namespace CodeBase.GamePlay.UI.Services
         public Transform UIRoot { get; set; }
         public HUDPresenter HUDPresenter { get; set; }
         public HUDWindow HUDWindow { get; set; }
+        public ShrinePresenter ShrinePresenter { get; set; }
+        public ShrineWindow ShrineWindow { get; set; }
         public LevelResultPresenter LevelResultPresenter { get; set; }
         public LevelResultWindow LevelResultWindow { get; set; }
 
@@ -69,6 +74,7 @@ namespace CodeBase.GamePlay.UI.Services
         {
             HUDPresenter = await CreateWindowAsync<HUDWindow, HUDPresenter>(config);
             HUDWindow = HUDPresenter.GetWindow();
+            HUDWindowCreated?.Invoke();
             return HUDPresenter;
         }
 
@@ -79,8 +85,13 @@ namespace CodeBase.GamePlay.UI.Services
             await CreateUIItemAsync<ShopItem>(AssetAddress.ShopItemPath);
 
         // Shrine
-        public async Task<ShrinePresenter> CreateShrineWindowAsync(WindowConfig config) =>
-            await CreateWindowAsync<ShrineWindow, ShrinePresenter>(config);
+        public async Task<ShrinePresenter> CreateShrineWindowAsync(WindowConfig config)
+        {
+            ShrinePresenter = await CreateWindowAsync<ShrineWindow, ShrinePresenter>(config);
+            ShrineWindow = ShrinePresenter.GetWindow();
+            return ShrinePresenter;
+        }
+
         public async Task<ShrineItem> CreateShrineItemAsync() =>
             await CreateUIItemAsync<ShrineItem>(AssetAddress.ShrineItemPath);
 
