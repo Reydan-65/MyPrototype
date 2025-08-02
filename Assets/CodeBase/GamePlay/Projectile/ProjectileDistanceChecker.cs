@@ -8,10 +8,12 @@ namespace CodeBase.GamePlay.Projectile
         private float maxDistance = 0;
 
         private Vector3 spawnPosition;
+        private ProjectileDestroyer destroyer;
 
         private void Start()
         {
             spawnPosition = transform.position;
+            destroyer = GetComponent<ProjectileDestroyer>();
         }
 
         private void Update()
@@ -24,7 +26,7 @@ namespace CodeBase.GamePlay.Projectile
             float currentDistance = Vector3.Distance(spawnPosition, transform.position);
 
             if (currentDistance >= maxDistance)
-                Destroy(gameObject);
+                destroyer.CreateMissedImpactEffect();
         }
 
         public void InstallProjectileConfig(ProjectileConfig config)

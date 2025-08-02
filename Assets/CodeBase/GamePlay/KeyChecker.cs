@@ -75,7 +75,6 @@ namespace CodeBase.GamePlay
             if (inventoryData == null) return;
 
             bool hasKey = inventoryData.HasKey(requiredKeyID);
-            Debug.Log($"{hasKey}");
             infoImage.color = hasKey ? infoColors[1] : infoColors[0];
         }
 

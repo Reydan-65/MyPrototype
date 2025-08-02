@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BaseProjectile
   m_EditorClassIdentifier: 
   ProjectilePrefab: {fileID: 7710401144981938989, guid: 31891ec3fce0e7a49b6890f007bb4eee, type: 3}
-  DestroySFXPrefab: {fileID: 0}
+  MissSFXPrefab: {fileID: 7710401144981938989, guid: b816a21ccd365d04eae699039a9c0861, type: 3}
+  HitSFXPrefab: {fileID: 7710401144981938989, guid: a21ea693c90ff77479c95836caad337a, type: 3}
   ProjectileType: 0
   MovementSpeed: 10
   MaxDistance: 7

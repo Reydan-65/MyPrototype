@@ -6,14 +6,15 @@ namespace CodeBase.GamePlay.Projectile
     public class ProjectileCollisionHandler : MonoBehaviour, IProjectileConfigInstaller
     {
         private float damage = 0;
-        private GameObject destroySFX;
 
         private Transform parent;
         private Vector3 previousPosition;
+        private ProjectileDestroyer destroyer;
 
         private void Start()
         {
             previousPosition = transform.position;
+            destroyer = GetComponent<ProjectileDestroyer>();
         }
         private void Update()
         {
@@ -36,34 +37,20 @@ namespace CodeBase.GamePlay.Projectile
                         if (hit.transform.root.TryGetComponent(out IHealth health))
                             health.ApplyDamage((int)damage);
 
-                        DestroyProjectile();
+                        destroyer.CreateHitedImpactEffect();
                     }
                 }
             }
         }
 
-        private bool ShouldProcessCollision(Collider other)
-        {
-            return other != null && other.transform.root != parent && !other.isTrigger;
-        }
-
-        private void DestroyProjectile()
-        {
-            if (destroySFX != null)
-                Instantiate(destroySFX, transform.position, Quaternion.identity);
-
-            Destroy(gameObject);
-        }
-
-        public void SetParent(Transform parent)
-        {
-            this.parent = parent;
-        }
+        private bool ShouldProcessCollision(Collider other) 
+            => other != null && other.transform.root != parent && !other.isTrigger;
+        
+        public void SetParent(Transform parent) => this.parent = parent;
 
         public void InstallProjectileConfig(ProjectileConfig config)
         {
             damage = config.GetDamageSpread();
-            destroySFX = config.DestroySFXPrefab;
         }
     }
 }

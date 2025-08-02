@@ -81,15 +81,15 @@ namespace CodeBase.GamePlay.Interactive
         private IEnumerator PlatformActivationSequence()
         {
             if (meshRenderers != null) PressedButtonVisual();
-            connectedPlatform.Interact();
-
             entityActivityController.SetEntitiesActive(false);
-            entityActivityController.MoveCameraToTarget(connectedPlatform.transform, 1f);
 
-            yield return new WaitForSeconds(3f);
             yield return new WaitForSeconds(1f);
-
+            entityActivityController.MoveCameraToTarget(connectedPlatform.transform, 1.5f);
+            yield return new WaitForSeconds(1f);
+            connectedPlatform.Interact();
+            yield return new WaitForSeconds(1f);
             entityActivityController.SetEntitiesActive(true);
+
             progressSaver.SaveProgress();
         }
 

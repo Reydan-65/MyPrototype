@@ -8,7 +8,8 @@ namespace CodeBase.Configs
     {
         [Header("Prefab")]
         public GameObject ProjectilePrefab;
-        public GameObject DestroySFXPrefab;
+        public GameObject MissSFXPrefab;
+        public GameObject HitSFXPrefab;
 
         [Header("Type")]
         public ProjectileType ProjectileType;
