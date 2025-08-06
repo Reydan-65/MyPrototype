@@ -54,7 +54,7 @@ namespace CodeBase.GamePlay.UI
         {
             adsService.ShowRewarded(() =>
             {
-                progressProvider.PlayerProgress.HeroInventoryData.AddCoin(rewardAmount);
+                progressProvider.PlayerProgress.PrototypeInventoryData.AddCoin(rewardAmount);
                 progressSaver.SaveProgress();
             });
 

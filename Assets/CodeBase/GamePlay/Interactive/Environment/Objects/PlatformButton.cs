@@ -63,9 +63,9 @@ namespace CodeBase.GamePlay.Interactive
             Interact();
         }
 
-        protected override void OnHeroCreated()
+        protected override void OnPrototypeCreated()
         {
-            base.OnHeroCreated();
+            base.OnPrototypeCreated();
             triggerCollider = actionUser?.GetComponent<CharacterController>();
         }
 

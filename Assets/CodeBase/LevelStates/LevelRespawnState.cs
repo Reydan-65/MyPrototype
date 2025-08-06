@@ -1,6 +1,6 @@
 using CodeBase.GamePlay;
 using CodeBase.Configs;
-using CodeBase.GamePlay.Hero;
+using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.UI;
 using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.Services.ConfigProvider;
@@ -15,9 +15,9 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 {
     public class LevelRespawnState : LevelBaseState, IEnterableState
     {
-        private const float DELAY = 3f;
+        private const float DELAY = 1f;
 
-        private HeroHealth heroHealth;
+        private PrototypeHealth prototypeHealth;
 
         private IConfigsProvider configsProvider;
         private IInputService inputService;
@@ -63,12 +63,12 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             LevelConfig levelConfig = configsProvider.GetLevelConfig(sceneName);
 
 
-            await gameFactory.CreateHeroAsync(levelConfig.HeroSpawnPoint, Quaternion.identity);
-            heroHealth = gameFactory.HeroObject.GetComponent<HeroHealth>();
-            heroHealth.SetImmune(true);
-            heroHealth.Initialize(heroHealth.Max);
+            await gameFactory.CreatePrototypeAsync(levelConfig.PrototypeSpawnPoint, Quaternion.identity);
+            prototypeHealth = gameFactory.PrototypeObject.GetComponent<PrototypeHealth>();
+            prototypeHealth.SetImmune(true);
+            prototypeHealth.Initialize(prototypeHealth.Max);
 
-            gameFactory.FollowCamera.SetTarget(gameFactory.HeroObject.transform);
+            gameFactory.FollowCamera.SetTarget(gameFactory.PrototypeObject.transform);
 
             progressSaver.LoadProgress();
 
@@ -82,7 +82,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             yield return new WaitForSeconds(DELAY);
 
             inputService.Enable = true;
-            heroHealth.SetImmune(false);
+            prototypeHealth.SetImmune(false);
 
             levelStateSwitcher.Enter<LevelResearchState>();
         }

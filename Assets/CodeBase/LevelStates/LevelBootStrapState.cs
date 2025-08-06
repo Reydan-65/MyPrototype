@@ -2,12 +2,12 @@ using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 using CodeBase.Infrastructure.Services.ConfigProvider;
-using CodeBase.GamePlay.Enemies;
 using CodeBase.Configs;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using CodeBase.GamePlay.UI.Services;
 using CodeBase.GamePlay.UI;
+using CodeBase.GamePlay.Spawners;
 
 namespace CodeBase.Infrastructure.Services.LevelStates
 {
@@ -52,10 +52,10 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
             SpawnEnemies();
 
-            await SpawnHero();
+            await SpawnPrototype();
 
             FollowCamera followCamera = await gameFactory.CreateFollowCameraAsync();
-            followCamera.SetTarget(gameFactory.HeroObject.transform);
+            followCamera.SetTarget(gameFactory.PrototypeObject.transform);
 
             cursorService.SetCamera(followCamera.GetComponentInChildren<Camera>());
 
@@ -78,11 +78,11 @@ namespace CodeBase.Infrastructure.Services.LevelStates
                 enemySpawners[i].Spawn();
         }
 
-        private async System.Threading.Tasks.Task SpawnHero()
+        private async System.Threading.Tasks.Task SpawnPrototype()
         {
             string sceneName = SceneManager.GetActiveScene().name;
             LevelConfig levelConfig = configsProvider.GetLevelConfig(sceneName);
-            await gameFactory.CreateHeroAsync(levelConfig.HeroSpawnPoint, Quaternion.identity);
+            await gameFactory.CreatePrototypeAsync(levelConfig.PrototypeSpawnPoint, Quaternion.identity);
         }
     }
 }

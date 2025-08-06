@@ -42,7 +42,7 @@ namespace CodeBase.GamePlay.UI
             Destroy(gameObject);
         }
 
-        public HeroStats GetNewStats()
+        public PrototypeStats GetNewStats()
         {
             if(statsPresenter != null) return statsPresenter.NewStats;
             return null;

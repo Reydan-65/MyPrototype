@@ -1,4 +1,4 @@
-﻿using CodeBase.GamePlay.Enemies;
+﻿using CodeBase.GamePlay.Spawners;
 using System.Collections.Generic;
 using UnityEngine;
 

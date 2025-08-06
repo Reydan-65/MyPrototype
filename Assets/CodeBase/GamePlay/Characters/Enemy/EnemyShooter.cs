@@ -24,18 +24,18 @@ namespace CodeBase.GamePlay.Enemies
         private void OnEnable()
         {
             if (gameFactory != null)
-                gameFactory.HeroCreated += OnHeroCreated;
+                gameFactory.PrototypeCreated += OnPrototypeCreated;
         }
 
         private void OnDisable()
         {
             if (gameFactory != null)
-                gameFactory.HeroCreated -= OnHeroCreated;
+                gameFactory.PrototypeCreated -= OnPrototypeCreated;
         }
 
-        private void OnHeroCreated()
+        private void OnPrototypeCreated()
         {
-            SetTarget(gameFactory.HeroObject.transform);
+            SetTarget(gameFactory.PrototypeObject.transform);
         }
 
         private void Update()

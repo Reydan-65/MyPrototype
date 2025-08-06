@@ -1,7 +1,7 @@
 using CodeBase.Configs;
 using CodeBase.Data;
 using CodeBase.GamePlay.Enemies;
-using CodeBase.GamePlay.Hero;
+using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.Interactive;
 using CodeBase.GamePlay.Projectile;
 using CodeBase.GamePlay.UI;
@@ -19,12 +19,12 @@ namespace CodeBase.Infrastructure.Services.Factory
 {
     public class GameFactory : IGameFactory
     {
-        public event UnityAction HeroCreated;
+        public event UnityAction PrototypeCreated;
 
         private DIContainer container;
         private IAssetProvider assetProvider;
         private IProgressSaver progressSaver;
-        private IConfigsProvider configProvider;
+        private IConfigsProvider configsProvider;
         private IEnemySpawnManager enemySpawnManager;
 
         public GameFactory(
@@ -37,23 +37,23 @@ namespace CodeBase.Infrastructure.Services.Factory
             this.container = container;
             this.assetProvider = assetProvider;
             this.progressSaver = progressSaver;
-            this.configProvider = configProvider;
+            this.configsProvider = configProvider;
             this.enemySpawnManager = enemySpawnManager;
         }
 
-        public GameObject HeroObject { get; private set; }
+        public GameObject PrototypeObject { get; private set; }
         public VirtualJoystick VirtualJoystick { get; private set; }
         public FollowCamera FollowCamera { get; private set; }
-        public HeroHealth HeroHealth { get; private set; }
-        public HeroEnergy HeroEnergy { get; private set; }
-        public HeroInventory HeroInventory { get; private set; }
+        public PrototypeHealth PrototypeHealth { get; private set; }
+        public PrototypeEnergy PrototypeEnergy { get; private set; }
+        public PrototypeInventory PrototypeInventory { get; private set; }
         public List<GameObject> EnemiesObject { get; private set; } = new List<GameObject>();
         public List<GameObject> ProjectilesObject { get; private set; } = new List<GameObject>();
         public GameObject LootObject { get; private set; }
 
         public async Task WarmUp()
         {
-            EnemyConfig[] enemyConfigs = configProvider.GetAllEnemiesConfigs();
+            EnemyConfig[] enemyConfigs = configsProvider.GetAllEnemiesConfigs();
 
             for (int i = 0; i < enemyConfigs.Length; i++)
                 await assetProvider.Load<GameObject>(enemyConfigs[i].PrefabReference);
@@ -66,43 +66,37 @@ namespace CodeBase.Infrastructure.Services.Factory
             return newGameObject;
         }
 
-        #region Create Hero
-        public async Task<GameObject> CreateHeroAsync(Vector3 position, Quaternion rotation)
+        #region Create Prototype
+        public async Task<GameObject> CreatePrototypeAsync(Vector3 position, Quaternion rotation)
         {
-            string heroPath = AssetAddress.HeroMalePath;
+            string prototypePath = AssetAddress.BaseSkinPath;
 
-            HeroObject = await InstantiateAndInject(heroPath);
-            HeroObject.transform.SetPositionAndRotation(position, rotation);
+            PrototypeObject = await InstantiateAndInject(prototypePath);
+            PrototypeObject.transform.SetPositionAndRotation(position, rotation);
+            PrototypeObject.name = "Prototype";
 
-            HeroHealth = HeroObject.GetComponent<HeroHealth>();
-            HeroEnergy = HeroObject.GetComponent<HeroEnergy>();
+            PrototypeHealth = PrototypeObject.GetComponent<PrototypeHealth>();
+            PrototypeEnergy = PrototypeObject.GetComponent<PrototypeEnergy>();
 
             var progress = progressSaver.GetProgress();
 
-            HeroHealth.Initialize(progress.HeroStats.MaxHitPoints);
-            HeroEnergy.Initialize(progress.HeroStats.MaxEnergy);
+            PrototypeHealth.Initialize(progress.PrototypeStats.MaxHitPoints);
+            PrototypeEnergy.Initialize(progress.PrototypeStats.MaxEnergy);
 
-            HeroHealth.SetImmune(false);
+            PrototypeHealth.SetImmune(false);
 
-            HeroInventoryData inventoryData = progress.HeroInventoryData;
-            HeroInventory = HeroObject.GetComponent<HeroInventory>();
-            HeroInventory.SyncWithData(inventoryData);
+            PrototypeInventoryData inventoryData = progress.PrototypeInventoryData;
+            PrototypeInventory = PrototypeObject.GetComponent<PrototypeInventory>();
+            PrototypeInventory.SyncWithData(inventoryData);
 
-            progressSaver.AddObject(HeroObject);
+            progressSaver.AddObject(PrototypeObject);
 
-            HeroCreated?.Invoke();
-            return HeroObject;
+            PrototypeCreated?.Invoke();
+            return PrototypeObject;
         }
         #endregion
 
         #region Create Miscellaneous
-        //public async Task<VirtualJoystick> CreateJoystickAsync()
-        //{
-        //    GameObject joystickObject = await InstantiateAndInject(AssetAddress.VirtualJoystickPath);
-        //    VirtualJoystick = joystickObject.GetComponent<VirtualJoystick>();
-        //    return VirtualJoystick;
-        //}
-
         public async Task<FollowCamera> CreateFollowCameraAsync()
         {
             GameObject followCameraObject = await InstantiateAndInject(AssetAddress.FollowCameraPath);
@@ -149,8 +143,8 @@ namespace CodeBase.Infrastructure.Services.Factory
         #region Create Enemy
         public async Task<GameObject> CreateEnemyAsync(EnemyID id, Vector3 position)
         {
-            EnemyConfig enemyConfig = configProvider.GetEnemyConfig(id);
-
+            EnemyConfig enemyConfig = configsProvider.GetEnemyConfig(id);
+            PlayerProgress progress = progressSaver.GetProgress();
             GameObject enemyPrefab = await assetProvider.Load<GameObject>(enemyConfig.PrefabReference);
             GameObject enemy = container.Instantiate(enemyPrefab);
 
@@ -162,7 +156,13 @@ namespace CodeBase.Infrastructure.Services.Factory
 
             var installers = enemy.GetComponentsInChildren<IEnemyConfigInstaller>();
             for (int i = 0; i < installers.Length; i++)
+            {
+                enemyConfig.MaxHitPoints += progress.DifficultyIndex * 1.25f;
                 installers[i].InstallEnemyConfig(enemyConfig);
+
+                if (installers[i] is EnemyFollowToTarget followToTarget)
+                    followToTarget.Initialize(enemyConfig);
+            }
 
             EnemiesObject.Add(enemy);
 
@@ -175,7 +175,7 @@ namespace CodeBase.Infrastructure.Services.Factory
         #region Create Projectile
         public GameObject CreateProjectileObjectFromPrefab(ProjectileType type)
         {
-            ProjectileConfig config = configProvider.GetProjectileConfig(type);
+            ProjectileConfig config = configsProvider.GetProjectileConfig(type);
 
             GameObject projectilePrefab = config.ProjectilePrefab;
             GameObject projectileObject = container.Instantiate(projectilePrefab);

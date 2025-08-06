@@ -1,4 +1,4 @@
-namespace CodeBase.GamePlay.Turrets
+namespace CodeBase.GamePlay
 {
     public enum TurretType
     {

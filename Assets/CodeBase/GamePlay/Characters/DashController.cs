@@ -4,9 +4,9 @@ namespace CodeBase.GamePlay
 {
     public class DashController
     {
-        private CharacterController characterController;
+        private IMovementController movementController;
         private IHealth health;
-        private float dashRange;
+        private float dashDistance;
         private float dashDuration;
         private float dashCooldown;
         private AnimationCurve speedCurve;
@@ -20,16 +20,16 @@ namespace CodeBase.GamePlay
         public bool CanDash => cooldownTimer <= 0 && !isDashing;
 
         public DashController(
-            CharacterController characterController,
+            IMovementController movementController,
             IHealth health,
             float dashRange,
             float dashDuration,
             float dashCooldown,
             AnimationCurve speedCurve)
         {
-            this.characterController = characterController;
+            this.movementController = movementController;
             this.health = health;
-            this.dashRange = dashRange;
+            this.dashDistance = dashRange;
             this.dashDuration = dashDuration;
             this.dashCooldown = dashCooldown;
             this.speedCurve = speedCurve;
@@ -43,6 +43,7 @@ namespace CodeBase.GamePlay
             dashTimer = 0f;
             dashDirection = direction.normalized;
             health.SetInvulnerability(true);
+            movementController.IsStoped = true;
         }
 
         public void UpdateDash(float deltaTime, Vector3 gravityVelocity)
@@ -50,13 +51,14 @@ namespace CodeBase.GamePlay
             if (!isDashing) return;
 
             dashTimer += deltaTime;
-
             float progress = Mathf.Clamp01(dashTimer / dashDuration);
             float speedMultiplier = speedCurve.Evaluate(progress);
-            Vector3 movement = dashDirection * (dashRange * speedMultiplier * deltaTime);
-            movement += gravityVelocity * deltaTime;
 
-            characterController.Move(movement);
+            float currentSpeed = (dashDistance / dashDuration) * speedMultiplier;
+            Vector3 movement = dashDirection * (currentSpeed * deltaTime);
+
+            movement += gravityVelocity * deltaTime;
+            movementController.Move(movement);
 
             if (progress >= 1f) EndDash();
         }
@@ -72,6 +74,8 @@ namespace CodeBase.GamePlay
             isDashing = false;
             cooldownTimer = dashCooldown;
             health.SetInvulnerability(false);
+            movementController.IsStoped = false;
+            movementController.ResetPath();
         }
     }
 }

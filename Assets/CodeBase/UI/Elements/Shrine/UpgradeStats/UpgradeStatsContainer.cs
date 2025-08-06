@@ -4,7 +4,6 @@ using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CodeBase.GamePlay.UI
 {
@@ -39,11 +38,11 @@ namespace CodeBase.GamePlay.UI
 
         private void OnDestroy()
         {
-            if (progressProvider?.PlayerProgress?.HeroStats != null)
-                progressProvider.PlayerProgress.HeroStats.Changed -= UpdateAvailableElements;
+            if (progressProvider?.PlayerProgress?.PrototypeStats != null)
+                progressProvider.PlayerProgress.PrototypeStats.Changed -= UpdateAvailableElements;
 
-            if (progressProvider?.PlayerProgress?.HeroInventoryData != null)
-                progressProvider.PlayerProgress.HeroInventoryData.CoinValueChanged -= OnCoinValueChanged;
+            if (progressProvider?.PlayerProgress?.PrototypeInventoryData != null)
+                progressProvider.PlayerProgress.PrototypeInventoryData.CoinValueChanged -= OnCoinValueChanged;
         }
 
         public void Initialize(UpgradeStatsWindow window)
@@ -52,16 +51,16 @@ namespace CodeBase.GamePlay.UI
 
             this.window = window;
             isInitialized = true;
-            if (progressProvider?.PlayerProgress?.HeroStats != null)
+            if (progressProvider?.PlayerProgress?.PrototypeStats != null)
             {
-                progressProvider.PlayerProgress.HeroStats.Changed -= UpdateAvailableElements;
-                progressProvider.PlayerProgress.HeroStats.Changed += UpdateAvailableElements;
+                progressProvider.PlayerProgress.PrototypeStats.Changed -= UpdateAvailableElements;
+                progressProvider.PlayerProgress.PrototypeStats.Changed += UpdateAvailableElements;
             }
 
-            if (progressProvider?.PlayerProgress?.HeroInventoryData != null)
+            if (progressProvider?.PlayerProgress?.PrototypeInventoryData != null)
             {
-                progressProvider.PlayerProgress.HeroInventoryData.CoinValueChanged -= OnCoinValueChanged;
-                progressProvider.PlayerProgress.HeroInventoryData.CoinValueChanged += OnCoinValueChanged;
+                progressProvider.PlayerProgress.PrototypeInventoryData.CoinValueChanged -= OnCoinValueChanged;
+                progressProvider.PlayerProgress.PrototypeInventoryData.CoinValueChanged += OnCoinValueChanged;
             }
 
             UpdateAvailableElements();
@@ -79,7 +78,7 @@ namespace CodeBase.GamePlay.UI
                 Destroy(child.gameObject);
         }
 
-        private async void CreateUpgradeStatsElementAsync(HeroStats stats)
+        private async void CreateUpgradeStatsElementAsync(PrototypeStats stats)
         {
             if (parent == null) return;
 
@@ -113,21 +112,21 @@ namespace CodeBase.GamePlay.UI
                 window.UpdateStatsDisplay();
             });
 
-            if (int.Parse(priceValue) > progressProvider.PlayerProgress.HeroInventoryData.CoinAmount)
+            if (int.Parse(priceValue) > progressProvider.PlayerProgress.PrototypeInventoryData.CoinAmount)
                 element.SetInteractable(false);
         }
 
         private void UpgradeStat(ref int stat, int bonusValue, int price)
         {
             stat += bonusValue;
-            progressProvider.PlayerProgress.HeroInventoryData.CoinAmount -= price;
+            progressProvider.PlayerProgress.PrototypeInventoryData.CoinAmount -= price;
             window.UpdateStatsDisplay();
         }
 
         private void UpgradeStat(ref float stat, float bonusValue, int price)
         {
             stat += bonusValue;
-            progressProvider.PlayerProgress.HeroInventoryData.CoinAmount -= price;
+            progressProvider.PlayerProgress.PrototypeInventoryData.CoinAmount -= price;
             window.UpdateStatsDisplay();
         }
 

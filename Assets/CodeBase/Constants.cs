@@ -1,6 +1,5 @@
 public class Constants
 {
-    // Hero
     public static string BootStrapSceneName = "BootStrap";
     public static string MainMenuSceneName = "MainMenu";
 

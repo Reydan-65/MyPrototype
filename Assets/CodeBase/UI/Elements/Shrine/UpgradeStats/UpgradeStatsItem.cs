@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CodeBase.GamePlay.UI
+namespace CodeBase.UI.Elements
 {
     public class UpgradeStatsItem : MonoBehaviour
     {

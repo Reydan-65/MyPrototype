@@ -10,7 +10,8 @@
         ShrineWindow = 5,
         UpgradeStatsWindow = 6,
         HUDWindow = 7,
-        PauseWindow = 8
+        PauseWindow = 8,
+        SettingsWindow = 9
     }
 
 }

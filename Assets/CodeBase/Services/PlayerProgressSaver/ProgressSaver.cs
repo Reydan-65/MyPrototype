@@ -7,7 +7,7 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
 {
     public class ProgressSaver : IProgressSaver
     {
-        private const string ProgressKey = "Progress";
+        public const string ProgressKey = "Progress";
 
         private IProgressProvider progressProvider;
 
@@ -58,6 +58,8 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
 
                 progressProvider.PlayerProgress = new PlayerProgress();
                 progressProvider.PlayerProgress.CopyFrom(tempProgress);
+
+                Debug.Log($"PROGRESS LOADED FROM SAVE!");
             }
             else
                 progressProvider.PlayerProgress = PlayerProgress.GetDefaultProgress();
@@ -70,10 +72,10 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
         {
             foreach (IProgressBeforeSaveHandler saveHandler in progressBeforeSaveHandlers)
                 saveHandler?.UpdateProgressBeforeSave(progressProvider.PlayerProgress);
-
+            progressProvider.PlayerProgress.HasSavedGame = true;
             PlayerPrefs.SetString(ProgressKey, JsonUtility.ToJson(progressProvider.PlayerProgress));
 
-            Debug.Log("PROGRESS SAVED!");
+            Debug.Log($"PROGRESS SAVED!");
         }
 
         public PlayerProgress GetProgress()

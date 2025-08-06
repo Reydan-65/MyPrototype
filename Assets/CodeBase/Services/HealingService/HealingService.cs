@@ -1,7 +1,8 @@
 ﻿using CodeBase.Data;
-using CodeBase.GamePlay.Hero;
+using CodeBase.GamePlay.Prototype;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
+using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 
 namespace CodeBase.Infrastructure.Services
 {
@@ -10,24 +11,27 @@ namespace CodeBase.Infrastructure.Services
         private const float HEALINGVALUE = 0.15f;
 
         private IProgressProvider progressProvider;
+        private IProgressSaver progressSaver;
         private IGameFactory gameFactory;
 
         public HealingService(
             IProgressProvider progressProvider,
+            IProgressSaver progressSaver,
             IGameFactory gameFactory)
         {
             this.gameFactory = gameFactory;
+            this.progressSaver = progressSaver;
             this.progressProvider = progressProvider;
         }
 
         public bool TryHeal(LootItemID id)
         {
-            HeroHealth health = gameFactory.HeroObject.GetComponent<HeroHealth>();
+            PrototypeHealth health = gameFactory.PrototypeObject.GetComponent<PrototypeHealth>();
 
-            if (progressProvider.PlayerProgress.HeroInventoryData.HealingPotionAmount <= 0) return false;
+            if (progressProvider.PlayerProgress.PrototypeInventoryData.HealingPotionAmount <= 0) return false;
             if (health.Current >= health.Max) return false;
 
-            progressProvider.PlayerProgress.HeroInventoryData.ConsumeItem(id, 1);
+            progressProvider.PlayerProgress.PrototypeInventoryData.ConsumeItem(id, 1);
 
             float healAmount = 0;
 
@@ -35,6 +39,7 @@ namespace CodeBase.Infrastructure.Services
                 healAmount = health.Max * HEALINGVALUE;
 
             health.ApplyHeal(healAmount);
+            progressSaver.SaveProgress();
 
             return true;
         }

@@ -8,59 +8,52 @@ namespace CodeBase.GamePlay.UI
 {
     public class MainMenuWindow : WindowBase
     {
-        public event UnityAction PlayButtonClicked;
-        //public event UnityAction ShopButtonClicked;
-        public event UnityAction ResetButtonClicked;
+        public event UnityAction ContinueButtonClicked;
+        public event UnityAction NewGameButtonClicked;
+        public event UnityAction SettingsButtonClicked;
+        public event UnityAction QuitGameButtonClicked;
 
-        public event UnityAction SelectMaleSkinButtonClicked;
-        public event UnityAction SelectFemaleSkinButtonClicked;
+        public event UnityAction YesButtonClicked;
+        public event UnityAction NoButtonClicked;
+        
+        [Header("Panels")]
+        [SerializeField] private GameObject containerPanel;
+        [SerializeField] private GameObject confirmPanelPanel;
+        public GameObject ContainerPanel => containerPanel;
+        public GameObject ConfirmPanel => confirmPanelPanel;
 
-        [SerializeField] private Button playButton;
-        //[SerializeField] private Button shopButton;
-        [SerializeField] private Button resetButton;
+        [Header("Container Panel")]
+        [SerializeField] private Button continueButton;
+        [SerializeField] private Button newGameButton;
+        [SerializeField] private Button settingsButton;
+        [SerializeField] private Button quitGameButton;
+        
+        [Header("Warning Panel")]
+        [SerializeField] private Button yesButton;
+        [SerializeField] private Button noButton;
 
-        [SerializeField] private Button selectMaleSkinButton;
-        [SerializeField] private Button selectFemaleSkinButton;
-        [SerializeField] private Sprite selectedButtonSprite;
-        [SerializeField] private Sprite unselectedButtonSprite;
-
-        [SerializeField] private TextMeshProUGUI levelIndex;
+        //[SerializeField] private TextMeshProUGUI levelIndex;
 
         private void Start()
         {
-            playButton.onClick.AddListener(() => PlayButtonClicked?.Invoke());
-            //shopButton.onClick.AddListener(() => ShopButtonClicked?.Invoke());
-            resetButton.onClick.AddListener(() => ResetButtonClicked?.Invoke());
+            continueButton.onClick.AddListener(() => ContinueButtonClicked?.Invoke());
+            newGameButton.onClick.AddListener(() => NewGameButtonClicked?.Invoke());
+            settingsButton.onClick.AddListener(() => SettingsButtonClicked?.Invoke());
+            quitGameButton.onClick.AddListener(() => QuitGameButtonClicked?.Invoke());
 
-            selectMaleSkinButton.onClick.AddListener(() => SelectMaleSkinButtonClicked?.Invoke());
-            selectFemaleSkinButton.onClick.AddListener(() => SelectFemaleSkinButtonClicked?.Invoke());
+            yesButton.onClick.AddListener(() => YesButtonClicked?.Invoke());
+            noButton.onClick.AddListener(() => NoButtonClicked?.Invoke());
         }
 
         // Level
-        public void SetLevelIndex(int index)
-        {
-            levelIndex.text = Constants.PlayButtonPrefix + (index + 1).ToString();
-        }
+        //public void SetDifficultyIndex(int index)
+        //{
+        //    levelIndex.text = Constants.PlayButtonPrefix + (index + 1).ToString();
+        //}
 
-        public void HideLevelButton()
+        public void SetContinueButtonState(bool isActive)
         {
-            playButton.gameObject.SetActive(false);
-        }
-
-        // Hero Skin
-        public void SetSkinSelectionVisibility(bool isVisible)
-        {
-            if (selectMaleSkinButton != null && selectFemaleSkinButton != null)
-            {
-                selectMaleSkinButton.gameObject.SetActive(isVisible);
-                selectFemaleSkinButton.gameObject.SetActive(isVisible);
-            }
-        }
-
-        public void UpdateSkinSelectionButtonsView(HeroSkinID selectedSkin)
-        {
-            selectMaleSkinButton.image.sprite = selectedSkin == HeroSkinID.Male ? selectedButtonSprite : unselectedButtonSprite;
-            selectFemaleSkinButton.image.sprite = selectedSkin == HeroSkinID.Female ? selectedButtonSprite : unselectedButtonSprite;
+            continueButton.interactable = isActive;
         }
 
         protected override void OnClose()

@@ -64,7 +64,7 @@ namespace CodeBase.GamePlay.Interactive
 
         private bool HasRequiredKey()
         {
-            return progressProvider?.PlayerProgress?.HeroInventoryData?.Keys.Contains(requiredKeyID) ?? false;
+            return progressProvider?.PlayerProgress?.PrototypeInventoryData?.Keys.Contains(requiredKeyID) ?? false;
         }
 
         private void ShowKeyRequiredMessage()
@@ -87,7 +87,7 @@ namespace CodeBase.GamePlay.Interactive
 
         private void Process()
         {
-            progressProvider.PlayerProgress.HeroInventoryData.RemoveKey(requiredKeyID);
+            progressProvider.PlayerProgress.PrototypeInventoryData.RemoveKey(requiredKeyID);
             interactAmount--;
             OpenGateVisual();
         }
@@ -116,9 +116,9 @@ namespace CodeBase.GamePlay.Interactive
                 interactableTracker.UnregisterInteractable(this);
         }
 
-        protected override void OnHeroCreated()
+        protected override void OnPrototypeCreated()
         {
-            base.OnHeroCreated();
+            base.OnPrototypeCreated();
             loadStateCoroutine = coroutineRunner.StartCoroutine(DelayedLoadCheck());
         }
 

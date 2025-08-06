@@ -1,5 +1,6 @@
 ﻿using CodeBase.Configs;
 using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.UI.Elements;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,6 +20,8 @@ namespace CodeBase.GamePlay.UI.Services
         ShrineWindow ShrineWindow { get; set; }
         PausePresenter PausePresenter { get; set; }
         PauseWindow PauseWindow { get; set; }
+        SettingsPresenter SettingsPresenter { get; set; }
+        SettingsWindow SettingsWindow { get; set; }
         LevelResultPresenter LevelResultPresenter { get; set; }
         LevelResultWindow LevelResultWindow { get; set; }
 
@@ -28,6 +31,9 @@ namespace CodeBase.GamePlay.UI.Services
         Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config);
         Task<HUDPresenter> CreateHUDWindowAsync(WindowConfig config);
         Task<PausePresenter> CreatePauseWindowAsync(WindowConfig config);
+
+        Task<SettingsPresenter> CreateSettingsWindowAsync(WindowConfig config);
+        Task<SettingsItem> CreateSettingsItemAsync();
 
         Task<ShopPresenter> CreateShopWindowAsync(WindowConfig config);
         Task<ShopItem> CreateShopItemAsync();

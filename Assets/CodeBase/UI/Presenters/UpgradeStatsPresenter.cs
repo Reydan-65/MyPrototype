@@ -1,5 +1,5 @@
 using CodeBase.Data;
-using CodeBase.GamePlay.Hero;
+using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
@@ -17,9 +17,9 @@ namespace CodeBase.GamePlay.UI
         private UpgradeStatsWindow window;
 
         private bool isClosed;
-        private HeroStats currentStats;
-        private HeroStats newStats;
-        public HeroStats NewStats => newStats;
+        private PrototypeStats currentStats;
+        private PrototypeStats newStats;
+        public PrototypeStats NewStats => newStats;
 
         public UpgradeStatsPresenter(
             IWindowsProvider windowsProvider,
@@ -37,17 +37,18 @@ namespace CodeBase.GamePlay.UI
         {
             this.window = window;
 
-            currentStats = progressProvider.PlayerProgress.HeroStats;
-            newStats = new HeroStats();
+            currentStats = progressProvider.PlayerProgress.PrototypeStats;
+
+            newStats = new PrototypeStats();
             newStats.CopyFrom(currentStats);
 
-            window.InitializeContainer(this);
+            this.window.InitializeContainer(this);
 
-            window.AcceptButtonClicked += OnAcceptButtonClicked;
-            window.CancelButtonClicked += OnCancelButtonClicked;
-            window.SetCancelButtonText("CLOSE");
-            window.Closed += OnClosed;
-            window.CleanUped += OnCleanUp;
+            this.window.AcceptButtonClicked += OnAcceptButtonClicked;
+            this.window.CancelButtonClicked += OnCancelButtonClicked;
+            this.window.SetCancelButtonText("CLOSE");
+            this.window.Closed += OnClosed;
+            this.window.CleanUped += OnCleanUp;
         }
 
         private void OnAcceptButtonClicked()
@@ -61,12 +62,12 @@ namespace CodeBase.GamePlay.UI
             }
 
             progressSaver.SaveProgress();
-            progressProvider.PlayerProgress.HeroStats.IsChanged();
+            progressProvider.PlayerProgress.PrototypeStats.IsChanged();
 
-            gameFactory.HeroObject.GetComponent<HeroHealth>().Initialize(currentStats.MaxHitPoints);
-            gameFactory.HeroObject.GetComponent<HeroEnergy>().Initialize(currentStats.MaxEnergy);
-            gameFactory.HeroObject.GetComponent<HeroTurret>().Initialize(currentStats.ShootingRate);
-            gameFactory.HeroObject.GetComponent<HeroMovement>().Initialize(currentStats.MovementSpeed, currentStats.DashRange);
+            gameFactory.PrototypeObject.GetComponent<PrototypeHealth>().Initialize(currentStats.MaxHitPoints);
+            gameFactory.PrototypeObject.GetComponent<PrototypeEnergy>().Initialize(currentStats.MaxEnergy);
+            gameFactory.PrototypeObject.GetComponent<PrototypeTurret>().Initialize(currentStats.ShootingRate);
+            gameFactory.PrototypeObject.GetComponent<PrototypeMovement>().Initialize(currentStats.MovementSpeed, currentStats.DashRange);
 
             OnClosed();
         }
@@ -84,7 +85,7 @@ namespace CodeBase.GamePlay.UI
             OnClosed();
         }
 
-        private bool AreStatsEqual(HeroStats a, HeroStats b)
+        private bool AreStatsEqual(PrototypeStats a, PrototypeStats b)
         {
             return a.MaxHitPoints == b.MaxHitPoints &&
                    a.MaxEnergy == b.MaxEnergy &&

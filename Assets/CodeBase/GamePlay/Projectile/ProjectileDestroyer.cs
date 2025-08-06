@@ -8,6 +8,9 @@ namespace CodeBase.GamePlay.Projectile
         private GameObject missSFX;
         private GameObject hitSFX;
 
+        private GameObject impactObject;
+        public GameObject ImpactObject;
+
         public void CreateMissedImpactEffect()
         {
             if (missSFX != null)
@@ -16,12 +19,12 @@ namespace CodeBase.GamePlay.Projectile
             Destroy(gameObject);
         }
 
-        public void CreateHitedImpactEffect()
+        public GameObject CreateHitedImpactEffect()
         {
             if (hitSFX != null)
-                Instantiate(hitSFX, transform.position, Quaternion.identity);
+                return Instantiate(hitSFX, transform.position, Quaternion.identity);
 
-            Destroy(gameObject);
+            return null;
         }
 
         public void InstallProjectileConfig(ProjectileConfig config)

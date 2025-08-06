@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8460276767242189671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc19a58faf9570f4187ce6161743e4c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 60097ee6e459864469ae877b9d1b2941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyID: 0
@@ -55,10 +55,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8460276767242189671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a78d387d1b676b742aa87d915d870f12, type: 3}
+  m_Script: {fileID: 11500000, guid: 189f58591ffe8114da89e69735419231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minCoins: 0
-  maxCoins: 3
-  healingPotions: 0
   hasKey: 0

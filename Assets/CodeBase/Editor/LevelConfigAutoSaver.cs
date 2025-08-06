@@ -1,6 +1,6 @@
 #if UNITY_EDITOR
 using CodeBase.Configs;
-using CodeBase.GamePlay.Hero;
+using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -53,7 +53,7 @@ public static class LevelConfigAutoSaver
         bool changed = false;
         SerializedObject serializedConfig = new SerializedObject(config);
 
-        var spawnMarker = Object.FindFirstObjectByType<HeroSpawnPoint>();
+        var spawnMarker = Object.FindFirstObjectByType<PrototypeSpawnPoint>();
         if (spawnMarker != null)
         {
             SerializedProperty spawnProp = serializedConfig.FindProperty("HeroSpawnPoint");

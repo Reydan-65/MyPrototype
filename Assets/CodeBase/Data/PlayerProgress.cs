@@ -6,11 +6,12 @@ namespace CodeBase.Data
     [System.Serializable]
     public class PlayerProgress
     {
-        public int CurrentLevelIndex;
-        public HeroStats HeroStats = new HeroStats();
-        public HeroInventoryData HeroInventoryData = new HeroInventoryData();
+        public bool HasSavedGame = false;
+        public int DifficultyIndex;
+        public PrototypeStats PrototypeStats = new PrototypeStats();
+        public PrototypeInventoryData PrototypeInventoryData = new PrototypeInventoryData();
         public PurchaseData PurchaseData = new PurchaseData();
-        public HeroSkinID HeroSkinID;
+        public PlayerSkinID PrototypeSkinID;
 
         public List<string> PickedLootItems = new List<string>();
 
@@ -45,12 +46,14 @@ namespace CodeBase.Data
         {
             var progress = new PlayerProgress();
 
-            progress.CurrentLevelIndex = 0;
-            progress.HeroStats = HeroStats.GetDefaultStats();
-            progress.HeroInventoryData.SetDefaultInventoryData();
+            progress.HasSavedGame = false;
+            progress.DifficultyIndex = 0;
+            progress.PrototypeStats = PrototypeStats.GetDefaultStats();
+            progress.PrototypeInventoryData.SetDefaultInventoryData();
             progress.PurchaseData = new PurchaseData();
-            progress.HeroSkinID = HeroSkinID.Male;
+            progress.PrototypeSkinID = PlayerSkinID.BaseShip;
 
+            progress.PickedLootItems.Clear();
             progress.InteractiveKeys.Clear();
             progress.InteractiveValues.Clear();
             progress.InteractiveStates.Clear();
@@ -62,15 +65,21 @@ namespace CodeBase.Data
 
         public void CopyFrom(PlayerProgress progress)
         {
-            CurrentLevelIndex = progress.CurrentLevelIndex;
-            HeroStats.CopyFrom(progress.HeroStats);
-            HeroInventoryData.CopyFrom(progress.HeroInventoryData);
+            HasSavedGame = progress.HasSavedGame;
+            DifficultyIndex = progress.DifficultyIndex;
+            PrototypeStats.CopyFrom(progress.PrototypeStats);
+            PrototypeInventoryData.CopyFrom(progress.PrototypeInventoryData);
             PurchaseData.CopyFrom(progress.PurchaseData);
-            HeroSkinID = progress.HeroSkinID;
+            PrototypeSkinID = progress.PrototypeSkinID;
 
             PickedLootItems = new List<string>(progress.PickedLootItems);
             InteractiveKeys = new List<string>(progress.InteractiveStates.Keys);
             InteractiveValues = new List<bool>(progress.InteractiveStates.Values);
+        }
+
+        public void ResetProgress()
+        {
+            CopyFrom(GetDefaultProgress());
         }
 
         // Pecked Loot

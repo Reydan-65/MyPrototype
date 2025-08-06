@@ -42,5 +42,13 @@ namespace CodeBase.GamePlay.UI
         protected virtual void OnAwake() { }
         protected virtual void OnClose() { }
         protected virtual void OnCleanUp() { }
+
+        public void SetConfirmPanelState(GameObject firstPanel, GameObject secondPanel, bool isActive)
+        {
+            if (firstPanel == null || secondPanel == null) return;
+
+            firstPanel.SetActive(!isActive);
+            secondPanel.SetActive(isActive);
+        }
     }
 }

@@ -1,55 +1,78 @@
+using CodeBase.GamePlay.Prototype;
 using CodeBase.Infrastructure.Services.Factory;
-using CodeBase.Infrastructure.Services.PlayerProgressProvider;
+using UnityEngine;
 
 namespace CodeBase.GamePlay.UI
 {
     public class HUDPresenter : WindowPresenterBase<HUDWindow>
     {
-        private readonly IGameFactory gameFactory;
         private HUDWindow window;
+        private PrototypeHealth prototypeHealth;
+        private IGameFactory gameFactory;
 
         public HUDPresenter(IGameFactory gameFactory)
         {
             this.gameFactory = gameFactory;
-            this.gameFactory.HeroCreated += OnHeroCreated;
         }
 
         public override void SetWindow(HUDWindow window)
         {
             this.window = window;
-            UpdateResourcesDisplay();
-        }
-
-        private void OnHeroCreated()
-        {
+            this.window.LockImage.fillAmount = 0;
             UpdateResourcesDisplay();
         }
 
         private void UpdateResourcesDisplay()
         {
-            if (window == null || gameFactory.HeroObject == null)
+            if (window == null || gameFactory.PrototypeObject == null)
                 return;
 
-            var heroHealth = gameFactory.HeroObject.GetComponent<IHealth>();
-            var heroEnergy = gameFactory.HeroObject.GetComponent<IEnergy>();
+            var prototypeHealth = gameFactory.PrototypeObject.GetComponent<IHealth>();
+            var prototypeEnergy = gameFactory.PrototypeObject.GetComponent<IEnergy>();
+            this.prototypeHealth = gameFactory.PrototypeObject.GetComponent<PrototypeHealth>();
 
-            if (window.HealthBar != null && heroHealth != null)
-                window.HealthBar.SetResource(heroHealth);
-            if (window.HealthText != null && heroHealth != null)
-                window.HealthText.SetResource(heroHealth);
+            if (this.prototypeHealth != null)
+            {
+                this.prototypeHealth.Healed += OnHealed;
+                this.prototypeHealth.HealTimerUpdated += OnHealTimerUpdated;
+            }
 
-            if (window.EnergyBar != null && heroEnergy != null)
-                window.EnergyBar.SetResource(heroEnergy);
-            if (window.EnergyText != null && heroEnergy != null)
-                window.EnergyText.SetResource(heroEnergy);
+            if (window.HealthBar != null && prototypeHealth != null)
+                window.HealthBar.SetResource(prototypeHealth);
+            if (window.HealthText != null && prototypeHealth != null)
+                window.HealthText.SetResource(prototypeHealth);
+
+            if (window.EnergyBar != null && prototypeEnergy != null)
+                window.EnergyBar.SetResource(prototypeEnergy);
+            if (window.EnergyText != null && prototypeEnergy != null)
+                window.EnergyText.SetResource(prototypeEnergy);
+        }
+
+        private void OnHealed()
+        {
+            if (prototypeHealth == null) return;
+
+            window.LockImage.fillAmount = 1;
+            prototypeHealth.Timer = prototypeHealth.HealCooldown;
+        }
+
+        private void OnHealTimerUpdated(float remainingTime)
+        {
+            if (window != null && window.LockImage != null)
+            {
+                float newFillAmount = remainingTime / prototypeHealth.HealCooldown;
+
+                if (Mathf.Abs(window.LockImage.fillAmount - newFillAmount) > 0.01f)
+                    window.LockImage.fillAmount = newFillAmount;
+            }
         }
 
         public HUDWindow GetWindow() => window;
 
         public void CleanUp()
         {
-            if (gameFactory != null)
-                gameFactory.HeroCreated -= OnHeroCreated;
+            if (prototypeHealth != null)
+                prototypeHealth.Healed -= OnHealed;
         }
     }
 }

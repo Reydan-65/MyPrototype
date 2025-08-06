@@ -27,3 +27,11 @@ MonoBehaviour:
   ShootingRate: 1
   ShootingRange: 6
   ShootingAngle: 10
+  CoinLoot:
+    DropChance: 50
+    MinAmount: 2
+    MaxAmount: 4
+  PotionLoot:
+    DropChance: 30
+    MinAmount: 1
+    MaxAmount: 2

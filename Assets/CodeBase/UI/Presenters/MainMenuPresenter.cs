@@ -1,5 +1,5 @@
 using CodeBase.Data;
-using CodeBase.GamePlay.Hero;
+using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.Services.ConfigProvider;
 using CodeBase.Infrastructure.Services.GameStateMachine;
@@ -15,123 +15,128 @@ namespace CodeBase.GamePlay.UI
         private IGameStateSwitcher gameStateSwitcher;
         private IProgressProvider progressProvider;
         private IConfigsProvider configProvider;
-        //private IWindowsProvider windowsProvider;
+        private IWindowsProvider windowsProvider;
         private IProgressSaver progressSaver;
 
-        private HeroPreviewLogic heroPreviewLogic;
+        private PrototypePreviewLogic prototypePreviewLogic;
+
         private MainMenuWindow window;
         public MainMenuWindow Window => window;
+
+        private GameObject containerPanel;
+        private GameObject warningPanel;
+        private PlayerProgress progress;
+        private IUIFactory uiFactory;
 
         public MainMenuPresenter(
             IGameStateSwitcher gameStateSwitcher,
             IProgressProvider progressProvider,
             IConfigsProvider configProvider,
-            //IWindowsProvider windowsProvider,
-            IProgressSaver progressSaver)
+            IWindowsProvider windowsProvider,
+            IProgressSaver progressSaver,
+            IUIFactory uiFactory)
         {
             this.gameStateSwitcher = gameStateSwitcher;
             this.progressProvider = progressProvider;
             this.configProvider = configProvider;
-            //this.windowsProvider = windowsProvider;
+            this.windowsProvider = windowsProvider;
             this.progressSaver = progressSaver;
+            this.uiFactory = uiFactory;
 
-            heroPreviewLogic = Object.FindObjectOfType<HeroPreviewLogic>();
+            prototypePreviewLogic = Object.FindObjectOfType<PrototypePreviewLogic>();
         }
 
         public override void SetWindow(MainMenuWindow window)
         {
             this.window = window;
 
-            UpdateSkin();
+            prototypePreviewLogic?.UpdatePreview();
 
-            heroPreviewLogic?.UpdatePreview();
+            //int currentLevelIndex = progressProvider.PlayerProgress.DifficultyIndex;
+            //window.SetLevelIndex(currentLevelIndex);
 
-            int currentLevelIndex = progressProvider.PlayerProgress.CurrentLevelIndex;
+            this.window.ContinueButtonClicked += OnContinueButtonClicked;
+            this.window.NewGameButtonClicked += OnNewGameButtonClicked;
+            this.window.SettingsButtonClicked += OnSettingsButtonClicked;
+            this.window.QuitGameButtonClicked += OnQuitGameButtonClicked;
 
-            if (currentLevelIndex >= configProvider.LevelAmount)
-                window.HideLevelButton();
-            else
-                window.SetLevelIndex(currentLevelIndex);
+            this.window.YesButtonClicked += OnYesButtonClicked;
+            this.window.NoButtonClicked += OnNoButtonClicked;
 
-            window.PlayButtonClicked += OnPlayButtonClicked;
-            //window.ShopButtonClicked += OnShopButtonClicked;
-            window.ResetButtonClicked += OnResetButtonClicked;
+            warningPanel.SetActive(false);
 
-            window.SelectMaleSkinButtonClicked += OnMaleSkinSelected;
-            window.SelectFemaleSkinButtonClicked += OnFemaleSkinSelected;
+            progress = progressSaver.GetProgress();
+
+            if (progress != null)
+                window.SetContinueButtonState(progress.HasSavedGame);
 
             window.CleanUped += OnCleanUped;
         }
 
         private void OnCleanUped()
         {
-            window.PlayButtonClicked -= OnPlayButtonClicked;
-            //window.ShopButtonClicked -= OnShopButtonClicked;
-            window.ResetButtonClicked -= OnResetButtonClicked;
-
-            window.SelectMaleSkinButtonClicked -= OnMaleSkinSelected;
-            window.SelectFemaleSkinButtonClicked -= OnFemaleSkinSelected;
+            window.ContinueButtonClicked -= OnContinueButtonClicked;
+            window.NewGameButtonClicked -= OnNewGameButtonClicked;
+            window.SettingsButtonClicked -= OnSettingsButtonClicked;
+            window.QuitGameButtonClicked -= OnQuitGameButtonClicked;
 
             window.CleanUped -= OnCleanUped;
         }
 
-        public void UpdateSkin()
-        {
-            var progress = progressProvider.PlayerProgress;
-            bool isFemaleSkinUnlocked = progress.PurchaseData?.IsFemaleSkinUnlocked ?? false;
-
-            window.SetSkinSelectionVisibility(isFemaleSkinUnlocked);
-
-            if (isFemaleSkinUnlocked)
-                window.UpdateSkinSelectionButtonsView(progress.HeroSkinID);
-
-            heroPreviewLogic?.UpdatePreview();
-        }
-
-        private void OnMaleSkinSelected()
-        {
-            progressProvider.PlayerProgress.HeroSkinID = HeroSkinID.Male;
-            UpdateSkin();
-            progressSaver.SaveProgress();
-        }
-
-        private void OnFemaleSkinSelected()
-        {
-            progressProvider.PlayerProgress.HeroSkinID = HeroSkinID.Female;
-            UpdateSkin();
-            progressSaver.SaveProgress();
-        }
-
-        private void OnPlayButtonClicked()
+        private void OnContinueButtonClicked()
         {
             gameStateSwitcher.Enter<LoadNextLevelState>();
         }
 
-        //private void OnShopButtonClicked()
-        //{
-        //    window.Close();
-        //    windowsProvider.Open(WindowID.ShopWindow);
-        //}
-
-        private void OnResetButtonClicked()
+        private void OnSettingsButtonClicked()
         {
-            PlayerPrefs.DeleteAll();
+            windowsProvider.SetSourceWindow(WindowID.MainMenuWindow);
+            windowsProvider.Open(WindowID.SettingsWindow);
+
+            window.Close();
+        }
+
+        private void OnNewGameButtonClicked()
+        {
+            if (progress.HasSavedGame)
+            {
+                window.SetConfirmPanelState(window.ContainerPanel, window.ConfirmPanel, true);
+            }
+            else
+            {
+                Debug.Log("NEW GAME STARTED!");
+                gameStateSwitcher.Enter<LoadNextLevelState>();
+            }
+        }
+
+        private void OnYesButtonClicked()
+        {
+            PlayerPrefs.DeleteKey(ProgressSaver.ProgressKey);
             PlayerPrefs.Save();
 
-            progressProvider.PlayerProgress.CurrentLevelIndex = 0;
-            progressProvider.PlayerProgress.HeroSkinID = HeroSkinID.Male;
+            progressProvider.PlayerProgress.ResetProgress();
 
-            progressProvider.PlayerProgress.HeroInventoryData.SetDefaultInventoryData();
-            progressProvider.PlayerProgress.PurchaseData = new PurchaseData();
-            progressProvider.PlayerProgress.HeroStats.SetDefaultStats();
-
-            UpdateSkin();
-            window.SetLevelIndex(progressProvider.PlayerProgress.CurrentLevelIndex);
-            heroPreviewLogic?.UpdatePreview();
+            //window.SetLevelIndex(progressProvider.PlayerProgress.CurrentLevelIndex);
+            prototypePreviewLogic?.UpdatePreview();
 
             progressSaver.SaveProgress();
 
             Debug.Log("PROGRESS DELETED!");
+            Debug.Log("NEW GAME STARTED!");
+
+            gameStateSwitcher.Enter<LoadNextLevelState>();
+        }
+
+        private void OnNoButtonClicked()
+        {
+            window.SetConfirmPanelState(window.ContainerPanel, window.ConfirmPanel, false);
+        }
+
+        private void OnQuitGameButtonClicked()
+        {
+            OnCleanUped();
+
+            Application.Quit();
         }
     }
 }

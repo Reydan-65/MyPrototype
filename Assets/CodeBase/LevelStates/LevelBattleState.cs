@@ -13,7 +13,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
         {
             activePersuersCount = 0;
 
-            gameFactory.HeroHealth.Depleted += OnHeroDie;
+            gameFactory.PrototypeHealth.Depleted += OnPrototypeDie;
 
             SubscribeToEnemyEvents(persuer =>
             {
@@ -28,7 +28,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         public void Exit()
         {
-            gameFactory.HeroHealth.Depleted -= OnHeroDie;
+            gameFactory.PrototypeHealth.Depleted -= OnPrototypeDie;
 
             SubscribeToEnemyEvents(persuer =>
             {
@@ -37,7 +37,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             });
         }
 
-        private void OnHeroDie()
+        private void OnPrototypeDie()
         {
             levelStateSwitcher.Enter<LevelDeathState>();
         }

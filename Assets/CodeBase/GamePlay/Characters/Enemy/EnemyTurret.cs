@@ -1,5 +1,4 @@
 using CodeBase.Configs;
-using CodeBase.GamePlay.Turrets;
 
 namespace CodeBase.GamePlay.Enemies
 {

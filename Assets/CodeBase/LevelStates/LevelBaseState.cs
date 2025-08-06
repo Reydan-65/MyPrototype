@@ -16,13 +16,13 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             this.levelStateSwitcher = levelStateSwitcher;
         }
 
-        protected void SubscribeToEnemyEvents(UnityAction<EnemyHeroPersuer> subscribeAction)
+        protected void SubscribeToEnemyEvents(UnityAction<EnemyTargetPersuer> subscribeAction)
         {
             foreach (var enemy in gameFactory.EnemiesObject)
             {
                 if (enemy == null) continue;
 
-                EnemyHeroPersuer persuer = enemy.GetComponent<EnemyHeroPersuer>();
+                EnemyTargetPersuer persuer = enemy.GetComponent<EnemyTargetPersuer>();
 
                 if (persuer != null)
                     subscribeAction(persuer);

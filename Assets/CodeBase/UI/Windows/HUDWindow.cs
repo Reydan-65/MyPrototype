@@ -1,4 +1,6 @@
+using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CodeBase.GamePlay.UI
 {
@@ -19,9 +21,17 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] private GameObject solution;
         public GameObject Solution { get => solution; set => solution = value; }
 
+        [SerializeField] private Image lockImage;
+        public Image LockImage => lockImage;
+
         private void Start()
         {
             SetSolutionActive(false);
+        }
+
+        public void StartLockImageUpdate(float timer, float cooldown)
+        {
+            lockImage.fillAmount = timer / cooldown;
         }
 
         public void SetSolutionActive(bool active)

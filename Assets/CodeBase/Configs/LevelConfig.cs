@@ -10,7 +10,7 @@ namespace CodeBase.Configs
     public class LevelConfig : ScriptableObject
     {
         public string SceneName;
-        public Vector3 HeroSpawnPoint;
+        public Vector3 PrototypeSpawnPoint;
         public Vector3 FinishPoint;
 
 #if UNITY_EDITOR
@@ -26,7 +26,7 @@ namespace CodeBase.Configs
         }
 #endif
 
-        public void SetHeroSpawnPoint(Vector3 position) => HeroSpawnPoint = position;
+        public void SetPrototypeSpawnPoint(Vector3 position) => PrototypeSpawnPoint = position;
         public void SetFinishPoint(Vector3 position) => FinishPoint = position;
     }
 }

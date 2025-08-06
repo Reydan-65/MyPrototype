@@ -1,5 +1,7 @@
 using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.Services.GameStateMachine;
+using CodeBase.Infrastructure.Services.GameStates;
 using CodeBase.Services.EntityActivityController;
 using UnityEngine;
 
@@ -7,17 +9,22 @@ namespace CodeBase.GamePlay.UI
 {
     public class PausePresenter : WindowPresenterBase<PauseWindow>
     {
-        private IWindowsProvider windowsProvider;
-        private IEntityActivityController entityActivityController;
-
         private PauseWindow window;
 
+        private IWindowsProvider windowsProvider;
+        private IEntityActivityController entityActivityController;
+        private IGameStateSwitcher gameStateSwitcher;
+        private IUIFactory uiFactory;
         public PausePresenter(
             IWindowsProvider windowsProvider,
-            IEntityActivityController entityActivityController)
+            IEntityActivityController entityActivityController,
+            IGameStateSwitcher gameStateSwitcher,
+            IUIFactory uiFactory)
         {
             this.windowsProvider = windowsProvider;
             this.entityActivityController = entityActivityController;
+            this.gameStateSwitcher = gameStateSwitcher;
+            this.uiFactory = uiFactory;
         }
 
         public override void SetWindow(PauseWindow window)
@@ -50,12 +57,18 @@ namespace CodeBase.GamePlay.UI
 
         private void OnSettingsButtonClicked()
         {
-            Debug.Log("OPEN SETTINGS WINDOW");
+            window.Close();
+
+            windowsProvider.SetSourceWindow(WindowID.PauseWindow);
+            windowsProvider.Open(WindowID.SettingsWindow);
+
+            window.Close();
         }
 
         private void OnMainMenuButtonClicked()
         {
-            windowsProvider.Open(WindowID.MainMenuWindow);
+            OnCleanUp();
+            gameStateSwitcher.Enter<LoadMainMenuState>();
         }
 
         private void OnQuitGameButtonClicked()

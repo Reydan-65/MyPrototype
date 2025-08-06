@@ -39,7 +39,7 @@ namespace CodeBase.GamePlay.Interactive
         {
             if (gameFactory == null) return;
 
-            if (other.gameObject == gameFactory.HeroObject)
+            if (other.gameObject == gameFactory.PrototypeObject)
             {
                 OnPickup();
                 progressProvider.PlayerProgress.AddPickedLoot(uniqueID);

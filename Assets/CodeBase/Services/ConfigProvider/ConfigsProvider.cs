@@ -19,7 +19,6 @@ namespace CodeBase.Infrastructure.Services.ConfigProvider
         private Dictionary<ProjectileType, ProjectileConfig> projectiles;
         private Dictionary<string, LevelConfig> levels;
         private Dictionary<WindowID, WindowConfig> windows;
-        //private Dictionary<int, ProductConfig> products;
         private LevelConfig[] levelList;
 
         public int LevelAmount => levelList.Length;

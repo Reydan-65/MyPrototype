@@ -2,6 +2,9 @@ using CodeBase.Configs;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.ConfigProvider;
+using CodeBase.Infrastructure.Services.SettingsSaver;
+using CodeBase.UI.Elements;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,15 +20,18 @@ namespace CodeBase.GamePlay.UI.Services
         private DIContainer container;
         private IAssetProvider assetProvider;
         private IConfigsProvider configProvider;
+        private ISettingsSaver settingsSaver;
 
         public UIFactory(
             DIContainer container,
             IAssetProvider assetProvider,
-            IConfigsProvider configProvider)
+            IConfigsProvider configProvider,
+            ISettingsSaver settingsSaver)
         {
             this.container = container;
             this.assetProvider = assetProvider;
             this.configProvider = configProvider;
+            this.settingsSaver = settingsSaver;
         }
 
         public Transform UIRoot { get; set; }
@@ -35,6 +41,8 @@ namespace CodeBase.GamePlay.UI.Services
         public ShrineWindow ShrineWindow { get; set; }
         public PausePresenter PausePresenter { get; set; }
         public PauseWindow PauseWindow { get; set; }
+        public SettingsPresenter SettingsPresenter { get; set; }
+        public SettingsWindow SettingsWindow { get; set; }
         public LevelResultPresenter LevelResultPresenter { get; set; }
         public LevelResultWindow LevelResultWindow { get; set; }
 
@@ -48,7 +56,9 @@ namespace CodeBase.GamePlay.UI.Services
                 WindowID.DeathWindow,
                 WindowID.ShrineWindow,
                 WindowID.UpgradeStatsWindow,
-                WindowID.HUDWindow
+                WindowID.HUDWindow,
+                WindowID.PauseWindow,
+                WindowID.SettingsWindow
             };
 
             foreach (var windowConfig in windowConfigs)
@@ -110,6 +120,30 @@ namespace CodeBase.GamePlay.UI.Services
             await CreateWindowAsync<UpgradeStatsWindow, UpgradeStatsPresenter>(config);
         public async Task<UpgradeStatsItem> CreateUpgradeStatsItemAsync() =>
             await CreateUIItemAsync<UpgradeStatsItem>(AssetAddress.UpgradeStatItemPath);
+
+        // Shop
+        public async Task<SettingsPresenter> CreateSettingsWindowAsync(WindowConfig config)
+        {
+            SettingsPresenter = await CreateWindowAsync<SettingsWindow, SettingsPresenter>(config);
+            SettingsWindow = SettingsPresenter.GetWindow();
+            return SettingsPresenter;
+        }
+
+        public async Task<SettingsItem> CreateSettingsItemAsync()
+        {
+            try
+            {
+                var item = await CreateUIItemAsync<SettingsItem>(AssetAddress.SettingsItemPath);
+                if (item == null)
+                    Debug.LogError("SettingsItem prefab is null!");
+                return item;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error creating SettingsItem: {e}");
+                return null;
+            }
+        }
 
         // Private
         private async Task<TPresenter> CreateWindowAsync<TWindow, TPresenter>(WindowConfig config)

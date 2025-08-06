@@ -1,5 +1,4 @@
 using CodeBase.Data;
-using CodeBase.GamePlay.UI;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
 using System.Collections.Generic;
@@ -10,9 +9,7 @@ namespace CodeBase.GamePlay.Enemies
 {
     public class EnemyDeath : MonoBehaviour
     {
-        [SerializeField] private EnemyFollowToHero followToHero;
         [SerializeField] private GameObject visualModel;
-        [SerializeField] private HealthBar healthBar;
 
         private EnemyHealth enemyHealth;
         private EnemyInventory inventory;
@@ -44,9 +41,7 @@ namespace CodeBase.GamePlay.Enemies
             Destroy(gameObject);
 
             if (inventory != null)
-            {
                 await DropAllLoot();
-            }
         }
 
         private async Task DropAllLoot()

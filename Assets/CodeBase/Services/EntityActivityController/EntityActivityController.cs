@@ -10,7 +10,7 @@ namespace CodeBase.Services.EntityActivityController
 {
     public class EntityActivityController : IEntityActivityController
     {
-        private Dictionary<EnemyFollowToHero, bool> originalFollowerStates = new();
+        private Dictionary<EnemyFollowToTarget, bool> originalFollowerStates = new();
 
         private IGameFactory gameFactory;
         private IInputService inputService;
@@ -52,7 +52,7 @@ namespace CodeBase.Services.EntityActivityController
                 if (shooter != null)
                     shooter.enabled = isActive;
 
-                var follower = enemy.GetComponent<EnemyFollowToHero>();
+                var follower = enemy.GetComponent<EnemyFollowToTarget>();
                 if (follower != null)
                 {
                     if (isActive)
@@ -67,7 +67,7 @@ namespace CodeBase.Services.EntityActivityController
                     }
                 }
 
-                var persuer = enemy.GetComponent<EnemyHeroPersuer>();
+                var persuer = enemy.GetComponent<EnemyTargetPersuer>();
                 if (persuer != null)
                     persuer.enabled = isActive;
 

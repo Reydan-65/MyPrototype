@@ -9,9 +9,9 @@ namespace CodeBase.GamePlay.Interactive
 
         protected override void OnPickup()
         {
-            if (progressProvider?.PlayerProgress?.HeroInventoryData != null)
+            if (progressProvider?.PlayerProgress?.PrototypeInventoryData != null)
             {
-                progressProvider.PlayerProgress.HeroInventoryData.AddHealingItem(LootItemID.HealingPotion, 1, amountHeal);
+                progressProvider.PlayerProgress.PrototypeInventoryData.AddHealingItem(LootItemID.HealingPotion, 1, amountHeal);
             }
         }
     }

@@ -5,6 +5,9 @@ namespace CodeBase.GamePlay.UI.Services
 {
     public class WindowsProvider : IWindowsProvider
     {
+        private WindowID sourceWindowID;
+        public WindowID SourceWindowID => sourceWindowID;
+
         private IUIFactory factory;
         private IConfigsProvider configsProvider;
 
@@ -41,6 +44,13 @@ namespace CodeBase.GamePlay.UI.Services
 
             if (id == WindowID.PauseWindow)
                 factory.CreatePauseWindowAsync(config);
+
+            if (id == WindowID.SettingsWindow)
+            {
+                factory.CreateSettingsWindowAsync(config);
+            }
         }
+
+        public void SetSourceWindow(WindowID id) => sourceWindowID = id;
     }
 }

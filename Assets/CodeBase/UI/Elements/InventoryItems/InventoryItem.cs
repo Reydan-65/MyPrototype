@@ -11,16 +11,16 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] protected TextMeshProUGUI amountText;
 
         private IProgressProvider progressProvider;
-        protected HeroInventoryData inventoryData;
+        protected PrototypeInventoryData inventoryData;
 
         [Inject]
         public void Construct(IProgressProvider progressProvider)
         {
             this.progressProvider = progressProvider;
 
-            if (this.progressProvider?.PlayerProgress?.HeroInventoryData != null)
+            if (this.progressProvider?.PlayerProgress?.PrototypeInventoryData != null)
             {
-                inventoryData = progressProvider.PlayerProgress.HeroInventoryData;
+                inventoryData = progressProvider.PlayerProgress.PrototypeInventoryData;
                 SubscribeToValueChanges();
             }
         }
@@ -28,7 +28,7 @@ namespace CodeBase.GamePlay.UI
         private void Start()
         {
             if (inventoryData == null && 
-                progressProvider?.PlayerProgress?.HeroInventoryData != null)
+                progressProvider?.PlayerProgress?.PrototypeInventoryData != null)
                 SubscribeToValueChanges();
 
             UpdateAmountText();

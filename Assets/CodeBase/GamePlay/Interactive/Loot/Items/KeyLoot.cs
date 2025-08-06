@@ -8,8 +8,8 @@ namespace CodeBase.GamePlay.Interactive
 
         protected override void OnPickup()
         {
-            if (progressProvider?.PlayerProgress?.HeroInventoryData != null)
-                progressProvider.PlayerProgress.HeroInventoryData.AddKey(KeyID);
+            if (progressProvider?.PlayerProgress?.PrototypeInventoryData != null)
+                progressProvider.PlayerProgress.PrototypeInventoryData.AddKey(KeyID);
         }
     }
 }

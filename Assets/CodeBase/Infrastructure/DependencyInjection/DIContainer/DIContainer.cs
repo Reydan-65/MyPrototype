@@ -78,23 +78,29 @@ namespace CodeBase.Infrastructure.DependencyInjection
         public object[] GetAllServicesToInject(MethodInfo methodInfo)
         {
             ParameterInfo[] parameterInfos = methodInfo.GetParameters();
+            object[] parameters = new object[parameterInfos.Length];
 
-            object[] parametrs = new object[parameterInfos.Length];
-
-            for (int i = 0;i < parameterInfos.Length;i++)
+            for (int i = 0; i < parameterInfos.Length; i++)
             {
-                IService objectToInject;
-                services.TryGetValue(parameterInfos[i].ParameterType, out objectToInject);
+                Type parameterType = parameterInfos[i].ParameterType;
 
-                if (objectToInject == null)
+                if (!services.TryGetValue(parameterType, out IService objectToInject))
                 {
-                    Debug.Log("Зависимость для MonoBehaviour не была создана!");
+                    string errorMessage = $"Не удалось разрешить зависимость для {methodInfo.DeclaringType.Name}.{methodInfo.Name}()\n" +
+                                        $"Тип: {parameterType.Name}\n" +
+                                        $"Параметр #{i + 1}: {parameterInfos[i].Name}\n" +
+                                        $"Зарегистрированные сервисы: {string.Join(", ", services.Keys.Select(k => k.Name))}";
+
+                    Debug.LogWarning(errorMessage);
+
+                    parameters[i] = null;
+                    continue;
                 }
 
-                parametrs[i] = objectToInject;
+                parameters[i] = objectToInject;
             }
 
-            return parametrs;
+            return parameters;
         }
 
         public void InjectToMonoBehaviour(MonoBehaviour monoBehaviour)

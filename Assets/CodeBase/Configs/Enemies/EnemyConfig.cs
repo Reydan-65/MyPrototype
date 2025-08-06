@@ -1,5 +1,6 @@
-﻿using CodeBase.GamePlay.Enemies;
-using CodeBase.GamePlay.Turrets;
+﻿using CodeBase.Data;
+using CodeBase.GamePlay;
+using CodeBase.GamePlay.Enemies;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -32,5 +33,17 @@ namespace CodeBase.Configs
         [Header("Shooter")]
         public float ShootingRange;
         public float ShootingAngle;
+
+        [Header("Loot Settings")]
+        public LootSettings CoinLoot;
+        public LootSettings PotionLoot;
+
+        [Header("Dash Settings")]
+        public float DashDistance = 5f;
+        public float DashDuration = 0.3f;
+        public float DashCooldown = 5f;
+        public float AimDetectionAngle = 15f;
+        public float DetectionRange = 15f;
+        public AnimationCurve DashCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
     }
 }

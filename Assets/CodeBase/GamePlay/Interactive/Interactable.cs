@@ -51,7 +51,7 @@ namespace CodeBase.GamePlay.Interactive
             if (interactPoint == null)
                 interactPoint = transform;
             if (gameFactory != null)
-                gameFactory.HeroCreated += OnHeroCreated;
+                gameFactory.PrototypeCreated += OnPrototypeCreated;
 
             uiFactory.HUDWindowCreated += OnHUDWindowCreated;
         }
@@ -68,7 +68,7 @@ namespace CodeBase.GamePlay.Interactive
             StopAllCoroutines();
 
             if (gameFactory != null)
-                gameFactory.HeroCreated -= OnHeroCreated;
+                gameFactory.PrototypeCreated -= OnPrototypeCreated;
         }
 
         protected virtual void Update()
@@ -80,7 +80,7 @@ namespace CodeBase.GamePlay.Interactive
             if (CanInteract()) Interact();
         }
 
-        protected virtual void OnHeroCreated() => actionUser = gameFactory.HeroObject;
+        protected virtual void OnPrototypeCreated() => actionUser = gameFactory.PrototypeObject;
 
         public virtual bool CanInteract()
         {

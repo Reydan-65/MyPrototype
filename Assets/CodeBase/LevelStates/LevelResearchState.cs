@@ -16,7 +16,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         private LevelConfig levelConfig;
         private IProgressProvider progressProvider;
-        private HeroInventoryData inventoryData;
+        private PrototypeInventoryData inventoryData;
 
         public LevelResearchState(
             IGameFactory gameFactory,
@@ -34,9 +34,9 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             activePersuersCount = 0;
 
             levelConfig = configProvider.GetLevelConfig(SceneManager.GetActiveScene().name);
-            inventoryData = progressProvider.PlayerProgress.HeroInventoryData;
+            inventoryData = progressProvider.PlayerProgress.PrototypeInventoryData;
 
-            gameFactory.HeroHealth.Depleted += OnHeroDie;
+            gameFactory.PrototypeHealth.Depleted += OnPrototypeDie;
 
             SubscribeToEnemyEvents(persuer =>
             {
@@ -53,7 +53,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         public void Exit()
         {
-            gameFactory.HeroHealth.Depleted -= OnHeroDie;
+            gameFactory.PrototypeHealth.Depleted -= OnPrototypeDie;
 
             SubscribeToEnemyEvents(persuer =>
             {
@@ -61,14 +61,14 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             });
         }
 
-        private void OnHeroDie()
+        private void OnPrototypeDie()
         {
             levelStateSwitcher.Enter<LevelDeathState>();
         }
 
         private void CheckVictory()
         {
-            //if (Vector3.Distance(gameFactory.HeroObject.transform.position, levelConfig.FinishPoint) < FinishPoint.Radius
+            //if (Vector3.Distance(gameFactory.PrototypeObject.transform.position, levelConfig.FinishPoint) < FinishPoint.Radius
             //                     && inventoryData.HasKey)
             //{
             //    levelStateSwitcher.Enter<LevelVictoryState>();

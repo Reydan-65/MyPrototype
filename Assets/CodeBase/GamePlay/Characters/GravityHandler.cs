@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CodeBase.GamePlay.Hero
+namespace CodeBase.GamePlay.Prototype
 {
     public class GravityHandler
     {

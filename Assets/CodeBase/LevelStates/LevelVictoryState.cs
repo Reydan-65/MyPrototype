@@ -48,7 +48,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         private void UpdateCurrentLevelIndex()
         {
-            progressProvider.PlayerProgress.CurrentLevelIndex++;
+            progressProvider.PlayerProgress.DifficultyIndex++;
 
             //if (progressProvider.PlayerProgress.CurrentLevelIndex > configsProvider.LevelAmount - 1)
             //    progressProvider.PlayerProgress.CurrentLevelIndex = configsProvider.LevelAmount - 1;

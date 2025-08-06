@@ -24,7 +24,7 @@ namespace CodeBase.Infrastructure.Services.GameStates
 
         public void EnterAsync()
         {
-            int levelIndex = progressProvider.PlayerProgress.CurrentLevelIndex;
+            int levelIndex = progressProvider.PlayerProgress.DifficultyIndex;
             levelIndex = Mathf.Clamp(levelIndex, 0, configProvider.LevelAmount - 1);
 
             string sceneName = configProvider.GetLevelConfig(levelIndex).SceneName;

@@ -16,7 +16,7 @@ namespace CodeBase.GamePlay
 
         private IProgressProvider progressProvider;
         private IGameFactory gameFactory;
-        private HeroInventoryData inventoryData;
+        private PrototypeInventoryData inventoryData;
 
         [Inject]
         public void Construct(IProgressProvider progressProvider, IGameFactory gameFactory)
@@ -24,9 +24,9 @@ namespace CodeBase.GamePlay
             this.progressProvider = progressProvider;
             this.gameFactory = gameFactory;
 
-            if (this.progressProvider?.PlayerProgress?.HeroInventoryData == null) return;
+            if (this.progressProvider?.PlayerProgress?.PrototypeInventoryData == null) return;
 
-            inventoryData = this.progressProvider.PlayerProgress.HeroInventoryData;
+            inventoryData = this.progressProvider.PlayerProgress.PrototypeInventoryData;
             SubscribeToEvents();
         }
 
@@ -43,8 +43,8 @@ namespace CodeBase.GamePlay
             inventoryData.KeyAdded -= OnKeyChanged;
             inventoryData.KeyAdded += OnKeyChanged;
 
-            gameFactory.HeroCreated -= OnHeroCreated;
-            gameFactory.HeroCreated += OnHeroCreated;
+            gameFactory.PrototypeCreated -= OnPrototypeCreated;
+            gameFactory.PrototypeCreated += OnPrototypeCreated;
 
             inventoryData.KeyRemoved -= OnKeyChanged;
             inventoryData.KeyRemoved += OnKeyChanged;
@@ -58,7 +58,7 @@ namespace CodeBase.GamePlay
             inventoryData.KeyRemoved -= OnKeyChanged;
         }
 
-        private void OnHeroCreated()
+        private void OnPrototypeCreated()
         {
             UpdateKeyVisual();
         }

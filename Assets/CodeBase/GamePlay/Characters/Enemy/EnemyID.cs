@@ -2,7 +2,7 @@
 {
     public enum EnemyID
     {
-        Boxer,
-        ClockKnight
+        Enemy_01,
+        Enemy_02
     }
 }

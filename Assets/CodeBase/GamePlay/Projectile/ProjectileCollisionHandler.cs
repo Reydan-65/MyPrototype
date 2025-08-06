@@ -11,10 +11,13 @@ namespace CodeBase.GamePlay.Projectile
         private Vector3 previousPosition;
         private ProjectileDestroyer destroyer;
 
+        private SphereCollider projectileCollider;
+
         private void Start()
         {
             previousPosition = transform.position;
             destroyer = GetComponent<ProjectileDestroyer>();
+            projectileCollider = GetComponent<SphereCollider>();
         }
         private void Update()
         {
@@ -27,30 +30,39 @@ namespace CodeBase.GamePlay.Projectile
             Vector3 direction = transform.position - previousPosition;
             float distance = direction.magnitude;
 
-            if (distance > 0)
+            if (distance > 0 &&
+                Physics.SphereCast(previousPosition, projectileCollider.radius, direction.normalized, out RaycastHit hit, distance))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(previousPosition, direction.normalized, out hit, distance))
-                {
-                    if (ShouldProcessCollision(hit.collider))
-                    {
-                        if (hit.transform.root.TryGetComponent(out IHealth health))
-                            health.ApplyDamage((int)damage);
-
-                        destroyer.CreateHitedImpactEffect();
-                    }
-                }
+                if (ShouldProcessCollision(hit.collider))
+                    ProcessHit(hit.collider, hit.point);
             }
         }
 
-        private bool ShouldProcessCollision(Collider other) 
+        private void ProcessHit(Collider other, Vector3 hitPoint)
+        {
+            bool damageApplied = false;
+            if (other.transform.root.TryGetComponent(out IHealth health))
+            {
+                if (!damageApplied)
+                {
+                    health.ApplyDamage((int)damage);
+                    damageApplied = true;
+                }
+            }
+
+            GameObject impactObject = destroyer.CreateHitedImpactEffect();
+            impactObject.transform.position = hitPoint;
+            impactObject.transform.SetParent(other.transform);
+
+            Destroy(gameObject);
+        }
+
+        private bool ShouldProcessCollision(Collider other)
             => other != null && other.transform.root != parent && !other.isTrigger;
-        
+
         public void SetParent(Transform parent) => this.parent = parent;
 
         public void InstallProjectileConfig(ProjectileConfig config)
-        {
-            damage = config.GetDamageSpread();
-        }
+            => damage = config.GetDamageSpread();
     }
 }

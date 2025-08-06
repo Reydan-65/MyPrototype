@@ -6,9 +6,9 @@ namespace CodeBase.GamePlay.Interactive
     {
         protected override void OnPickup()
         {
-            if (progressProvider?.PlayerProgress?.HeroInventoryData != null)
+            if (progressProvider?.PlayerProgress?.PrototypeInventoryData != null)
             {
-                progressProvider.PlayerProgress.HeroInventoryData.AddItem(LootItemID.Coin, 1);
+                progressProvider.PlayerProgress.PrototypeInventoryData.AddItem(LootItemID.Coin, 1);
             }
         }
     }

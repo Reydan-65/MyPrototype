@@ -1,6 +1,6 @@
 using CodeBase.Data;
 using CodeBase.GamePlay.Enemies;
-using CodeBase.GamePlay.Hero;
+using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.Projectile;
 using CodeBase.Infrastructure.DependencyInjection;
 using System.Collections.Generic;
@@ -14,11 +14,11 @@ namespace CodeBase.Infrastructure.Services.Factory
     {
         Task WarmUp();
 
-        event UnityAction HeroCreated;
-        Task<GameObject> CreateHeroAsync(Vector3 position, Quaternion rotation);
-        GameObject HeroObject { get; }
-        HeroHealth HeroHealth { get; }
-        HeroInventory HeroInventory { get; }
+        event UnityAction PrototypeCreated;
+        Task<GameObject> CreatePrototypeAsync(Vector3 position, Quaternion rotation);
+        GameObject PrototypeObject { get; }
+        PrototypeHealth PrototypeHealth { get; }
+        PrototypeInventory PrototypeInventory { get; }
 
         Task<FollowCamera> CreateFollowCameraAsync();
         FollowCamera FollowCamera { get; }

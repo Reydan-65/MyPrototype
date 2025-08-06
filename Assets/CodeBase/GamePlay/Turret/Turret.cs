@@ -3,7 +3,7 @@ using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
 using UnityEngine;
 
-namespace CodeBase.GamePlay.Turrets
+namespace CodeBase.GamePlay
 {
     public class Turret : MonoBehaviour
     {
@@ -15,6 +15,8 @@ namespace CodeBase.GamePlay.Turrets
         protected float timer;
         protected IGameFactory gameFactory;
         public Transform FirePoint => firePoint;
+
+        public bool IsFiring = false;
 
         [Inject]
         public void Construct(IGameFactory gameFactory)

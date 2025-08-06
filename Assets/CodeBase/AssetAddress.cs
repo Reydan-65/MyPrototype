@@ -1,7 +1,7 @@
 public class AssetAddress
 {
-    // Hero Skin
-    public const string HeroMalePath = "HeroMale";
+    // Prototype Skin
+    public const string BaseSkinPath = "BaseSkin";
 
     // Follow Camera
     public const string FollowCameraPath = "FollowCamera";
@@ -22,4 +22,7 @@ public class AssetAddress
 
     // UpgradeStat Item
     public static string UpgradeStatItemPath = "UpgradeStatItem";
+
+    // Settings Item
+    public static string SettingsItemPath = "SettingsItem";
 }

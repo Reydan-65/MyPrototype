@@ -12,6 +12,7 @@ namespace CodeBase.Editor
             PlayerPrefs.Save();
 
             Debug.Log("PROGRESS DELETED!");
+            Debug.Log("SETTINGS RESET!");
         }
     }
 }

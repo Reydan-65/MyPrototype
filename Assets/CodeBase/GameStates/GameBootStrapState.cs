@@ -1,11 +1,13 @@
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
+using CodeBase.Infrastructure.Services.SettingsSaver;
 using CodeBase.Infrastructure.Services.ConfigProvider;
 using CodeBase.Infrastructure.Services.GameStateMachine;
 using CodeBase.GamePlay.UI.Services;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using UnityEngine;
+using CodeBase.Data;
 
 namespace CodeBase.Infrastructure.Services.GameStates
 {
@@ -13,40 +15,36 @@ namespace CodeBase.Infrastructure.Services.GameStates
     {
         private IGameStateSwitcher gameStateSwitcher;
         private IProgressSaver progressSaver;
+        private ISettingsSaver settingsSaver;
         private IConfigsProvider configProvider;
         private IUIFactory uiFactory;
-        //private IAdsService adsService;
-        private IIApService iApService;
 
         public GameBootStrapState(
             IGameStateSwitcher gameStateSwitcher,
             IProgressSaver progressSaver,
+            ISettingsSaver settingsSaver,
             IConfigsProvider configProvider,
-            IUIFactory uiFactory,
-            /*IAdsService adsService,*/
-            IIApService iApService)
+            IUIFactory uiFactory)
         {
             this.gameStateSwitcher = gameStateSwitcher;
             this.progressSaver = progressSaver;
+            this.settingsSaver = settingsSaver;
             this.configProvider = configProvider;
             this.uiFactory = uiFactory;
-            //this.adsService = adsService;
-            this.iApService = iApService;
         }
 
         public async void EnterAsync()
         {
             await Unity.Services.Core.UnityServices.InitializeAsync();
 
-            iApService.Initialize();
-
-            //adsService.Initialize();
-            //adsService.LoadInterstitial();
-            //adsService.LoadRewarded();
-
             configProvider.Load();
 
             await uiFactory.WarmUp();
+
+            settingsSaver.LoadSettings();
+
+            //string json = PlayerPrefs.GetString("Settings");
+            //Debug.Log(json);
 
             progressSaver.LoadProgress();
 
