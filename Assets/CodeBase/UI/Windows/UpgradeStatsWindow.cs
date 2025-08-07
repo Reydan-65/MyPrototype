@@ -10,17 +10,30 @@ namespace CodeBase.GamePlay.UI
 {
     public class UpgradeStatsWindow : WindowBase
     {
-        public event UnityAction AcceptButtonClicked;
-        public event UnityAction CancelButtonClicked;
+        public UnityAction AcceptButtonClicked;
+        public UnityAction AdvancedCloseButtonClicked;
+        public UnityAction YesButtonClicked;
+        public UnityAction NoButtonClicked;
 
+        [Header("Panels")]
+        [SerializeField] private GameObject mainBottomPanel;
+        [SerializeField] private GameObject confirmBottomPanel;
+
+        [Header("Main Panel Buttons")]
         [SerializeField] private Button acceptButton;
-        [SerializeField] private Button cancelButton;
-        [SerializeField] private TextMeshProUGUI cancelButtonText;
+        [SerializeField] private Button advancedCloseButton;
+
+        [Header("Confirm Panel Buttons")]
+        [SerializeField] private Button yesButton;
+        [SerializeField] private Button noButton;
 
         private UpgradeStatsContainer statsContainer;
         private UpgradeStatsPresenter statsPresenter;
-
+        public GameObject MainBottomPanel => mainBottomPanel;
+        public GameObject ConfirmBottomPanel => confirmBottomPanel;
+        public Button AcceptButton => acceptButton;
         private IInputService inputService;
+        public UpgradeStatsContainer Container => statsContainer;
 
         [Inject]
         public void Construct(IInputService inputService)
@@ -33,7 +46,9 @@ namespace CodeBase.GamePlay.UI
             inputService.Enable = false;
 
             acceptButton.onClick.AddListener(() => AcceptButtonClicked?.Invoke());
-            cancelButton.onClick.AddListener(() => CancelButtonClicked?.Invoke());
+            advancedCloseButton.onClick.AddListener(() => AdvancedCloseButtonClicked?.Invoke());
+            yesButton.onClick.AddListener(() => YesButtonClicked?.Invoke());
+            noButton.onClick.AddListener(() => NoButtonClicked?.Invoke());
         }
 
         protected override void OnClose()
@@ -52,7 +67,6 @@ namespace CodeBase.GamePlay.UI
         {
             statsPresenter = presenter;
             statsContainer = GetComponent<UpgradeStatsContainer>();
-
             if (statsContainer != null)
                 statsContainer.Initialize(this);
         }
@@ -61,11 +75,6 @@ namespace CodeBase.GamePlay.UI
         {
             if (statsContainer != null)
                 statsContainer.UpdateAvailableElements();
-        }
-
-        public void SetCancelButtonText(string text)
-        {
-            cancelButtonText.text = text;
         }
     }
 }

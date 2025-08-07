@@ -1,5 +1,9 @@
-﻿using TMPro;
+﻿using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Services.Factory;
+using CodeBase.Infrastructure.Services.PlayerProgressProvider;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 namespace CodeBase.UI.Elements
@@ -9,45 +13,140 @@ namespace CodeBase.UI.Elements
         [SerializeField] private TextMeshProUGUI statNameText;
         [SerializeField] private TextMeshProUGUI currentValueText;
         [SerializeField] private TextMeshProUGUI bonusValueText;
-        [SerializeField] private TextMeshProUGUI priceValueText;
-        [SerializeField] private Button upgradeButton;
+        [SerializeField] private TextMeshProUGUI costValueText;
+        [SerializeField] private Button plusButton;
+        [SerializeField] private Button minusButton;
+        [SerializeField] private Color[] itemButtonColors;
 
-        public string StatName { get; private set; }
+        private float baseValue;
+        private float currentValue;
+        private int currentLevel;
+
+        private float bonusPerUpgrade;
+        private int basePrice;
+
+        private System.Action onUpgrade;
+        private System.Action onDowngrade;
+
+        private string statName;
+        public int PendingUpgrades { get; private set; }
+        public int CurrentPrice { get; private set; }
+        public float TotalBonusValue => PendingUpgrades * bonusPerUpgrade;
+        public int TotalPrice => currentLevel * basePrice;
+
+        public string StatName => statName;
+        public float BaseValue => baseValue;
+        public float CurrentValue => currentValue;
+        public int CurrentLevel => currentLevel;
+        public float BonusPerUpgrade => bonusPerUpgrade;
+        public int BasePrice { get => basePrice; set => basePrice = value; }
+
+        private IProgressProvider progress;
+
+        [Inject]
+        public void Construct(IProgressProvider progress) => this.progress = progress;
 
         public void Initialize(string statName,
-            string currentValue,
-            string bonusValue,
-            int priceValue,
-            System.Action onUpgrade)
+            float baseValue,
+            float bonusPerUpgrade,
+            int basePrice,
+            int currentLevel,
+            System.Action onUpgrade,
+            System.Action onDowngrade)
         {
-            StatName = statName;
-            statNameText.text = statName;
-            currentValueText.text = currentValue;
-            bonusValueText.text = "+"+bonusValue;
-            priceValueText.text = priceValue.ToString();
+            this.statName = statName;
+            this.baseValue = baseValue;
+            this.bonusPerUpgrade = bonusPerUpgrade;
+            this.basePrice = basePrice;
+            this.currentLevel = currentLevel;
+            this.onUpgrade = onUpgrade;
+            this.onDowngrade = onDowngrade;
 
-            upgradeButton.onClick.RemoveListener(() => onUpgrade?.Invoke());
-            upgradeButton.onClick.AddListener(() => onUpgrade?.Invoke());
+            currentValue = baseValue;
+
+            UpdateUI();
         }
 
-        public void UpdateCurrentValue(string newValue)
+        private void OnEnable()
         {
-            currentValueText.text = newValue;
+            plusButton.onClick.AddListener(OnPlusClicked);
+            minusButton.onClick.AddListener(OnMinusClicked);
         }
 
-        public void UpdatePriceValue(string newValue)
+        private void OnDisable()
         {
-            priceValueText.text = newValue;
+            plusButton.onClick.RemoveListener(OnPlusClicked);
+            minusButton.onClick.RemoveListener(OnMinusClicked);
         }
 
-        public void SetInteractable(bool interactable)
+        private void OnPlusClicked()
         {
-            upgradeButton.interactable = interactable;
+            PendingUpgrades++;
+            currentLevel++;
+            currentValue += bonusPerUpgrade;
+            progress.PlayerProgress.PrototypeInventoryData.CoinAmount -= basePrice * (currentLevel - 1);
+            onUpgrade?.Invoke();
+            UpdateUI();
         }
 
-        public void SetPriceColor(Color color)
+        private void OnMinusClicked()
         {
-            priceValueText.color = color;
+            if (PendingUpgrades > 0)
+            {
+                PendingUpgrades--;
+                currentLevel--;
+                currentValue -= bonusPerUpgrade;
+                progress.PlayerProgress.PrototypeInventoryData.CoinAmount += basePrice * currentLevel;
+                onDowngrade?.Invoke();
+                UpdateUI();
+            }
         }
+
+        public void UpdateUI()
+        {
+            statNameText.text = StatName;
+            currentValueText.text = currentValue.ToString();
+            bonusValueText.text = TotalBonusValue > 0 ? $"+{TotalBonusValue}" : "0";
+            costValueText.text = TotalPrice.ToString();
+
+            minusButton.interactable = PendingUpgrades > 0;
+            plusButton.interactable = CanAffordNextUpgrade();
+
+            UpdateButtonsColor();
+        }
+
+        public void UpdateStats(float newBaseValue, float newBonus, int newBasePrice)
+        {
+            this.baseValue = newBaseValue;
+            this.bonusPerUpgrade = newBonus;
+            this.basePrice = newBasePrice;
+        }
+
+        private void UpdateButtonsColor()
+        {
+            Image plusImage = plusButton.GetComponent<Image>();
+            if (plusImage != null)
+                plusImage.color = plusButton.interactable ? itemButtonColors[0] : itemButtonColors[1];
+
+            Image minusImage = minusButton.GetComponent<Image>();
+            if (minusImage != null)
+                minusImage.color = minusButton.interactable ? itemButtonColors[0] : itemButtonColors[1];
+        }
+
+        public void ApplyUpgrades()
+        {
+            baseValue += TotalBonusValue;
+            PendingUpgrades = 0;
+            UpdateUI();
+        }
+
+        public void ResetUpgrades()
+        {
+            PendingUpgrades = 0;
+            UpdateUI();
+        }
+
+        private bool CanAffordNextUpgrade()
+            => progress.PlayerProgress.PrototypeInventoryData.CoinAmount >= basePrice * currentLevel;
     }
 }

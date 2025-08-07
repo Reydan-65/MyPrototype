@@ -26,12 +26,14 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] private Button yesButton;
         [SerializeField] private Button noButton;
 
+        private SettingsPresenter presenter;
+        private SettingsItemContainer container;
+
         public GameObject MainBottomPanel => mainBottomPanel;
         public GameObject ConfirmBottomPanel => confirmBottomPanel;
         public Button DefaultButton => defaultButton;
         public Button AcceptButton => acceptButton;
-        SettingsPresenter presenter;
-        private SettingsItemContainer container;
+
         public SettingsItemContainer Container => container;
 
         public void InitializeContainer(SettingsPresenter presenter)
@@ -50,7 +52,6 @@ namespace CodeBase.GamePlay.UI
 
             SetConfirmPanelState(mainBottomPanel, confirmBottomPanel, false);
         }
-
 
         public SettingsPresenter GetPresenter() => presenter;
         protected override void OnClose() => Destroy(gameObject);

@@ -48,7 +48,7 @@ namespace CodeBase.Data
 
             progress.HasSavedGame = false;
             progress.DifficultyIndex = 0;
-            progress.PrototypeStats = PrototypeStats.GetDefaultStats();
+            progress.PrototypeStats = PrototypeStats.Default;
             progress.PrototypeInventoryData.SetDefaultInventoryData();
             progress.PurchaseData = new PurchaseData();
             progress.PrototypeSkinID = PlayerSkinID.BaseShip;

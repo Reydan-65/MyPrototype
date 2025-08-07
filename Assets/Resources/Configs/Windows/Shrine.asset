@@ -15,7 +15,7 @@ MonoBehaviour:
   WindowID: 5
   Title: SHRINE
   PrefabReference:
-    m_AssetGUID: c0d12388c3944ea4abced2559a94fed8
+    m_AssetGUID: 8a00d5799ca5edd4581068f67dbc1023
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

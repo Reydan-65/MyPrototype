@@ -32,6 +32,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32b75537b94d90b46b9200976e5e9ee4
+    m_Address: UpgradeStatsWindow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 432a8081ebf805c4180d7758a12f7b5e
     m_Address: SettingsWindow
     m_ReadOnly: 0
@@ -47,11 +52,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 67eecb9da54c3504d94c32b9083c79c6
-    m_Address: UpgradeStatsWindow
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 72e8f389cfbd9c44ea664c360952f805
     m_Address: VictoryWindow
     m_ReadOnly: 0
@@ -62,8 +62,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a00d5799ca5edd4581068f67dbc1023
+    m_Address: ShrineWindow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8bdd7a26d35a349489095953447498a5
     m_Address: HealingPotionLoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9873e44602c8430489ce1d5f910b8348
+    m_Address: UpgradeStatItem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -89,16 +99,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb6b5eb156fe054459de55c9c9a53a83
     m_Address: BaseSkin
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c0d12388c3944ea4abced2559a94fed8
-    m_Address: ShrineWindow
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c97e8e87d45132e4cb21bde99b6719fe
-    m_Address: UpgradeStatItem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

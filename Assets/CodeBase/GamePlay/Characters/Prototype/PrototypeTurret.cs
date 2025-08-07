@@ -29,8 +29,7 @@ namespace CodeBase.GamePlay.Prototype
 
         public void LoadProgress(PlayerProgress progress)
         {
-            turretType = progress.PrototypeStats.TurretType;
-            Initialize(progress.PrototypeStats.ShootingRate);
+            Initialize(progress.PrototypeStats.ShootingRate.Value);
         }
     }
 }

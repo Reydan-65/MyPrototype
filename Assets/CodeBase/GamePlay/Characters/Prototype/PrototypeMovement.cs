@@ -159,7 +159,7 @@ namespace CodeBase.GamePlay.Prototype
 
         public void LoadProgress(PlayerProgress progress)
         {
-            Initialize(progress.PrototypeStats.MovementSpeed, progress.PrototypeStats.DashRange);
+            Initialize(progress.PrototypeStats.MovementSpeed.Value, progress.PrototypeStats.DashRange.Value);
         }
     }
 }

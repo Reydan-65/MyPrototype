@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 4278239428803355585}
   - component: {fileID: 4758930162728397774}
   - component: {fileID: 6489300321348906554}
+  - component: {fileID: -3537083606168813036}
   m_Layer: 0
   m_Name: BaseSkin
   m_TagString: Untagged
@@ -196,6 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 5918733957088649607}
+  IsFiring: 0
 --- !u!114 &4758930162728397774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +231,29 @@ MonoBehaviour:
   maxTiltAngle: 15
   tiltSpeed: 8
   returnSpeed: 12
+--- !u!114 &-3537083606168813036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2751160580884724760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3ddabb793da4e44f9a80e83709bf143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryData:
+    HealthLevel: 1
+    EnergyLevel: 1
+    ShootingRateLevel: 1
+    SpeedLevel: 1
+    DashRangeLevel: 1
+    MaxHitPoints: 0
+    MaxEnergy: 0
+    MovementSpeed: 0
+    DashRange: 0
+    ShootingRate: 0
 --- !u!1 &2823896480985476044
 GameObject:
   m_ObjectHideFlags: 0

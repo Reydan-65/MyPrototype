@@ -80,8 +80,8 @@ namespace CodeBase.Infrastructure.Services.Factory
 
             var progress = progressSaver.GetProgress();
 
-            PrototypeHealth.Initialize(progress.PrototypeStats.MaxHitPoints);
-            PrototypeEnergy.Initialize(progress.PrototypeStats.MaxEnergy);
+            PrototypeHealth.Initialize(progress.PrototypeStats.Health.Value);
+            PrototypeEnergy.Initialize(progress.PrototypeStats.Energy.Value);
 
             PrototypeHealth.SetImmune(false);
 

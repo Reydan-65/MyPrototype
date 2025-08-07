@@ -11,7 +11,7 @@ namespace CodeBase.GamePlay.Prototype
 
         public void LoadProgress(PlayerProgress progress)
         {
-            max = progress.PrototypeStats.MaxEnergy;
+            max = progress.PrototypeStats.Energy.Value;
             current = max;
             InvokeChangedEvent();
         }

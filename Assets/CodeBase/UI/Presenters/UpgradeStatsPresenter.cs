@@ -4,6 +4,7 @@ using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
+using Unity.VisualScripting;
 
 namespace CodeBase.GamePlay.UI
 {
@@ -45,60 +46,67 @@ namespace CodeBase.GamePlay.UI
             this.window.InitializeContainer(this);
 
             this.window.AcceptButtonClicked += OnAcceptButtonClicked;
-            this.window.CancelButtonClicked += OnCancelButtonClicked;
-            this.window.SetCancelButtonText("CLOSE");
+            this.window.AdvancedCloseButtonClicked += OnAdvancedCloseButtonClicked;
+            this.window.YesButtonClicked += OnYesButtonClicked;
+            this.window.NoButtonClicked += OnNoButtonClicked;
             this.window.Closed += OnClosed;
             this.window.CleanUped += OnCleanUp;
+            this.window.Container.PendingStats.Changed += UpdateButtonsState;
+            this.window.AcceptButton.interactable = false;
+            OnNoButtonClicked();
         }
 
         private void OnAcceptButtonClicked()
         {
-            if (currentStats == null || newStats == null) return;
+            window.Container.ApplyAllUpgrades();
+            SaveAndApply();
+            window.AcceptButton.interactable = false;
+        }
 
-            if (!AreStatsEqual(currentStats, newStats))
-            {
-                currentStats.CopyFrom(newStats);
-                currentStats.IsChanged();
-            }
+        private void OnYesButtonClicked()
+        {
+            window.Container.RevertChanges();
+            OnClosed();
+        }
 
+        private void OnNoButtonClicked()
+        {
+            window.SetConfirmPanelState(window.MainBottomPanel, window.ConfirmBottomPanel, false);
+        }
+
+        private void UpdateButtonsState()
+        {
+            PrototypeStats newStats = window.Container.PendingStats;
+            PrototypeStats currentStats = progressProvider.PlayerProgress.PrototypeStats;
+            window.AcceptButton.interactable = !PrototypeStats.StatsAreEqual(newStats, currentStats);
+        }
+
+        private void SaveAndApply()
+        {
             progressSaver.SaveProgress();
+
+            gameFactory.PrototypeObject.GetComponent<PrototypeHealth>().Initialize(currentStats.Health.Value);
+            gameFactory.PrototypeObject.GetComponent<PrototypeEnergy>().Initialize(currentStats.Energy.Value);
+            gameFactory.PrototypeObject.GetComponent<PrototypeTurret>().Initialize(currentStats.ShootingRate.Value);
+            gameFactory.PrototypeObject.GetComponent<PrototypeMovement>().Initialize(currentStats.MovementSpeed.Value, currentStats.DashRange.Value);
+
             progressProvider.PlayerProgress.PrototypeStats.IsChanged();
-
-            gameFactory.PrototypeObject.GetComponent<PrototypeHealth>().Initialize(currentStats.MaxHitPoints);
-            gameFactory.PrototypeObject.GetComponent<PrototypeEnergy>().Initialize(currentStats.MaxEnergy);
-            gameFactory.PrototypeObject.GetComponent<PrototypeTurret>().Initialize(currentStats.ShootingRate);
-            gameFactory.PrototypeObject.GetComponent<PrototypeMovement>().Initialize(currentStats.MovementSpeed, currentStats.DashRange);
-
-            OnClosed();
         }
 
-        private void OnCancelButtonClicked()
+        private void OnAdvancedCloseButtonClicked()
         {
-            if (currentStats == null || newStats == null) return;
-
-            if (!AreStatsEqual(currentStats, newStats))
-            {
-                newStats.CopyFrom(currentStats);
-                window.UpdateStatsDisplay();
-                window.SetCancelButtonText("CANCEL");
-            }
-            OnClosed();
-        }
-
-        private bool AreStatsEqual(PrototypeStats a, PrototypeStats b)
-        {
-            return a.MaxHitPoints == b.MaxHitPoints &&
-                   a.MaxEnergy == b.MaxEnergy &&
-                   a.ShootingRate == b.ShootingRate &&
-                   a.DashRange == b.DashRange &&
-                   a.MovementSpeed == b.MovementSpeed;
+            if (!PrototypeStats.StatsAreEqual(window.Container.PendingStats, progressProvider.PlayerProgress.PrototypeStats))
+                window.SetConfirmPanelState(window.MainBottomPanel, window.ConfirmBottomPanel, true);
+            else
+                OnClosed();
         }
 
         private void OnCleanUp()
         {
             window.AcceptButtonClicked -= OnAcceptButtonClicked;
-            window.CancelButtonClicked -= OnCancelButtonClicked;
-
+            window.AdvancedCloseButtonClicked -= OnAdvancedCloseButtonClicked;
+            window.YesButtonClicked -= OnYesButtonClicked;
+            window.NoButtonClicked -= OnNoButtonClicked;
             window.Closed -= OnClosed;
             window.CleanUped -= OnCleanUp;
         }

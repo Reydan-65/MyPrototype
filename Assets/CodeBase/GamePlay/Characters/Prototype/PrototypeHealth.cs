@@ -54,7 +54,7 @@ namespace CodeBase.GamePlay.Prototype
 
         public void LoadProgress(PlayerProgress progress)
         {
-            max = progress.PrototypeStats.MaxHitPoints;
+            max = progress.PrototypeStats.Health.Value;
             current = max;
             InvokeChangedEvent();
         }
