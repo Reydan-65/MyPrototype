@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
+using CodeBase.GamePlay.Projectile.Installer;
 
 namespace CodeBase.Infrastructure.Services.Factory
 {
@@ -173,19 +174,25 @@ namespace CodeBase.Infrastructure.Services.Factory
         #endregion
 
         #region Create Projectile
-        public GameObject CreateProjectileObjectFromPrefab(ProjectileType type)
+        public GameObject CreateProjectileObjectFromPrefab(ProjectileType type, Transform parent)
         {
             ProjectileConfig config = configsProvider.GetProjectileConfig(type);
+            ProjectileStats stats = progressSaver.GetProgress().ProjectileStats;
+            ProjectileTypeStats typeStats = stats.GetStatsForType(type);
 
-            GameObject projectilePrefab = config.ProjectilePrefab;
-            GameObject projectileObject = container.Instantiate(projectilePrefab);
+            GameObject projectileObject = container.Instantiate(config.ProjectilePrefab);
 
-            var installers = projectileObject.GetComponentsInChildren<IProjectileConfigInstaller>();
-            foreach (var installer in installers)
+            bool isPlayerProjectile = parent.GetComponent<PrototypeTurret>() != null;
+
+            var configInstallers = projectileObject.GetComponentsInChildren<IProjectileConfigInstaller>();
+            foreach (var installer in configInstallers)
                 installer.InstallProjectileConfig(config);
 
-            ProjectilesObject.Add(projectileObject);
+            var statsInstallers = projectileObject.GetComponentsInChildren<IProjectileStatsInstaller>();
+            foreach (var installer in statsInstallers)
+                installer.InstallProjectileStats(typeStats, isPlayerProjectile);
 
+            ProjectilesObject.Add(projectileObject);
             return projectileObject;
         }
         #endregion

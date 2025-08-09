@@ -7,11 +7,11 @@ namespace CodeBase.Infrastructure.Services
 {
     public interface IIApService : IService
     {
-        public void Initialize();
-        bool IsInitialized { get; }
-        event UnityAction Initialized;
-        public void StartPurchase(string productID);
-        void ProcessPurchase(Product purchasedProduct);
-        List<ProductDescription> GetProductDescription();
+        //public void Initialize();
+        //bool IsInitialized { get; }
+        //event UnityAction Initialized;
+        //public void StartPurchase(string productID);
+        //void ProcessPurchase(Product purchasedProduct);
+        //List<ProductDescription> GetProductDescription();
     }
 }

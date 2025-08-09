@@ -22,8 +22,6 @@ namespace CodeBase.Infrastructure.Services.Factory
 
         Task<FollowCamera> CreateFollowCameraAsync();
         FollowCamera FollowCamera { get; }
-        //Task<VirtualJoystick> CreateJoystickAsync();
-        //VirtualJoystick VirtualJoystick { get; }
 
         List<GameObject> EnemiesObject { get; }
         Task<GameObject> CreateEnemyAsync(EnemyID id, Vector3 position);
@@ -31,6 +29,6 @@ namespace CodeBase.Infrastructure.Services.Factory
         public GameObject LootObject { get; }
 
         List<GameObject> ProjectilesObject { get; }
-        GameObject CreateProjectileObjectFromPrefab(ProjectileType type);
+        GameObject CreateProjectileObjectFromPrefab(ProjectileType type, Transform parent);
     }
 }

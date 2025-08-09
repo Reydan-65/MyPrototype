@@ -43,5 +43,6 @@ namespace CodeBase.GamePlay.UI.Services
 
         Task<UpgradeStatsPresenter> CreateUpgradeStatsWindowAsync(WindowConfig config);
         Task<UpgradeStatsItem> CreateUpgradeStatsItemAsync();
+        Task<UpgradeStatsHeaderItem> CreateUpgradeStatsHeaderItemAsync();
     }
 }

@@ -41,7 +41,7 @@ namespace CodeBase.Data
 
         public void SetDefaultInventoryData()
         {
-            CoinAmount = 10;
+            CoinAmount = 100;
             healingPotionAmount = 0;
             keys.Clear();
         }

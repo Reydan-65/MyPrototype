@@ -4,7 +4,6 @@ using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
-using Unity.VisualScripting;
 
 namespace CodeBase.GamePlay.UI
 {
@@ -52,7 +51,9 @@ namespace CodeBase.GamePlay.UI
             this.window.Closed += OnClosed;
             this.window.CleanUped += OnCleanUp;
             this.window.Container.PendingStats.Changed += UpdateButtonsState;
+            this.window.Container.PendingProjectileStats.Changed += UpdateButtonsState;
             this.window.AcceptButton.interactable = false;
+
             OnNoButtonClicked();
         }
 
@@ -75,30 +76,34 @@ namespace CodeBase.GamePlay.UI
         }
 
         private void UpdateButtonsState()
-        {
-            PrototypeStats newStats = window.Container.PendingStats;
-            PrototypeStats currentStats = progressProvider.PlayerProgress.PrototypeStats;
-            window.AcceptButton.interactable = !PrototypeStats.StatsAreEqual(newStats, currentStats);
-        }
+            => window.AcceptButton.interactable = WasChanges();
+
 
         private void SaveAndApply()
         {
-            progressSaver.SaveProgress();
-
             gameFactory.PrototypeObject.GetComponent<PrototypeHealth>().Initialize(currentStats.Health.Value);
             gameFactory.PrototypeObject.GetComponent<PrototypeEnergy>().Initialize(currentStats.Energy.Value);
             gameFactory.PrototypeObject.GetComponent<PrototypeTurret>().Initialize(currentStats.ShootingRate.Value);
             gameFactory.PrototypeObject.GetComponent<PrototypeMovement>().Initialize(currentStats.MovementSpeed.Value, currentStats.DashRange.Value);
 
             progressProvider.PlayerProgress.PrototypeStats.IsChanged();
+            progressProvider.PlayerProgress.ProjectileStats.IsChanged();
+
+            progressSaver.SaveProgress();
         }
 
         private void OnAdvancedCloseButtonClicked()
         {
-            if (!PrototypeStats.StatsAreEqual(window.Container.PendingStats, progressProvider.PlayerProgress.PrototypeStats))
+            if (WasChanges())
                 window.SetConfirmPanelState(window.MainBottomPanel, window.ConfirmBottomPanel, true);
             else
                 OnClosed();
+        }
+
+        private bool WasChanges()
+        {
+            return !PrototypeStats.StatsAreEqual(window.Container.PendingStats, progressProvider.PlayerProgress.PrototypeStats) ||
+                   !ProjectileStats.StatsAreEqual(window.Container.PendingProjectileStats, progressProvider.PlayerProgress.ProjectileStats);
         }
 
         private void OnCleanUp()
@@ -109,11 +114,13 @@ namespace CodeBase.GamePlay.UI
             window.NoButtonClicked -= OnNoButtonClicked;
             window.Closed -= OnClosed;
             window.CleanUped -= OnCleanUp;
+            window.Container.PendingStats.Changed -= UpdateButtonsState;
+            window.Container.PendingProjectileStats.Changed -= UpdateButtonsState;
         }
 
         private void OnClosed()
         {
-            if(isClosed) return;
+            if (isClosed) return;
             isClosed = true;
             window.Close();
             windowsProvider.Open(WindowID.ShrineWindow);

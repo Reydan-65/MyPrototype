@@ -120,6 +120,8 @@ namespace CodeBase.GamePlay.UI.Services
             await CreateWindowAsync<UpgradeStatsWindow, UpgradeStatsPresenter>(config);
         public async Task<UpgradeStatsItem> CreateUpgradeStatsItemAsync() =>
             await CreateUIItemAsync<UpgradeStatsItem>(AssetAddress.UpgradeStatItemPath);
+        public async Task<UpgradeStatsHeaderItem> CreateUpgradeStatsHeaderItemAsync() =>
+            await CreateUIItemAsync<UpgradeStatsHeaderItem>(AssetAddress.UpgradeStatHeaderItemPath);
 
         // Shop
         public async Task<SettingsPresenter> CreateSettingsWindowAsync(WindowConfig config)

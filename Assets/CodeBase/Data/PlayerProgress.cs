@@ -9,9 +9,10 @@ namespace CodeBase.Data
         public bool HasSavedGame = false;
         public int DifficultyIndex;
         public PrototypeStats PrototypeStats = new PrototypeStats();
+        public ProjectileStats ProjectileStats = new ProjectileStats();
         public PrototypeInventoryData PrototypeInventoryData = new PrototypeInventoryData();
         public PurchaseData PurchaseData = new PurchaseData();
-        public PlayerSkinID PrototypeSkinID;
+        public PrototypeSkinID PrototypeSkinID;
 
         public List<string> PickedLootItems = new List<string>();
 
@@ -49,9 +50,10 @@ namespace CodeBase.Data
             progress.HasSavedGame = false;
             progress.DifficultyIndex = 0;
             progress.PrototypeStats = PrototypeStats.Default;
+            progress.ProjectileStats = ProjectileStats.Default;
             progress.PrototypeInventoryData.SetDefaultInventoryData();
             progress.PurchaseData = new PurchaseData();
-            progress.PrototypeSkinID = PlayerSkinID.BaseShip;
+            progress.PrototypeSkinID = PrototypeSkinID.BaseSkin;
 
             progress.PickedLootItems.Clear();
             progress.InteractiveKeys.Clear();
@@ -68,8 +70,9 @@ namespace CodeBase.Data
             HasSavedGame = progress.HasSavedGame;
             DifficultyIndex = progress.DifficultyIndex;
             PrototypeStats.CopyFrom(progress.PrototypeStats);
+            ProjectileStats.CopyFrom(progress.ProjectileStats);
             PrototypeInventoryData.CopyFrom(progress.PrototypeInventoryData);
-            PurchaseData.CopyFrom(progress.PurchaseData);
+            //PurchaseData.CopyFrom(progress.PurchaseData);
             PrototypeSkinID = progress.PrototypeSkinID;
 
             PickedLootItems = new List<string>(progress.PickedLootItems);
@@ -82,7 +85,7 @@ namespace CodeBase.Data
             CopyFrom(GetDefaultProgress());
         }
 
-        // Pecked Loot
+        // Picked Loot
         public void AddPickedLoot(string id)
         {
             if (!PickedLootItems.Contains(id))

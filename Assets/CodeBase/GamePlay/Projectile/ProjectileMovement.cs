@@ -1,11 +1,14 @@
 using CodeBase.Configs;
+using CodeBase.Data;
+using CodeBase.GamePlay.Projectile.Installer;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Projectile
 {
-    public class ProjectileMovement : MonoBehaviour, IProjectileConfigInstaller
+    public class ProjectileMovement : MonoBehaviour, IProjectileConfigInstaller, IProjectileStatsInstaller
     {
         private float movementSpeed = 0;
+        private bool isPlayerProjectile;
 
         private void Update()
         {
@@ -19,7 +22,14 @@ namespace CodeBase.GamePlay.Projectile
 
         public void InstallProjectileConfig(ProjectileConfig config)
         {
-            movementSpeed = config.MovementSpeed;
+            if (!isPlayerProjectile)
+                    movementSpeed = config.MovementSpeed;
+        }
+
+        public void InstallProjectileStats(ProjectileTypeStats stats, bool isPlayerProjectile)
+        {
+            if (isPlayerProjectile)
+                    movementSpeed = stats.Speed.Value;
         }
     }
 }

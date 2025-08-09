@@ -1,10 +1,14 @@
 using CodeBase.Configs;
+using CodeBase.Data;
+using CodeBase.GamePlay.Projectile.Installer;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Projectile
 {
-    public class ProjectileDistanceChecker : MonoBehaviour, IProjectileConfigInstaller
+    public class ProjectileDistanceChecker : MonoBehaviour, IProjectileConfigInstaller, IProjectileStatsInstaller, IProjectileDistanceChecker
     {
+        private bool isPlayerProjectile;
+
         private float maxDistance = 0;
 
         private Vector3 spawnPosition;
@@ -31,7 +35,14 @@ namespace CodeBase.GamePlay.Projectile
 
         public void InstallProjectileConfig(ProjectileConfig config)
         {
-            maxDistance = config.MaxDistance;
+            if (!isPlayerProjectile)
+                maxDistance = config.MaxDistance;
+        }
+
+        public void InstallProjectileStats(ProjectileTypeStats stats, bool isPlayerProjectile)
+        {
+            if (isPlayerProjectile)
+                maxDistance = stats.Range.Value;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace CodeBase.Configs
         public GameObject MissSFXPrefab;
         public GameObject HitSFXPrefab;
 
+        [Header("Enemy Projectile Config")]
         [Header("Type")]
         public ProjectileType ProjectileType;
 
@@ -23,7 +24,7 @@ namespace CodeBase.Configs
         public float MinDamage;
         public float MaxDamage;
 
-        public float GetDamageSpread()
+        public float GetEnemyDamageSpread()
         {
             float damage = Random.Range(MinDamage, MaxDamage);
             return damage;

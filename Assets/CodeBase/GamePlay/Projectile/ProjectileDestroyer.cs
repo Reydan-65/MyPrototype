@@ -1,4 +1,5 @@
 using CodeBase.Configs;
+using CodeBase.GamePlay.Projectile.Installer;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Projectile
@@ -7,10 +8,7 @@ namespace CodeBase.GamePlay.Projectile
     {
         private GameObject missSFX;
         private GameObject hitSFX;
-
-        private GameObject impactObject;
-        public GameObject ImpactObject;
-
+        
         public void CreateMissedImpactEffect()
         {
             if (missSFX != null)

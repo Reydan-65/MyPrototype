@@ -1,10 +1,7 @@
-using CodeBase.GamePlay;
 using UnityEngine.Events;
 
 namespace CodeBase.Data
 {
-    
-
     [System.Serializable]
     public class PrototypeStats
     {

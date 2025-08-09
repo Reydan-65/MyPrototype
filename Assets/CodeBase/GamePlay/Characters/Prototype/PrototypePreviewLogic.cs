@@ -40,11 +40,11 @@ namespace CodeBase.GamePlay.Prototype
             if (progressProvider == null || progressProvider.PlayerProgress == null) return;
 
             var progress = progressProvider.PlayerProgress;
-            bool useFemaleSkin = progress.PrototypeSkinID == PlayerSkinID.Female &&
-                                progress.PurchaseData.IsFemaleSkinUnlocked;
+            //bool useSecondSkin = progress.PrototypeSkinID == PrototypeSkinID.SecondSkin &&
+            //                    progress.PurchaseData.IsSecondSkinUnlocked;
 
-            if (baseSkinPreview != null) baseSkinPreview.SetActive(!useFemaleSkin);
-            if (secondSkinPreview != null) secondSkinPreview.SetActive(useFemaleSkin);
+            if (baseSkinPreview != null) baseSkinPreview.SetActive(true);
+            //if (secondSkinPreview != null) secondSkinPreview.SetActive(useSecondSkin);
         }
     }
 }

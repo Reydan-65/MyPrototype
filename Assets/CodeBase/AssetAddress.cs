@@ -22,6 +22,7 @@ public class AssetAddress
 
     // UpgradeStat Item
     public static string UpgradeStatItemPath = "UpgradeStatItem";
+    public static string UpgradeStatHeaderItemPath = "UpgradeStatHeaderItem";
 
     // Settings Item
     public static string SettingsItemPath = "SettingsItem";

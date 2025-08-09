@@ -1,16 +1,18 @@
 using CodeBase.Configs;
+using CodeBase.Data;
+using CodeBase.GamePlay.Projectile.Installer;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Projectile
 {
-    public class ProjectileCollisionHandler : MonoBehaviour, IProjectileConfigInstaller
+    public class ProjectileCollisionHandler : MonoBehaviour, IProjectileConfigInstaller, IProjectileStatsInstaller
     {
         private float damage = 0;
+        private bool isPlayerProjectile;
 
-        private Transform parent;
         private Vector3 previousPosition;
         private ProjectileDestroyer destroyer;
-
+        private ProjectileParent parent;
         private SphereCollider projectileCollider;
 
         private void Start()
@@ -18,7 +20,9 @@ namespace CodeBase.GamePlay.Projectile
             previousPosition = transform.position;
             destroyer = GetComponent<ProjectileDestroyer>();
             projectileCollider = GetComponent<SphereCollider>();
+            parent = GetComponent<ProjectileParent>();
         }
+
         private void Update()
         {
             OnHit();
@@ -60,9 +64,27 @@ namespace CodeBase.GamePlay.Projectile
         private bool ShouldProcessCollision(Collider other)
             => other != null && other.transform.root != parent && !other.isTrigger;
 
-        public void SetParent(Transform parent) => this.parent = parent;
 
         public void InstallProjectileConfig(ProjectileConfig config)
-            => damage = config.GetDamageSpread();
+        {
+            if (!isPlayerProjectile)
+            {
+                damage = Random.Range(config.MinDamage, config.MaxDamage);
+            }
+        }
+
+        public void InstallProjectileStats(ProjectileTypeStats stats, bool isPlayerProjectile)
+        {
+            this.isPlayerProjectile = isPlayerProjectile;
+
+            if (isPlayerProjectile)
+            {
+                float spread = stats.AverageDamage.Value * 0.25f;
+                damage = Random.Range(
+                    stats.AverageDamage.Value - spread,
+                    stats.AverageDamage.Value + spread
+                );
+            }
+        }
     }
 }
