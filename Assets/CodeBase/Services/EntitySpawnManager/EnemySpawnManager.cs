@@ -1,5 +1,6 @@
 ﻿using CodeBase.GamePlay.Spawners;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Services
@@ -19,12 +20,15 @@ namespace CodeBase.Infrastructure.Services
             activeEnemies.Clear();
         }
 
-        public void SpawnAllEnemies()
+        public async void SpawnAllEnemies()
         {
             EnemySpawner[] spawners = Object.FindObjectsOfType<EnemySpawner>();
 
             foreach (var spawner in spawners)
-                spawner.Spawn();
+            {
+                await spawner.Spawn();
+                await Task.Delay(50);
+            }
         }
 
         public void RegisterEnemy(GameObject enemy)

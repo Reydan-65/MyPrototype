@@ -2,16 +2,21 @@ using CodeBase.Configs;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CodeBase.GamePlay.Enemies
 {
     public class EnemyShooter : MonoBehaviour, IEnemyConfigInstaller
     {
+        public event UnityAction TargetFound;
+
         [SerializeField] private EnemyTurret[] turrets;
 
         private float shootingRange;
         private float shootingAngle;
         private Transform target;
+
+        public Transform Target => target;
 
         private IGameFactory gameFactory;
 
@@ -68,6 +73,7 @@ namespace CodeBase.GamePlay.Enemies
         public void SetTarget(Transform target)
         {
             this.target = target;
+            TargetFound?.Invoke();
         }
 
 #if UNITY_EDITOR

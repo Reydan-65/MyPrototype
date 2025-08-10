@@ -28,10 +28,10 @@ namespace CodeBase.GamePlay.Interactive
         {
             base.Interact();
 
+            ObjectsDestroyer.DestroyObjectsByTag("ToDestroy");
+
             enemySpawnManager.DestroyAllEnemies();
             enemySpawnManager.SpawnAllEnemies();
-
-            ObjectsDestroyer.DestroyObjectsByTag("ToDestroy");
 
             windowsProvider.Open(WindowID.ShrineWindow);
         }

@@ -70,12 +70,12 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             levelStateSwitcher.Enter<LevelResearchState>();
         }
 
-        private static void SpawnEnemies()
+        private static async void SpawnEnemies()
         {
             EnemySpawner[] enemySpawners = GameObject.FindObjectsByType<EnemySpawner>(0);
 
             for (int i = 0; i < enemySpawners.Length; i++)
-                enemySpawners[i].Spawn();
+                await enemySpawners[i].Spawn();
         }
 
         private async System.Threading.Tasks.Task SpawnPrototype()

@@ -3,6 +3,7 @@ using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.ConfigProvider;
 using CodeBase.Infrastructure.Services.Factory;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Spawners
@@ -33,7 +34,7 @@ namespace CodeBase.GamePlay.Spawners
             lootDistributor = GetComponent<LootDistributor>();
         }
 
-        public async void Spawn()
+        public async Task Spawn()
         {
             GameObject enemy = await gameFactory.CreateEnemyAsync(enemyID, transform.position);
 

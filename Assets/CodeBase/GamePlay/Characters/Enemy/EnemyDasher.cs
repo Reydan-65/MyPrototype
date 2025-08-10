@@ -17,10 +17,31 @@ namespace CodeBase.GamePlay.Enemies
         private NavMeshAgent agent;
         private IHealth health;
         private Transform target;
+        private EnemyShooter shooter;
         private PrototypeTurret targetTurret;
         private DashController dashController;
 
         public bool IsDashing => dashController?.IsDashing ?? false;
+
+        private void Awake()
+        {
+            shooter = GetComponent<EnemyShooter>();
+
+            if (shooter != null)
+                shooter.TargetFound += OnTargetFound;
+        }
+
+        private void OnTargetFound()
+        {
+            if (target != null) return;
+
+            agent = GetComponent<NavMeshAgent>();
+            health = GetComponent<IHealth>();
+            target = shooter.Target;
+            targetTurret = target.GetComponent<PrototypeTurret>();
+
+            Initialize(agent, health, target, targetTurret);
+        }
 
         public void Initialize(NavMeshAgent agent, IHealth health, Transform target, PrototypeTurret targetTurret)
         {
@@ -42,6 +63,8 @@ namespace CodeBase.GamePlay.Enemies
 
         public void TryDashIfAimed()
         {
+            if (Time.frameCount % 2 != 0) return;
+
             if (!dashController.CanDash || target == null || targetTurret == null) return;
             if (!targetTurret.IsAiming || !targetTurret.IsFiring) return;
 
