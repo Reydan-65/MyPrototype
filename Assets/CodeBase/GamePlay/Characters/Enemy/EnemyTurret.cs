@@ -2,7 +2,7 @@ using CodeBase.Configs;
 
 namespace CodeBase.GamePlay.Enemies
 {
-    public class EnemyTurret : Turret, IEnemyConfigInstaller
+    public class EnemyTurret : BaseTurret, IEnemyConfigInstaller
     {
         public void InstallEnemyConfig(EnemyConfig config)
         {

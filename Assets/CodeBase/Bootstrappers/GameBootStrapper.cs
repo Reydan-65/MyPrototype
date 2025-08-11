@@ -8,28 +8,23 @@ namespace CodeBase.Infrastructure
     {
         private IGameStateSwitcher gameStateSwitcher;
         private GameBootStrapState gameBootStrappState;
-        private LoadNextLevelState loadNextLevelState;
+        private LoadLevelState loadNextLevelState;
         private LoadMainMenuState loadMainMenuState;
 
         [Inject]
         public void Construct(
             IGameStateSwitcher gameStateSwitcher, 
             GameBootStrapState gameBootStrappState, 
-            LoadNextLevelState loadNextLevelState,
+            LoadLevelState loadLevelState,
             LoadMainMenuState loadMainMenuState)
         {
             this.gameStateSwitcher = gameStateSwitcher;
             this.gameBootStrappState = gameBootStrappState;
-            this.loadNextLevelState = loadNextLevelState;
+            this.loadNextLevelState = loadLevelState;
             this.loadMainMenuState = loadMainMenuState;
         }
 
-        public override void OnBindResolved()
-        {
-            //UnityEngine.Debug.Log("GLOBAL: Init");
-
-            InitGameStateMachine();
-        }
+        public override void OnBindResolved() => InitGameStateMachine();
 
         private void InitGameStateMachine()
         {

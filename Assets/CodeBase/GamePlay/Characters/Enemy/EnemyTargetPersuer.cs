@@ -13,6 +13,7 @@ namespace CodeBase.GamePlay.Enemies
         [SerializeField] private float viewDistance = 10f;
 
         private EnemyFollowToTarget followToTarget;
+        private EnemyCallAssist callAssist;
         private EnemyCombatMovement combatMovement;
         private EnemyDasher dasher;
 
@@ -28,6 +29,7 @@ namespace CodeBase.GamePlay.Enemies
         private void Awake()
         {
             followToTarget = GetComponent<EnemyFollowToTarget>();
+            callAssist = GetComponent<EnemyCallAssist>();
             combatMovement = GetComponent<EnemyCombatMovement>();
             dasher = GetComponent<EnemyDasher>();
 
@@ -51,6 +53,7 @@ namespace CodeBase.GamePlay.Enemies
         private void StartPersuit()
         {
             followToTarget.enabled = true;
+            callAssist.CallAssistToPersuitTarget(viewDistance);
             hasTarget = true;
             combatMovement.SetActive(true);
             dasher.enabled = true;

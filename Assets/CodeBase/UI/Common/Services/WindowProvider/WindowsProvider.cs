@@ -24,8 +24,8 @@ namespace CodeBase.GamePlay.UI.Services
 
             WindowConfig config = configsProvider.GetWindowConfig(id);
 
-            if (id == WindowID.VictoryWindow || id == WindowID.DeathWindow)
-                factory.CreateLevelResultWindowAsync(config);
+            if (id == WindowID.EndGameWindow || id == WindowID.DeathWindow)
+                factory.CreateLevelEndWindowAsync(config);
 
             if (id == WindowID.MainMenuWindow)
                 factory.CreateMainMenuWindowAsync(config);
@@ -36,8 +36,8 @@ namespace CodeBase.GamePlay.UI.Services
             if (id == WindowID.ShrineWindow)
                 factory.CreateShrineWindowAsync(config);
 
-            if (id == WindowID.UpgradeStatsWindow)
-                factory.CreateUpgradeStatsWindowAsync(config);
+            if (id == WindowID.UpgradesWindow)
+                factory.CreateUpgradesWindowAsync(config);
 
             if (id == WindowID.HUDWindow)
                 factory.CreateHUDWindowAsync(config);

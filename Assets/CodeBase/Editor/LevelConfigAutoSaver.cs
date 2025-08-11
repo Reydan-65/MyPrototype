@@ -56,7 +56,7 @@ public static class LevelConfigAutoSaver
         var spawnMarker = Object.FindFirstObjectByType<PrototypeSpawnPoint>();
         if (spawnMarker != null)
         {
-            SerializedProperty spawnProp = serializedConfig.FindProperty("HeroSpawnPoint");
+            SerializedProperty spawnProp = serializedConfig.FindProperty("PrototypeSpawnPoint");
             if (spawnProp != null && spawnProp.propertyType == SerializedPropertyType.Vector3)
             {
                 Vector3 newPosition = spawnMarker.transform.position;

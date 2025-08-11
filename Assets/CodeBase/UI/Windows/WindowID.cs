@@ -4,11 +4,11 @@
     {
         Unknown = 0,
         MainMenuWindow = 1,
-        VictoryWindow = 2,
+        EndGameWindow = 2,
         DeathWindow = 3,
         ShopWindow = 4,
         ShrineWindow = 5,
-        UpgradeStatsWindow = 6,
+        UpgradesWindow = 6,
         HUDWindow = 7,
         PauseWindow = 8,
         SettingsWindow = 9

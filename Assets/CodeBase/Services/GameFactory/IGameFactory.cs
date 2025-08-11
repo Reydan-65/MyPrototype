@@ -30,5 +30,6 @@ namespace CodeBase.Infrastructure.Services.Factory
 
         List<GameObject> ProjectilesObject { get; }
         GameObject CreateProjectileObjectFromPrefab(ProjectileType type, Transform parent);
+        GameObject CreateImpactEffectObjectFromPrefab(GameObject impactobject, Vector3 position, Quaternion rotation);
     }
 }

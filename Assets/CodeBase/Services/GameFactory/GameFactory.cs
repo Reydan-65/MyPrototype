@@ -158,7 +158,6 @@ namespace CodeBase.Infrastructure.Services.Factory
             var installers = enemy.GetComponentsInChildren<IEnemyConfigInstaller>();
             for (int i = 0; i < installers.Length; i++)
             {
-                enemyConfig.MaxHitPoints += progress.DifficultyIndex * 1.25f;
                 installers[i].InstallEnemyConfig(enemyConfig);
 
                 if (installers[i] is EnemyFollowToTarget followToTarget)
@@ -178,6 +177,7 @@ namespace CodeBase.Infrastructure.Services.Factory
         {
             ProjectileConfig config = configsProvider.GetProjectileConfig(type);
             ProjectileStats stats = progressSaver.GetProgress().ProjectileStats;
+            PlayerProgress progress = progressSaver.GetProgress();
             ProjectileTypeStats typeStats = stats.GetStatsForType(type);
 
             GameObject projectileObject = container.Instantiate(config.ProjectilePrefab);
@@ -194,6 +194,16 @@ namespace CodeBase.Infrastructure.Services.Factory
 
             ProjectilesObject.Add(projectileObject);
             return projectileObject;
+        }
+        #endregion
+
+        #region Create ImpactEffect
+        public GameObject CreateImpactEffectObjectFromPrefab(GameObject impactobject, Vector3 position, Quaternion rotation)
+        {
+            GameObject impact = container.Instantiate(impactobject);
+            impact.transform.position = position;
+            impact.transform.rotation = rotation;
+            return impact;
         }
         #endregion
 

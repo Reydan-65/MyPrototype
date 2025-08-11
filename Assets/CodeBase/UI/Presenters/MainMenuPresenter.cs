@@ -1,7 +1,5 @@
 using CodeBase.Data;
-using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.UI.Services;
-using CodeBase.Infrastructure.Services.ConfigProvider;
 using CodeBase.Infrastructure.Services.GameStateMachine;
 using CodeBase.Infrastructure.Services.GameStates;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
@@ -12,66 +10,52 @@ namespace CodeBase.GamePlay.UI
 {
     public class MainMenuPresenter : WindowPresenterBase<MainMenuWindow>
     {
-        private IGameStateSwitcher gameStateSwitcher;
-        private IProgressProvider progressProvider;
-        private IConfigsProvider configProvider;
-        private IWindowsProvider windowsProvider;
-        private IProgressSaver progressSaver;
-
-        private PrototypePreviewLogic prototypePreviewLogic;
-
         private MainMenuWindow window;
-        public MainMenuWindow Window => window;
-
-        private GameObject containerPanel;
         private GameObject warningPanel;
         private PlayerProgress progress;
-        private IUIFactory uiFactory;
+        
+        public MainMenuWindow Window => window;
+        
+        private IGameStateSwitcher gameStateSwitcher;
+        private IProgressProvider progressProvider;
+        private IWindowsProvider windowsProvider;
+        private IProgressSaver progressSaver;
 
         public MainMenuPresenter(
             IGameStateSwitcher gameStateSwitcher,
             IProgressProvider progressProvider,
-            IConfigsProvider configProvider,
             IWindowsProvider windowsProvider,
-            IProgressSaver progressSaver,
-            IUIFactory uiFactory)
+            IProgressSaver progressSaver)
         {
             this.gameStateSwitcher = gameStateSwitcher;
             this.progressProvider = progressProvider;
-            this.configProvider = configProvider;
             this.windowsProvider = windowsProvider;
             this.progressSaver = progressSaver;
-            this.uiFactory = uiFactory;
-
-            prototypePreviewLogic = Object.FindObjectOfType<PrototypePreviewLogic>();
         }
 
         public override void SetWindow(MainMenuWindow window)
         {
             this.window = window;
 
-            prototypePreviewLogic?.UpdatePreview();
-
-            //int currentLevelIndex = progressProvider.PlayerProgress.DifficultyIndex;
-            //window.SetLevelIndex(currentLevelIndex);
-
             this.window.ContinueButtonClicked += OnContinueButtonClicked;
             this.window.NewGameButtonClicked += OnNewGameButtonClicked;
             this.window.SettingsButtonClicked += OnSettingsButtonClicked;
             this.window.QuitGameButtonClicked += OnQuitGameButtonClicked;
-
             this.window.YesButtonClicked += OnYesButtonClicked;
             this.window.NoButtonClicked += OnNoButtonClicked;
-
-            warningPanel.SetActive(false);
+            this.window.CleanUped += OnCleanUped;
 
             progress = progressSaver.GetProgress();
 
             if (progress != null)
-                window.SetContinueButtonState(progress.HasSavedGame);
+            {
+                this.window.SetContinueButtonState(progress.HasSavedGame);
+                this.window.SetDifficultyInfoText((progress.DifficultyLevel + 1).ToString());
+            }
 
-            window.CleanUped += OnCleanUped;
+            warningPanel.SetActive(false);
         }
+
 
         private void OnCleanUped()
         {
@@ -79,14 +63,13 @@ namespace CodeBase.GamePlay.UI
             window.NewGameButtonClicked -= OnNewGameButtonClicked;
             window.SettingsButtonClicked -= OnSettingsButtonClicked;
             window.QuitGameButtonClicked -= OnQuitGameButtonClicked;
-
+            window.YesButtonClicked -= OnYesButtonClicked;
+            window.NoButtonClicked -= OnNoButtonClicked;
             window.CleanUped -= OnCleanUped;
         }
 
         private void OnContinueButtonClicked()
-        {
-            gameStateSwitcher.Enter<LoadNextLevelState>();
-        }
+            => gameStateSwitcher.Enter<LoadLevelState>();
 
         private void OnSettingsButtonClicked()
         {
@@ -99,13 +82,11 @@ namespace CodeBase.GamePlay.UI
         private void OnNewGameButtonClicked()
         {
             if (progress.HasSavedGame)
-            {
                 window.SetConfirmPanelState(window.ContainerPanel, window.ConfirmPanel, true);
-            }
             else
             {
                 Debug.Log("NEW GAME STARTED!");
-                gameStateSwitcher.Enter<LoadNextLevelState>();
+                gameStateSwitcher.Enter<LoadLevelState>();
             }
         }
 
@@ -115,27 +96,20 @@ namespace CodeBase.GamePlay.UI
             PlayerPrefs.Save();
 
             progressProvider.PlayerProgress.ResetProgress();
-
-            //window.SetLevelIndex(progressProvider.PlayerProgress.CurrentLevelIndex);
-            prototypePreviewLogic?.UpdatePreview();
-
             progressSaver.SaveProgress();
 
             Debug.Log("PROGRESS DELETED!");
             Debug.Log("NEW GAME STARTED!");
 
-            gameStateSwitcher.Enter<LoadNextLevelState>();
+            gameStateSwitcher.Enter<LoadLevelState>();
         }
 
         private void OnNoButtonClicked()
-        {
-            window.SetConfirmPanelState(window.ContainerPanel, window.ConfirmPanel, false);
-        }
+            => window.SetConfirmPanelState(window.ContainerPanel, window.ConfirmPanel, false);
 
         private void OnQuitGameButtonClicked()
         {
             OnCleanUped();
-
             Application.Quit();
         }
     }

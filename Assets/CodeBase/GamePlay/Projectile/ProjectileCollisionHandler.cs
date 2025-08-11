@@ -1,6 +1,8 @@
 using CodeBase.Configs;
 using CodeBase.Data;
 using CodeBase.GamePlay.Projectile.Installer;
+using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Projectile
@@ -14,6 +16,12 @@ namespace CodeBase.GamePlay.Projectile
         private ProjectileDestroyer destroyer;
         private ProjectileParent parent;
         private SphereCollider projectileCollider;
+
+        private IProgressProvider progressProvider;
+
+        [Inject]
+        public void Construct(IProgressProvider progressProvider)
+            => this.progressProvider = progressProvider;
 
         private void Start()
         {
@@ -45,6 +53,7 @@ namespace CodeBase.GamePlay.Projectile
         private void ProcessHit(Collider other, Vector3 hitPoint)
         {
             bool damageApplied = false;
+
             if (other.transform.root.TryGetComponent(out IHealth health))
             {
                 if (!damageApplied)
@@ -70,6 +79,7 @@ namespace CodeBase.GamePlay.Projectile
             if (!isPlayerProjectile)
             {
                 damage = Random.Range(config.MinDamage, config.MaxDamage);
+                damage = damage * config.DamageScalePerLevel * progressProvider.PlayerProgress.DifficultyLevel;
             }
         }
 

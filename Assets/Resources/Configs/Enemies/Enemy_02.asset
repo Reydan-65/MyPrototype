@@ -17,6 +17,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  DestroySFX: {fileID: 1828176872806910, guid: cfa6c51b05ae39448b555901be61797f, type: 3}
   EnemyID: 1
   MaxHitPoints: 250
   MovementSpeed: 2.5
@@ -35,3 +36,33 @@ MonoBehaviour:
     DropChance: 30
     MinAmount: 1
     MaxAmount: 2
+  DashDistance: 5
+  DashDuration: 0.3
+  DashCooldown: 5
+  AimDetectionAngle: 15
+  DetectionRange: 15
+  DashCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HealthScalePerLevel: 0.25

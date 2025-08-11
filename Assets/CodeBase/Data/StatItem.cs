@@ -6,10 +6,7 @@
         public int Level = 1;
         public float Value;
 
-        public StatItem(float value)
-        {
-            Value = value;
-        }
+        public StatItem(float value) => Value = value;
 
         public void SetDefault(float defaultValue)
         {

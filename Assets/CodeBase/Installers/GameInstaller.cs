@@ -29,7 +29,7 @@ namespace CodeBase.Infrastructure
         {
             container.RegisterSingle<IGameStateSwitcher, GameStateMachine>();
             container.RegisterSingle<GameBootStrapState>();
-            container.RegisterSingle<LoadNextLevelState>();
+            container.RegisterSingle<LoadLevelState>();
             container.RegisterSingle<LoadMainMenuState>();
         }
 

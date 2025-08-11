@@ -15,19 +15,23 @@ namespace CodeBase.GamePlay.UI
 
         public event UnityAction YesButtonClicked;
         public event UnityAction NoButtonClicked;
-        
+
         [Header("Panels")]
         [SerializeField] private GameObject containerPanel;
         [SerializeField] private GameObject confirmPanelPanel;
         public GameObject ContainerPanel => containerPanel;
         public GameObject ConfirmPanel => confirmPanelPanel;
 
+        [Header("Difficulty Info")]
+        [SerializeField] private TextMeshProUGUI difficultyInfoText;
+        public TextMeshProUGUI DifficultyInfoText => difficultyInfoText;
+
         [Header("Container Panel")]
         [SerializeField] private Button continueButton;
         [SerializeField] private Button newGameButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button quitGameButton;
-        
+
         [Header("Warning Panel")]
         [SerializeField] private Button yesButton;
         [SerializeField] private Button noButton;
@@ -45,20 +49,8 @@ namespace CodeBase.GamePlay.UI
             noButton.onClick.AddListener(() => NoButtonClicked?.Invoke());
         }
 
-        // Level
-        //public void SetDifficultyIndex(int index)
-        //{
-        //    levelIndex.text = Constants.PlayButtonPrefix + (index + 1).ToString();
-        //}
-
-        public void SetContinueButtonState(bool isActive)
-        {
-            continueButton.interactable = isActive;
-        }
-
-        protected override void OnClose()
-        {
-            Destroy(gameObject);
-        }
+        public void SetContinueButtonState(bool isActive) => continueButton.interactable = isActive;
+        public void SetDifficultyInfoText(string text) => difficultyInfoText.text = $"DIFFICULTY: {text}";
+        protected override void OnClose() => Destroy(gameObject);
     }
 }

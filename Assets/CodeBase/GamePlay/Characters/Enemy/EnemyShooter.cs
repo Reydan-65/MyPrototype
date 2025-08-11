@@ -21,10 +21,7 @@ namespace CodeBase.GamePlay.Enemies
         private IGameFactory gameFactory;
 
         [Inject]
-        public void Construct(IGameFactory gameFactory)
-        {
-            this.gameFactory = gameFactory;
-        }
+        public void Construct(IGameFactory gameFactory) => this.gameFactory = gameFactory;
 
         private void OnEnable()
         {
@@ -38,10 +35,7 @@ namespace CodeBase.GamePlay.Enemies
                 gameFactory.PrototypeCreated -= OnPrototypeCreated;
         }
 
-        private void OnPrototypeCreated()
-        {
-            SetTarget(gameFactory.PrototypeObject.transform);
-        }
+        private void OnPrototypeCreated() => SetTarget(gameFactory.PrototypeObject.transform);
 
         private void Update()
         {
@@ -59,7 +53,6 @@ namespace CodeBase.GamePlay.Enemies
             if (target == null) return false;
 
             Vector3 targetPosXZ = new Vector3(target.position.x, transform.position.y, target.position.z);
-
             float distanceToTarget = Vector3.Distance(transform.position, targetPosXZ);
             return distanceToTarget <= shootingRange;
         }

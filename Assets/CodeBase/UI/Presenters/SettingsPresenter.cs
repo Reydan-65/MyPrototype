@@ -12,12 +12,10 @@ namespace CodeBase.GamePlay.UI
         private SettingsWindow window;
 
         private IWindowsProvider windowsProvider;
-        private ISettingsSaver settingsSaver;
 
         public SettingsPresenter(IWindowsProvider windowsProvider, ISettingsSaver settingsSaver)
         {
             this.windowsProvider = windowsProvider;
-            this.settingsSaver = settingsSaver;
         }
 
         public override void SetWindow(SettingsWindow window)

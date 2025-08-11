@@ -33,7 +33,7 @@ namespace CodeBase.GamePlay.UI
         private void OnUpgradeStatsButtonClicked()
         {
             window.Close();
-            windowsProvider.Open(WindowID.UpgradeStatsWindow);
+            windowsProvider.Open(WindowID.UpgradesWindow);
         }
     }
 }

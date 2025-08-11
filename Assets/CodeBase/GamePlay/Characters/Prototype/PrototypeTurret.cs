@@ -4,7 +4,7 @@ using System;
 
 namespace CodeBase.GamePlay.Prototype
 {
-    public class PrototypeTurret : Turret, IProgressLoadHandler
+    public class PrototypeTurret : BaseTurret, IProgressLoadHandler
     {
         public event Action<bool> AimingStateChanged;
 

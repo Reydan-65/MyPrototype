@@ -32,10 +32,8 @@ namespace CodeBase.Infrastructure.Services.LevelStates
         public void EnterAsync()
         {
             activePersuersCount = 0;
-
             levelConfig = configProvider.GetLevelConfig(SceneManager.GetActiveScene().name);
             inventoryData = progressProvider.PlayerProgress.PrototypeInventoryData;
-
             gameFactory.PrototypeHealth.Depleted += OnPrototypeDie;
 
             SubscribeToEnemyEvents(persuer =>
@@ -46,10 +44,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             Debug.Log("LEVEL: Research state");
         }
 
-        public void Tick()
-        {
-            CheckVictory();
-        }
+        public void Tick() => CheckEnd();
 
         public void Exit()
         {
@@ -61,25 +56,16 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             });
         }
 
-        private void OnPrototypeDie()
+        private void OnPrototypeDie() => levelStateSwitcher.Enter<LevelDeathState>();
+        private void CheckEnd()
         {
-            levelStateSwitcher.Enter<LevelDeathState>();
-        }
-
-        private void CheckVictory()
-        {
-            //if (Vector3.Distance(gameFactory.PrototypeObject.transform.position, levelConfig.FinishPoint) < FinishPoint.Radius
-            //                     && inventoryData.HasKey)
-            //{
-            //    levelStateSwitcher.Enter<LevelVictoryState>();
-            //    inventoryData.HasKey = false;
-            //}
+            if (Vector3.Distance(gameFactory.PrototypeObject.transform.position, levelConfig.FinishPoint) < FinishPoint.Radius)
+                levelStateSwitcher.Enter<LevelEndState>();
         }
 
         private void OnPersuitTarget()
         {
             activePersuersCount++;
-
             levelStateSwitcher.Enter<LevelBattleState>();
         }
     }

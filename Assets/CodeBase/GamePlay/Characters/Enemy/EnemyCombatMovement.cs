@@ -48,9 +48,7 @@ namespace CodeBase.GamePlay.Enemies
             currentCombatPosition = target.position +  new Vector3(randomDirection.x,0,randomDirection.y) * radius;
 
             if (NavMesh.SamplePosition(currentCombatPosition, out NavMeshHit hit, radius, NavMesh.AllAreas))
-            {
                 currentCombatPosition = hit.position;
-            }
         }
     }
 }

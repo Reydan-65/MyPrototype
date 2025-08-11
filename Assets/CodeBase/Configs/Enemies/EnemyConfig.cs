@@ -9,8 +9,9 @@ namespace CodeBase.Configs
     [CreateAssetMenu(fileName = "EnemyConfig", menuName = "Configs/Enemy")]
     public class EnemyConfig : ScriptableObject
     {
-        [Header("Prefab")]
+        [Header("Prefabs")]
         public AssetReferenceGameObject PrefabReference;
+        public GameObject DestroySFX;
 
         [Header("Identificator")]
         public EnemyID EnemyID;
@@ -45,5 +46,8 @@ namespace CodeBase.Configs
         public float AimDetectionAngle = 15f;
         public float DetectionRange = 15f;
         public AnimationCurve DashCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
+
+        [Header("Difficulty Scaling")]
+        public float HealthScalePerLevel = 0.25f;
     }
 }

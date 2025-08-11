@@ -21,3 +21,4 @@ MonoBehaviour:
   Distance: 10
   MinDamage: 10
   MaxDamage: 20
+  DamageScalePerLevel: 0.5

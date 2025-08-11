@@ -8,6 +8,8 @@ namespace CodeBase.GamePlay.Spawners
     public class LootDistributor : MonoBehaviour
     {
         [SerializeField] private bool hasKey = false;
+        [SerializeField] private string keyID;
+        public string KeyID { get => keyID; set => keyID = value; }
 
         private EnemyConfig enemyConfig;
         private EnemyID enemyId;

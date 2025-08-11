@@ -25,19 +25,19 @@ namespace CodeBase.Infrastructure.Services
             this.progressProvider = progressProvider;
         }
 
-        public async Task DropLoot(Vector3 position, LootItemID lootType, int count = 1)
+        public async Task DropLoot(Vector3 position, LootItemID lootType, int count = 1, string keyID = null)
         {
             var tasks = new List<Task>();
 
             for (int i = 0; i < count; i++)
             {
-                tasks.Add(DropSingleLoot(position, lootType));
+                tasks.Add(DropSingleLoot(position, lootType, keyID));
             }
 
             await Task.WhenAll(tasks);
         }
 
-        private async Task DropSingleLoot(Vector3 position, LootItemID lootType)
+        private async Task DropSingleLoot(Vector3 position, LootItemID lootType, string keyID = null)
         {
             Vector2 randomOffset = Random.insideUnitCircle * DropRadius;
             Vector3 spawnPosition = position + new Vector3(randomOffset.x, DropHeight, randomOffset.y);
@@ -48,6 +48,8 @@ namespace CodeBase.Infrastructure.Services
                 lootItem.SetColliderEnabled(false);
                 lootItem.transform.position = spawnPosition;
                 lootItem.GenerateID();
+                if (lootItem.TryGetComponent(out KeyLoot key))
+                    key.KeyID = keyID;
 
                 await AnimateLootDrop(lootItem);
 

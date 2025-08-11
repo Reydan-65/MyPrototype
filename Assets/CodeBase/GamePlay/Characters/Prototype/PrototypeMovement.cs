@@ -103,8 +103,9 @@ namespace CodeBase.GamePlay.Prototype
         {
             Vector3 moveDirection = directionControl * movementSpeed;
             moveDirection.y = gravityHandler.VerticalVelocity.y;
-            
-            characterController.Move(moveDirection * Time.deltaTime);
+
+            if (characterController != null && characterController.enabled)
+                characterController.Move(moveDirection * Time.deltaTime);
         }
 
         public bool TryDash()

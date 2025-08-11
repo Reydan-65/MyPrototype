@@ -31,6 +31,12 @@ namespace CodeBase.GamePlay.Enemies
                 shooter.TargetFound += OnTargetFound;
         }
 
+        private void OnDestroy()
+        {
+            if (shooter != null)
+                shooter.TargetFound -= OnTargetFound;
+        }
+
         private void OnTargetFound()
         {
             if (target != null) return;
@@ -40,7 +46,8 @@ namespace CodeBase.GamePlay.Enemies
             target = shooter.Target;
             targetTurret = target.GetComponent<PrototypeTurret>();
 
-            Initialize(agent, health, target, targetTurret);
+            if (agent != null || health != null || target != null || targetTurret != null)
+                Initialize(agent, health, target, targetTurret);
         }
 
         public void Initialize(NavMeshAgent agent, IHealth health, Transform target, PrototypeTurret targetTurret)
@@ -70,11 +77,9 @@ namespace CodeBase.GamePlay.Enemies
 
             Vector3 toEnemy = transform.position - target.position;
             float distanceToEnemy = toEnemy.magnitude;
-
             if (distanceToEnemy > detectionRange) return;
 
             float angleToEnemy = Vector3.Angle(target.forward, toEnemy.normalized);
-
             if (angleToEnemy < aimDetectionAngle)
                 dashController.StartDash(CalculateDashDirection(toEnemy));
         }
@@ -88,15 +93,8 @@ namespace CodeBase.GamePlay.Enemies
             return -toEnemy.normalized;
         }
 
-        public void UpdateDash()
-        {
-            dashController.UpdateDash(Time.deltaTime, Vector3.zero);
-        }
-
-        public void UpdateCooldown()
-        {
-            dashController.UpdateCooldown(Time.deltaTime);
-        }
+        public void UpdateDash() => dashController.UpdateDash(Time.deltaTime, Vector3.zero);
+        public void UpdateCooldown() => dashController.UpdateCooldown(Time.deltaTime);
 
         public void InstallEnemyConfig(EnemyConfig config)
         {

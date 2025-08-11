@@ -1,4 +1,7 @@
 using CodeBase.Configs;
+using CodeBase.Data;
+using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 
 namespace CodeBase.GamePlay.Enemies
 {
@@ -8,17 +11,18 @@ namespace CodeBase.GamePlay.Enemies
         public void ApplyHeal(float amount) => ChangeValue(amount);
         public void SetInvulnerability(bool enable) => SetImmune(enable);
 
+        private IProgressProvider progressProvider;
+
+        [Inject]
+        public void Construct(IProgressProvider progressProvider)
+            => this.progressProvider = progressProvider;
+
         public void InstallEnemyConfig(EnemyConfig config)
         {
-            current = config.MaxHitPoints;
-            max = config.MaxHitPoints;
+            current = config.MaxHitPoints + (config.MaxHitPoints * config.HealthScalePerLevel* progressProvider.PlayerProgress.DifficultyLevel);
+            max = config.MaxHitPoints + (config.MaxHitPoints * config.HealthScalePerLevel * progressProvider.PlayerProgress.DifficultyLevel);
 
             InvokeChangedEvent();
         }
-
-        //public void ApplyCriticalDamage(float damage)
-        //{
-        //    ApplyDamage(damage * 1.5f);
-        //}
     }
 }

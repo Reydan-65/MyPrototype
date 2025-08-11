@@ -17,6 +17,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  DestroySFX: {fileID: 1828176872806910, guid: cfa6c51b05ae39448b555901be61797f, type: 3}
   EnemyID: 0
   MaxHitPoints: 100
   MovementSpeed: 4
@@ -64,3 +65,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  HealthScalePerLevel: 0.25

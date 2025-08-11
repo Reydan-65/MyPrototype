@@ -1,6 +1,5 @@
 ﻿using CodeBase.GamePlay.Projectile;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.Events;
 
 namespace CodeBase.Data
@@ -94,10 +93,6 @@ namespace CodeBase.Data
 
             var aStats = a.TypeStats;
             var bStats = b.TypeStats;
-
-           UnityEngine.Debug.Log("=== Comparing ProjectileStats ===");
-            UnityEngine.Debug.Log("A Stats: " + string.Join(", ", a.TypeStats.Select(x => $"{x.Key}:{x.Value.AverageDamage.Value}")));
-            UnityEngine.Debug.Log("B Stats: " + string.Join(", ", b.TypeStats.Select(x => $"{x.Key}:{x.Value.AverageDamage.Value}")));
 
             if (aStats.Count != bStats.Count) return false;
 

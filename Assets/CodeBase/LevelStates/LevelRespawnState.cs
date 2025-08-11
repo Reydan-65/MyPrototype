@@ -1,5 +1,5 @@
-using CodeBase.GamePlay;
 using CodeBase.Configs;
+using CodeBase.GamePlay;
 using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.UI;
 using CodeBase.GamePlay.UI.Services;
@@ -15,7 +15,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 {
     public class LevelRespawnState : LevelBaseState, IEnterableState
     {
-        private const float DELAY = 1f;
+        private const float DELAY = 2f;
 
         private PrototypeHealth prototypeHealth;
 
@@ -62,11 +62,12 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             string sceneName = SceneManager.GetActiveScene().name;
             LevelConfig levelConfig = configsProvider.GetLevelConfig(sceneName);
 
-
             await gameFactory.CreatePrototypeAsync(levelConfig.PrototypeSpawnPoint, Quaternion.identity);
             prototypeHealth = gameFactory.PrototypeObject.GetComponent<PrototypeHealth>();
             prototypeHealth.SetImmune(true);
             prototypeHealth.Initialize(prototypeHealth.Max);
+
+            MakeObjectStatic(gameFactory.PrototypeObject, true);
 
             gameFactory.FollowCamera.SetTarget(gameFactory.PrototypeObject.transform);
 
@@ -80,6 +81,8 @@ namespace CodeBase.Infrastructure.Services.LevelStates
         private IEnumerator SwitchStateDelay()
         {
             yield return new WaitForSeconds(DELAY);
+
+            MakeObjectStatic(gameFactory.PrototypeObject, false);
 
             inputService.Enable = true;
             prototypeHealth.SetImmune(false);
@@ -97,6 +100,14 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
             if (uiFactory.HUDPresenter != null && uiFactory.HUDWindow != null)
                 uiFactory.HUDPresenter.SetWindow(uiFactory.HUDWindow);
+        }
+
+        private void MakeObjectStatic(GameObject obj, bool isStatic)
+        {
+            obj.isStatic = isStatic;
+
+            if (obj.TryGetComponent<CharacterController>(out var controller))
+                controller.enabled = !isStatic;
         }
     }
 }

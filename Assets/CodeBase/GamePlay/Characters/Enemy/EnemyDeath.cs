@@ -1,4 +1,6 @@
+using CodeBase.Configs;
 using CodeBase.Data;
+using CodeBase.GamePlay.UI;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
 using System.Collections.Generic;
@@ -7,41 +9,36 @@ using UnityEngine;
 
 namespace CodeBase.GamePlay.Enemies
 {
-    public class EnemyDeath : MonoBehaviour
+    public class EnemyDeath : BaseDeath, IEnemyConfigInstaller
     {
-        [SerializeField] private GameObject visualModel;
-
-        private EnemyHealth enemyHealth;
+        private HealthBar healthBar;
         private EnemyInventory inventory;
+        private EnemyFollowToTarget follower;
+        private EnemyShooter shooter;
+        private EnemyTargetPersuer persuer;
+        private Collider enemyCollider;
         private ILootService lootService;
-        private IHealth health;
 
         [Inject]
-        public void Construct(ILootService lootService)
-        {
-            this.lootService = lootService;
+        public void Construct(ILootService lootService) => this.lootService = lootService;
 
+        protected override void Awake()
+        {
+            base.Awake();
             inventory = GetComponent<EnemyInventory>();
-            enemyHealth = GetComponent<EnemyHealth>();
-
-            health = enemyHealth.GetComponent<IHealth>();
-
-            if (health != null)
-                health.Depleted += OnDie;
+            healthBar = GetComponentInChildren<HealthBar>();
+            follower = GetComponent<EnemyFollowToTarget>();
+            shooter = GetComponent<EnemyShooter>();
+            persuer = GetComponent<EnemyTargetPersuer>();
+            enemyCollider = GetComponent<Collider>();
         }
 
-        private void OnDestroy()
+        protected override async void OnDie()
         {
-            if (health != null)
-                health.Depleted -= OnDie;
-        }
-
-        private async void OnDie()
-        {
-            Destroy(gameObject);
-
-            if (inventory != null)
-                await DropAllLoot();
+            gameFactory.CreateImpactEffectObjectFromPrefab(destroySFX, visualModel.transform.position, Quaternion.identity);
+            base.OnDie();
+            Destroy(healthBar.gameObject);
+            if (inventory != null) await DropAllLoot();
         }
 
         private async Task DropAllLoot()
@@ -57,9 +54,19 @@ namespace CodeBase.GamePlay.Enemies
                 lootTasks.Add(lootService.DropLoot(transform.position, LootItemID.HealingPotion, potionsAmount));
 
             if (inventory.HasKey())
-                lootTasks.Add(lootService.DropLoot(transform.position, LootItemID.Key));
+                lootTasks.Add(lootService.DropLoot(transform.position, LootItemID.Key, 1, inventory.KeyID));
 
             await Task.WhenAll(lootTasks);
         }
+
+        protected override void DisableComponents()
+        {
+            follower.enabled = false;
+            shooter.enabled = false;
+            persuer.enabled = false;
+            enemyCollider.enabled = false;
+        }
+
+        public void InstallEnemyConfig(EnemyConfig config) => destroySFX = config.DestroySFX;
     }
 }

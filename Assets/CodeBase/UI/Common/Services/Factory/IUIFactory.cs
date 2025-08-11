@@ -22,13 +22,13 @@ namespace CodeBase.GamePlay.UI.Services
         PauseWindow PauseWindow { get; set; }
         SettingsPresenter SettingsPresenter { get; set; }
         SettingsWindow SettingsWindow { get; set; }
-        LevelResultPresenter LevelResultPresenter { get; set; }
-        LevelResultWindow LevelResultWindow { get; set; }
+        EndGamePresenter EndGamePresenter { get; set; }
+        EndGameWindow EndGameWindow { get; set; }
 
         void CreateUIRoot();
 
         Task<MainMenuPresenter> CreateMainMenuWindowAsync(WindowConfig config);
-        Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config);
+        Task<EndGamePresenter> CreateLevelEndWindowAsync(WindowConfig config);
         Task<HUDPresenter> CreateHUDWindowAsync(WindowConfig config);
         Task<PausePresenter> CreatePauseWindowAsync(WindowConfig config);
 
@@ -41,8 +41,8 @@ namespace CodeBase.GamePlay.UI.Services
         Task<ShrinePresenter> CreateShrineWindowAsync(WindowConfig config);
         Task<ShrineItem> CreateShrineItemAsync();
 
-        Task<UpgradeStatsPresenter> CreateUpgradeStatsWindowAsync(WindowConfig config);
-        Task<UpgradeStatsItem> CreateUpgradeStatsItemAsync();
-        Task<UpgradeStatsHeaderItem> CreateUpgradeStatsHeaderItemAsync();
+        Task<UpgradesPresenter> CreateUpgradesWindowAsync(WindowConfig config);
+        Task<UpgradesItem> CreateUpgradesItemAsync();
+        Task<UpgradesHeaderItem> CreateUpgradesHeaderItemAsync();
     }
 }

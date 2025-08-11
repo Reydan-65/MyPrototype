@@ -43,8 +43,8 @@ namespace CodeBase.GamePlay.UI.Services
         public PauseWindow PauseWindow { get; set; }
         public SettingsPresenter SettingsPresenter { get; set; }
         public SettingsWindow SettingsWindow { get; set; }
-        public LevelResultPresenter LevelResultPresenter { get; set; }
-        public LevelResultWindow LevelResultWindow { get; set; }
+        public EndGamePresenter EndGamePresenter { get; set; }
+        public EndGameWindow EndGameWindow { get; set; }
 
         public async Task WarmUp()
         {
@@ -52,10 +52,10 @@ namespace CodeBase.GamePlay.UI.Services
             {
                 WindowID.MainMenuWindow,
                 WindowID.ShopWindow,
-                WindowID.VictoryWindow,
+                WindowID.EndGameWindow,
                 WindowID.DeathWindow,
                 WindowID.ShrineWindow,
-                WindowID.UpgradeStatsWindow,
+                WindowID.UpgradesWindow,
                 WindowID.HUDWindow,
                 WindowID.PauseWindow,
                 WindowID.SettingsWindow
@@ -74,11 +74,11 @@ namespace CodeBase.GamePlay.UI.Services
             await CreateWindowAsync<MainMenuWindow, MainMenuPresenter>(config);
 
         // Level Result
-        public async Task<LevelResultPresenter> CreateLevelResultWindowAsync(WindowConfig config)
+        public async Task<EndGamePresenter> CreateLevelEndWindowAsync(WindowConfig config)
         {
-            LevelResultPresenter = await CreateWindowAsync<LevelResultWindow, LevelResultPresenter>(config);
-            LevelResultWindow = LevelResultPresenter.GetWindow();
-            return LevelResultPresenter;
+            EndGamePresenter = await CreateWindowAsync<EndGameWindow, EndGamePresenter>(config);
+            EndGameWindow = EndGamePresenter.GetWindow();
+            return EndGamePresenter;
         }
 
         // HUD
@@ -116,12 +116,12 @@ namespace CodeBase.GamePlay.UI.Services
             await CreateUIItemAsync<ShrineItem>(AssetAddress.ShrineItemPath);
 
         // Upgrade Stats
-        public async Task<UpgradeStatsPresenter> CreateUpgradeStatsWindowAsync(WindowConfig config) =>
-            await CreateWindowAsync<UpgradeStatsWindow, UpgradeStatsPresenter>(config);
-        public async Task<UpgradeStatsItem> CreateUpgradeStatsItemAsync() =>
-            await CreateUIItemAsync<UpgradeStatsItem>(AssetAddress.UpgradeStatItemPath);
-        public async Task<UpgradeStatsHeaderItem> CreateUpgradeStatsHeaderItemAsync() =>
-            await CreateUIItemAsync<UpgradeStatsHeaderItem>(AssetAddress.UpgradeStatHeaderItemPath);
+        public async Task<UpgradesPresenter> CreateUpgradesWindowAsync(WindowConfig config) =>
+            await CreateWindowAsync<UpgradesWindow, UpgradesPresenter>(config);
+        public async Task<UpgradesItem> CreateUpgradesItemAsync() =>
+            await CreateUIItemAsync<UpgradesItem>(AssetAddress.UpgradesItemPath);
+        public async Task<UpgradesHeaderItem> CreateUpgradesHeaderItemAsync() =>
+            await CreateUIItemAsync<UpgradesHeaderItem>(AssetAddress.UpgradesHeaderItemPath);
 
         // Shop
         public async Task<SettingsPresenter> CreateSettingsWindowAsync(WindowConfig config)
@@ -155,8 +155,7 @@ namespace CodeBase.GamePlay.UI.Services
             GameObject prefab = await assetProvider.Load<GameObject>(config.PrefabReference);
             TWindow window = container.Instantiate(prefab).GetComponent<TWindow>();
             window.transform.SetParent(UIRoot);
-            if (config.Title != null)
-                window.SetTitle(config.Title);
+            if (config.Title != null) window.SetTitle(config.Title);
             TPresenter presenter = container.CreateAndInject<TPresenter>();
             presenter.SetWindow(window);
             return presenter;

@@ -7,11 +7,10 @@ namespace CodeBase.Data
     public class PlayerProgress
     {
         public bool HasSavedGame = false;
-        public int DifficultyIndex;
+        public int DifficultyLevel;
         public PrototypeStats PrototypeStats = new PrototypeStats();
         public ProjectileStats ProjectileStats = new ProjectileStats();
         public PrototypeInventoryData PrototypeInventoryData = new PrototypeInventoryData();
-        public PurchaseData PurchaseData = new PurchaseData();
         public PrototypeSkinID PrototypeSkinID;
 
         public List<string> PickedLootItems = new List<string>();
@@ -48,11 +47,10 @@ namespace CodeBase.Data
             var progress = new PlayerProgress();
 
             progress.HasSavedGame = false;
-            progress.DifficultyIndex = 0;
+            progress.DifficultyLevel = 0;
             progress.PrototypeStats = PrototypeStats.Default;
             progress.ProjectileStats = ProjectileStats.Default;
             progress.PrototypeInventoryData.SetDefaultInventoryData();
-            progress.PurchaseData = new PurchaseData();
             progress.PrototypeSkinID = PrototypeSkinID.BaseSkin;
 
             progress.PickedLootItems.Clear();
@@ -68,11 +66,10 @@ namespace CodeBase.Data
         public void CopyFrom(PlayerProgress progress)
         {
             HasSavedGame = progress.HasSavedGame;
-            DifficultyIndex = progress.DifficultyIndex;
+            DifficultyLevel = progress.DifficultyLevel;
             PrototypeStats.CopyFrom(progress.PrototypeStats);
             ProjectileStats.CopyFrom(progress.ProjectileStats);
             PrototypeInventoryData.CopyFrom(progress.PrototypeInventoryData);
-            //PurchaseData.CopyFrom(progress.PurchaseData);
             PrototypeSkinID = progress.PrototypeSkinID;
 
             PickedLootItems = new List<string>(progress.PickedLootItems);
@@ -80,10 +77,10 @@ namespace CodeBase.Data
             InteractiveValues = new List<bool>(progress.InteractiveStates.Values);
         }
 
-        public void ResetProgress()
-        {
-            CopyFrom(GetDefaultProgress());
-        }
+        public void ResetProgress() => CopyFrom(GetDefaultProgress());
+        public bool WasLootPicked(string id) => PickedLootItems.Contains(id);
+        public bool TryGetInteractiveState(string id, out bool state) => InteractiveStates.TryGetValue(id, out state);
+        public void ClearInteractiveStates() => InteractiveStates.Clear();
 
         // Picked Loot
         public void AddPickedLoot(string id)
@@ -92,24 +89,11 @@ namespace CodeBase.Data
                 PickedLootItems.Add(id);
         }
 
-        public bool WasLootPicked(string id) => PickedLootItems.Contains(id);
-
-        // Interactable Objects
-        public bool TryGetInteractiveState(string id, out bool state)
-        {
-            return InteractiveStates.TryGetValue(id, out state);
-        }
-
         public void SetInteractiveState(string id, bool state)
         {
             var current = InteractiveStates;
             current[id] = state;
             InteractiveStates = current;
-        }
-
-        public void ClearInteractiveStates()
-        {
-            InteractiveStates.Clear();
         }
     }
 }

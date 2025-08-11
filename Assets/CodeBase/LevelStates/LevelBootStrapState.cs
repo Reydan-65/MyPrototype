@@ -44,8 +44,6 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
         public async void EnterAsync()
         {
-            //Debug.Log("LEVEL: Init");
-
             progressSaver.ClearObjects();
 
             await gameFactory.WarmUp();
@@ -58,13 +56,9 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             followCamera.SetTarget(gameFactory.PrototypeObject.transform);
 
             cursorService.SetCamera(followCamera.GetComponentInChildren<Camera>());
-
-            //await gameFactory.CreateJoystickAsync();
-
             progressSaver.LoadProgress();
             lootService.CleanUpPickedLoot();
             windowsProvider.Open(WindowID.HUDWindow);
-
             inputService.Enable = true;
 
             levelStateSwitcher.Enter<LevelResearchState>();

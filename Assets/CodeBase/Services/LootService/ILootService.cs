@@ -7,7 +7,7 @@ namespace CodeBase.Infrastructure.Services
 {
     public interface ILootService : IService
     {
-        Task DropLoot(Vector3 position, LootItemID lootType, int count = 1);
+        Task DropLoot(Vector3 position, LootItemID lootType, int count = 1, string keyID = null);
         void CleanUp();
         void CleanUpPickedLoot();
         void SetPauseVisualEffects(bool isActive);

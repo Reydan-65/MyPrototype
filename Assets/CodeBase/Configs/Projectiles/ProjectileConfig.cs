@@ -24,6 +24,9 @@ namespace CodeBase.Configs
         public float MinDamage;
         public float MaxDamage;
 
+        [Header("Difficulty Scaling")]
+        public float DamageScalePerLevel = 0.25f;
+
         public float GetEnemyDamageSpread()
         {
             float damage = Random.Range(MinDamage, MaxDamage);

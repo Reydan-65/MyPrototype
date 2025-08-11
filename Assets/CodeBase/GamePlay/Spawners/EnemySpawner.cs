@@ -45,7 +45,10 @@ namespace CodeBase.GamePlay.Spawners
             {
                 lootDistributor.Initialize(configsProvider, enemyID);
                 if (enemy.TryGetComponent(out EnemyInventory inventory))
+                {
                     lootDistributor?.DistributeLoot(inventory);
+                    inventory.KeyID = lootDistributor.KeyID;
+                }
             }
 
             if (enemy.TryGetComponent(out EnemyShooter shooter))

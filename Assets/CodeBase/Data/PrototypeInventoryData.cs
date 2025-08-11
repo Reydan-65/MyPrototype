@@ -64,7 +64,6 @@ namespace CodeBase.Data
                 coinAmount += amount;
                 CoinValueChanged?.Invoke(coinAmount);
             }
-
         }
 
         public void AddHealingItem(LootItemID id, int amount, float healingValue)

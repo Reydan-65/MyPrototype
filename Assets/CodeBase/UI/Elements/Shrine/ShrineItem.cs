@@ -34,7 +34,7 @@ namespace CodeBase.GamePlay.UI
 
         private void OnItemButtonClicked()
         {
-            windowsProvider.Open(WindowID.UpgradeStatsWindow);
+            windowsProvider.Open(WindowID.UpgradesWindow);
         }
     }
 }

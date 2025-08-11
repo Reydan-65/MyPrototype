@@ -77,14 +77,10 @@ namespace CodeBase.GamePlay.Enemies
                 }
             }
             else
-            {
                 agent.destination = gameFactory.PrototypeObject.transform.position;
-            }
 
             if (agent.velocity.magnitude > 0.1f)
-            {
                 lastDirection = agent.velocity.normalized;
-            }
 
             visualTilt.UpdateTilt(lastDirection);
             firePointStabilizer.Stabilize();
@@ -101,9 +97,7 @@ namespace CodeBase.GamePlay.Enemies
         }
 
         private void InitializeCombatMovement()
-        {
-            combatMovement.Initialize(agent, gameFactory.PrototypeObject.transform, enemyConfig.CombatMoveRadius);
-        }
+            => combatMovement.Initialize(agent, gameFactory.PrototypeObject.transform, enemyConfig.CombatMoveRadius);
 
         private void InitializeDasher()
         {

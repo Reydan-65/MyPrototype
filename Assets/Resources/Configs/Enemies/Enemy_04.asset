@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9efa66fb95f974245b659c3bdaa28338, type: 3}
+  m_Name: Enemy_04
+  m_EditorClassIdentifier: 
+  PrefabReference:
+    m_AssetGUID: 75fab5869106a9446899b9fa1d7f6225
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  DestroySFX: {fileID: 1828176872806910, guid: cfa6c51b05ae39448b555901be61797f, type: 3}
+  EnemyID: 3
+  MaxHitPoints: 450
+  MovementSpeed: 4
+  StopDistance: 4
+  CombatMoveRadius: 5
+  CombatMoveInterval: 2
+  TurretType: 1
+  ShootingRate: 0.8
+  ShootingRange: 6
+  ShootingAngle: 10
+  CoinLoot:
+    DropChance: 50
+    MinAmount: 2
+    MaxAmount: 4
+  PotionLoot:
+    DropChance: 30
+    MinAmount: 1
+    MaxAmount: 2
+  DashDistance: 5
+  DashDuration: 0.3
+  DashCooldown: 5
+  AimDetectionAngle: 15
+  DetectionRange: 15
+  DashCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HealthScalePerLevel: 0.25

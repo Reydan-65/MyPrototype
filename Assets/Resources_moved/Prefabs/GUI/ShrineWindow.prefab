@@ -916,6 +916,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8042961854318513955}
     m_Modifications:
+    - target: {fileID: 143217345974574987, guid: 0456d19de7e1de04db8ae287d0bf295c, type: 3}
+      propertyPath: m_text
+      value: UPGRADES
+      objectReference: {fileID: 0}
+    - target: {fileID: 143217345974574987, guid: 0456d19de7e1de04db8ae287d0bf295c, type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 3926296189112195904, guid: 0456d19de7e1de04db8ae287d0bf295c, type: 3}
       propertyPath: m_Name
       value: ShrineItem

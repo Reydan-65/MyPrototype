@@ -9,6 +9,7 @@ namespace CodeBase.GamePlay.Enemies
         private bool hasKey = false;
         private int coinsAmount;
         private int healingPotions;
+        public string KeyID { get;set; }
 
         private void Start() => UpdateKeyInfo();
 

@@ -26,14 +26,14 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] private Transform parent;
         [SerializeField] private Scrollbar scrollbar;
 
-        private List<UpgradeStatsItem> statItems = new List<UpgradeStatsItem>();
+        private List<UpgradesItem> statItems = new List<UpgradesItem>();
         private ProjectileStats pendingProjectileStats;
 
-        private UpgradeStatsWindow window;
+        private UpgradesWindow window;
         private PrototypeStats pendingStats;
         private bool isInitialized;
 
-        public List<UpgradeStatsItem> StatItems => statItems;
+        public List<UpgradesItem> StatItems => statItems;
         public PrototypeStats PendingStats => pendingStats;
         public ProjectileStats PendingProjectileStats => pendingProjectileStats;
 
@@ -47,7 +47,7 @@ namespace CodeBase.GamePlay.UI
             this.progressProvider = progressProvider;
         }
 
-        public void Initialize(UpgradeStatsWindow window)
+        public void Initialize(UpgradesWindow window)
         {
             if (isInitialized) return;
 
@@ -135,20 +135,20 @@ namespace CodeBase.GamePlay.UI
             await CreateStatElementAsync("MOVE SPEED", pendingStats.MovementSpeed.Value, SPEEDBONUS, 3, pendingStats.MovementSpeed.Level);
             await CreateStatElementAsync("DASH RANGE", pendingStats.DashRange.Value, DASHRANGEBONUS, 4, pendingStats.DashRange.Level);
 
-            //foreach (ProjectileType type in Enum.GetValues(typeof(ProjectileType)))
-            //{
             await CreateHeaderElementAsync("TURRET PROJECTILE");
 
             var stats = pendingProjectileStats.GetStatsForType(ProjectileType.Bullet);
             await CreateStatElements(ProjectileType.Bullet, "DAMAGE", stats.AverageDamage.Value, PPROJECTILEDAMAGEBONUS, 2, stats.AverageDamage.Level);
             await CreateStatElements(ProjectileType.Bullet, "SPEED", stats.Speed.Value, PPROJECTILESPEEDBONUS, 3, stats.Speed.Level);
             await CreateStatElements(ProjectileType.Bullet, "RANGE", stats.Range.Value, PPROJECTILERANGEBONUS, 4, stats.Range.Level);
-            //}
+
+            await Task.Yield();
+            scrollbar.value = 1f;
         }
 
         private async Task CreateHeaderElementAsync(string headerText)
         {
-            var headerElement = await uiFactory.CreateUpgradeStatsHeaderItemAsync();
+            var headerElement = await uiFactory.CreateUpgradesHeaderItemAsync();
             if (headerElement == null) return;
 
             headerElement.transform.SetParent(parent, false);
@@ -160,7 +160,7 @@ namespace CodeBase.GamePlay.UI
 
         private async Task CreateStatElementAsync(string name, float baseValue, float bonus, int price, int currentLevel)
         {
-            var element = await uiFactory.CreateUpgradeStatsItemAsync();
+            var element = await uiFactory.CreateUpgradesItemAsync();
             if (element == null) return;
 
             element.transform.SetParent(parent, false);
@@ -172,7 +172,7 @@ namespace CodeBase.GamePlay.UI
 
         private async Task CreateStatElements(ProjectileType type, string name, float baseValue, float bonus, int price, int currentLevel)
         {
-            var element = await uiFactory.CreateUpgradeStatsItemAsync();
+            var element = await uiFactory.CreateUpgradesItemAsync();
             if (element == null) return;
 
             element.transform.SetParent(parent, false);

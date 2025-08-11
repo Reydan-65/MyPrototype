@@ -33,7 +33,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 32b75537b94d90b46b9200976e5e9ee4
-    m_Address: UpgradeStatsWindow
+    m_Address: UpgradesWindow
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 46a1004404a69de4f9c65370333f4e4a
-    m_Address: UpgradeStatHeaderItem
+    m_Address: UpgradesHeaderItem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -58,7 +58,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 72e8f389cfbd9c44ea664c360952f805
-    m_Address: VictoryWindow
+    m_Address: EndGameWindow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75fab5869106a9446899b9fa1d7f6225
+    m_Address: Enemy_04
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -78,7 +83,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9873e44602c8430489ce1d5f910b8348
-    m_Address: UpgradeStatItem
+    m_Address: UpgradesItem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -104,6 +109,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb6b5eb156fe054459de55c9c9a53a83
     m_Address: BaseSkin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5742542646ada6409f117d09c4b4c38
+    m_Address: Enemy_03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -8,7 +8,7 @@ namespace CodeBase.Infrastructure
         private ILevelStateSwitcher levelStateSwitcher;
         private LevelBootStrapState levelBootStrappState;
         private LevelResearchState levelResearchState;
-        private LevelVictoryState levelVictoryState;
+        private LevelEndState levelEndState;
         private LevelDeathState levelDeathState;
         private LevelBattleState levelCombatState;
         private LevelRespawnState levelRespawnState;
@@ -18,7 +18,7 @@ namespace CodeBase.Infrastructure
             ILevelStateSwitcher levelStateSwitcher,
             LevelBootStrapState levelBootStrappState,
             LevelResearchState levelResearchState,
-            LevelVictoryState levelVictoryState,
+            LevelEndState levelEndState,
             LevelDeathState levelDeathState,
             LevelBattleState levelCombatState,
             LevelRespawnState levelRespawnState)
@@ -26,7 +26,7 @@ namespace CodeBase.Infrastructure
             this.levelStateSwitcher = levelStateSwitcher;
             this.levelBootStrappState = levelBootStrappState;
             this.levelResearchState = levelResearchState;
-            this.levelVictoryState = levelVictoryState;
+            this.levelEndState = levelEndState;
             this.levelDeathState = levelDeathState;
             this.levelCombatState = levelCombatState;
             this.levelRespawnState = levelRespawnState;
@@ -38,7 +38,7 @@ namespace CodeBase.Infrastructure
         {
             levelStateSwitcher.AddState(levelBootStrappState);
             levelStateSwitcher.AddState(levelResearchState);
-            levelStateSwitcher.AddState(levelVictoryState);
+            levelStateSwitcher.AddState(levelEndState);
             levelStateSwitcher.AddState(levelDeathState);
             levelStateSwitcher.AddState(levelCombatState);
             levelStateSwitcher.AddState(levelRespawnState);

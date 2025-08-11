@@ -21,8 +21,8 @@ public class AssetAddress
     public static string ShrineItemPath = "ShrineItem";
 
     // UpgradeStat Item
-    public static string UpgradeStatItemPath = "UpgradeStatItem";
-    public static string UpgradeStatHeaderItemPath = "UpgradeStatHeaderItem";
+    public static string UpgradesItemPath = "UpgradesItem";
+    public static string UpgradesHeaderItemPath = "UpgradesHeaderItem";
 
     // Settings Item
     public static string SettingsItemPath = "SettingsItem";
