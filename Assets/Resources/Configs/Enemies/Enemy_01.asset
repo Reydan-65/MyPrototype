@@ -26,7 +26,7 @@ MonoBehaviour:
   CombatMoveInterval: 2
   TurretType: 1
   ShootingRate: 0.5
-  ShootingRange: 6
+  ShootingRange: 7
   ShootingAngle: 10
   CoinLoot:
     DropChance: 50

@@ -11,7 +11,7 @@ namespace CodeBase.GamePlay
         [SerializeField] private ProjectileType projectileType;
 
         protected TurretType turretType;
-        protected float shootingRate;
+        protected float fireRate;
         protected float timer;
 
         public bool IsFiring = false;
@@ -24,11 +24,11 @@ namespace CodeBase.GamePlay
 
         protected virtual void Update()
         {
-            if (timer >= shootingRate) timer = shootingRate;
+            if (timer >= fireRate) timer = fireRate;
             else timer += Time.deltaTime;
         }
 
-        public bool CanFire() => timer >= shootingRate;
+        public bool CanFire() => timer >= fireRate;
 
         public void Fire()
         {

@@ -23,7 +23,7 @@ namespace CodeBase.GamePlay.Projectile
         public void InstallProjectileConfig(ProjectileConfig config)
         {
             if (!isPlayerProjectile)
-                    movementSpeed = config.MovementSpeed;
+                    movementSpeed = config.Speed;
         }
 
         public void InstallProjectileStats(ProjectileTypeStats stats, bool isPlayerProjectile)

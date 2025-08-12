@@ -7,7 +7,7 @@ namespace CodeBase.GamePlay.Enemies
         public void InstallEnemyConfig(EnemyConfig config)
         {
             turretType = config.TurretType;
-            shootingRate = config.ShootingRate;
+            fireRate = config.ShootingRate;
         }
     }
 }

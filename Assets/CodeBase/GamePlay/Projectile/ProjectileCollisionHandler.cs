@@ -78,8 +78,8 @@ namespace CodeBase.GamePlay.Projectile
         {
             if (!isPlayerProjectile)
             {
-                damage = Random.Range(config.MinDamage, config.MaxDamage);
-                damage = damage * config.DamageScalePerLevel * progressProvider.PlayerProgress.DifficultyLevel;
+                damage = config.GetEnemyDamageSpread();
+                damage += damage * config.DamageScalePerLevel * progressProvider.PlayerProgress.DifficultyLevel;
             }
         }
 

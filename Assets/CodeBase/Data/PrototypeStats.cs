@@ -11,7 +11,7 @@ namespace CodeBase.Data
         public StatItem Energy = new StatItem(100f);
         public StatItem MovementSpeed = new StatItem(5f);
         public StatItem DashRange = new StatItem(6f);
-        public StatItem ShootingRate = new StatItem(0.5f);
+        public StatItem FireRate = new StatItem(0.5f);
 
         public static PrototypeStats Default => new PrototypeStats()
         {
@@ -19,7 +19,7 @@ namespace CodeBase.Data
             Energy = new StatItem(100f),
             MovementSpeed = new StatItem(5f),
             DashRange = new StatItem(6f),
-            ShootingRate = new StatItem(0.5f)
+            FireRate = new StatItem(0.5f)
         };
 
         public void IsChanged() => Changed?.Invoke();
@@ -30,7 +30,7 @@ namespace CodeBase.Data
             Energy.SetDefault(100f);
             MovementSpeed.SetDefault(5f);
             DashRange.SetDefault(6f);
-            ShootingRate.SetDefault(0.5f);
+            FireRate.SetDefault(0.5f);
         }
 
         public void CopyFrom(PrototypeStats data)
@@ -47,8 +47,8 @@ namespace CodeBase.Data
             DashRange.Level = data.DashRange.Level;
             DashRange.Value = data.DashRange.Value;
 
-            ShootingRate.Level = data.ShootingRate.Level;
-            ShootingRate.Value = data.ShootingRate.Value;
+            FireRate.Level = data.FireRate.Level;
+            FireRate.Value = data.FireRate.Value;
         }
 
         public static bool StatsAreEqual(PrototypeStats a, PrototypeStats b)
@@ -57,7 +57,7 @@ namespace CodeBase.Data
                    a.Energy.Value == b.Energy.Value &&
                    a.MovementSpeed.Value == b.MovementSpeed.Value &&
                    a.DashRange.Value == b.DashRange.Value &&
-                   a.ShootingRate.Value == b.ShootingRate.Value;
+                   a.FireRate.Value == b.FireRate.Value;
         }
 
         public int GetLevelForStat(string statName)
@@ -66,7 +66,7 @@ namespace CodeBase.Data
             {
                 case "HEALTH": return Health.Level;
                 case "ENERGY": return Energy.Level;
-                case "FIRE RATE": return ShootingRate.Level;
+                case "FIRE RATE": return FireRate.Level;
                 case "SPEED": return MovementSpeed.Level;
                 case "DASH RANGE": return DashRange.Level;
                 default: return 1;
@@ -79,7 +79,7 @@ namespace CodeBase.Data
             {
                 case "HEALTH": Health.Level = level; break;
                 case "ENERGY": Energy.Level = level; break;
-                case "FIRE RATE": ShootingRate.Level = level; break;
+                case "FIRE RATE": FireRate.Level = level; break;
                 case "SPEED": MovementSpeed.Level = level; break;
                 case "DASH RANGE": DashRange.Level = level; break;
             }

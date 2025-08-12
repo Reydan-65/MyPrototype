@@ -26,12 +26,12 @@ MonoBehaviour:
   CombatMoveInterval: 2
   TurretType: 1
   ShootingRate: 0.8
-  ShootingRange: 6
+  ShootingRange: 7
   ShootingAngle: 10
   CoinLoot:
     DropChance: 50
-    MinAmount: 2
-    MaxAmount: 4
+    MinAmount: 3
+    MaxAmount: 6
   PotionLoot:
     DropChance: 30
     MinAmount: 1

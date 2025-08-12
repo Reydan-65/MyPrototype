@@ -1,16 +1,28 @@
-//using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.GameStateMachine;
 using CodeBase.Infrastructure.Services.GameStates;
+using CodeBase.Infrastructure.Services.PlayerProgressProvider;
+using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 
 namespace CodeBase.GamePlay.UI
 {
     public class EndGamePresenter : WindowPresenterBase<EndGameWindow>
     {
-        private IGameStateSwitcher gameStateSwitcher;
         private EndGameWindow window;
 
-        public EndGamePresenter(IGameStateSwitcher gameStateSwitcher)
-            => this.gameStateSwitcher = gameStateSwitcher;
+        private IProgressProvider progressProvider;
+        private IProgressSaver progressSaver;
+        private IGameStateSwitcher gameStateSwitcher;
+
+        public EndGamePresenter(
+            IGameStateSwitcher gameStateSwitcher,
+            IProgressProvider progressProvider,
+            IProgressSaver progressSaver)
+        {
+            this.gameStateSwitcher = gameStateSwitcher;
+            this.progressProvider = progressProvider;
+            this.progressSaver = progressSaver;
+
+        }
 
         public override void SetWindow(EndGameWindow window)
         {
@@ -26,6 +38,9 @@ namespace CodeBase.GamePlay.UI
         }
 
         public EndGameWindow GetWindow() => window;
-        private void OnMenuButtonClicked() => gameStateSwitcher.Enter<LoadMainMenuState>();
+        private void OnMenuButtonClicked()
+        {
+            gameStateSwitcher.Enter<LoadMainMenuState>();
+        }
     }
 }

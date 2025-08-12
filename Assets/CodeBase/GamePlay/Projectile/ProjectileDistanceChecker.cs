@@ -36,7 +36,7 @@ namespace CodeBase.GamePlay.Projectile
         public void InstallProjectileConfig(ProjectileConfig config)
         {
             if (!isPlayerProjectile)
-                maxDistance = config.MaxDistance;
+                maxDistance = config.Range;
         }
 
         public void InstallProjectileStats(ProjectileTypeStats stats, bool isPlayerProjectile)

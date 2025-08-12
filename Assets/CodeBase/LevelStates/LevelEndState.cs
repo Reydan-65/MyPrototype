@@ -36,6 +36,9 @@ namespace CodeBase.Infrastructure.Services.LevelStates
 
             inputService.Enable = false;
             UpdateDifficultyLevel();
+
+            progressProvider.PlayerProgress.ClearObjectsStates();
+            progressSaver.ClearObjects();
             progressSaver.SaveProgress();
             windowsProvider.Open(WindowID.EndGameWindow);
         }

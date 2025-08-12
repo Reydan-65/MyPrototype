@@ -128,15 +128,15 @@ namespace CodeBase.GamePlay.UI
         private async void CreateStatElements()
         {
             await CreateHeaderElementAsync("PROTOTYPE");
-
             await CreateStatElementAsync("HEALTH", pendingStats.Health.Value, HEALTHBONUS, 1, pendingStats.Health.Level);
             await CreateStatElementAsync("ENERGY", pendingStats.Energy.Value, ENERGYBONUS, 2, pendingStats.Energy.Level);
-            await CreateStatElementAsync("FIRE RATE", pendingStats.ShootingRate.Value, -FIRERATEBONUS, 5, pendingStats.ShootingRate.Level);
             await CreateStatElementAsync("MOVE SPEED", pendingStats.MovementSpeed.Value, SPEEDBONUS, 3, pendingStats.MovementSpeed.Level);
             await CreateStatElementAsync("DASH RANGE", pendingStats.DashRange.Value, DASHRANGEBONUS, 4, pendingStats.DashRange.Level);
 
-            await CreateHeaderElementAsync("TURRET PROJECTILE");
+            await CreateHeaderElementAsync("TURRET");
+            await CreateStatElementAsync("FIRE RATE", pendingStats.FireRate.Value, -FIRERATEBONUS, 5, pendingStats.FireRate.Level);
 
+            await CreateHeaderElementAsync("TURRET PROJECTILE");
             var stats = pendingProjectileStats.GetStatsForType(ProjectileType.Bullet);
             await CreateStatElements(ProjectileType.Bullet, "DAMAGE", stats.AverageDamage.Value, PPROJECTILEDAMAGEBONUS, 2, stats.AverageDamage.Level);
             await CreateStatElements(ProjectileType.Bullet, "SPEED", stats.Speed.Value, PPROJECTILESPEEDBONUS, 3, stats.Speed.Level);
@@ -209,7 +209,7 @@ namespace CodeBase.GamePlay.UI
             {
                 case "HEALTH": return pendingStats.Health.Value;
                 case "ENERGY": return pendingStats.Energy.Value;
-                case "FIRE RATE": return pendingStats.ShootingRate.Value;
+                case "FIRE RATE": return pendingStats.FireRate.Value;
                 case "MOVE SPEED": return pendingStats.MovementSpeed.Value;
                 case "DASH RANGE": return pendingStats.DashRange.Value;
 
@@ -255,8 +255,8 @@ namespace CodeBase.GamePlay.UI
                         pendingStats.Energy.Level = item.CurrentLevel;
                         break;
                     case "FIRE RATE":
-                        pendingStats.ShootingRate.Value = item.CurrentValue;
-                        pendingStats.ShootingRate.Level = item.CurrentLevel;
+                        pendingStats.FireRate.Value = item.CurrentValue;
+                        pendingStats.FireRate.Level = item.CurrentLevel;
                         break;
                     case "MOVE SPEED":
                         pendingStats.MovementSpeed.Value = item.CurrentValue;
@@ -396,8 +396,7 @@ namespace CodeBase.GamePlay.UI
                 case "MOVE SPEED": return true;
                 case "DASH RANGE": return true;
                 default: return false;
-            }
-            ;
+            };
         }
     }
 }

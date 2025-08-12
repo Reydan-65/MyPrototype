@@ -24,12 +24,12 @@ namespace CodeBase.GamePlay.Prototype
 
         public void Initialize(float value)
         {
-            shootingRate = value;
+            fireRate = value;
         }
 
         public void LoadProgress(PlayerProgress progress)
         {
-            Initialize(progress.PrototypeStats.ShootingRate.Value);
+            Initialize(progress.PrototypeStats.FireRate.Value);
         }
     }
 }

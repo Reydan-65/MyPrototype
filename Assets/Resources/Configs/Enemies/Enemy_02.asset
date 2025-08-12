@@ -20,13 +20,13 @@ MonoBehaviour:
   DestroySFX: {fileID: 1828176872806910, guid: cfa6c51b05ae39448b555901be61797f, type: 3}
   EnemyID: 1
   MaxHitPoints: 250
-  MovementSpeed: 2.5
+  MovementSpeed: 3
   StopDistance: 4
   CombatMoveRadius: 5
   CombatMoveInterval: 2
   TurretType: 1
   ShootingRate: 1
-  ShootingRange: 6
+  ShootingRange: 7
   ShootingAngle: 10
   CoinLoot:
     DropChance: 50

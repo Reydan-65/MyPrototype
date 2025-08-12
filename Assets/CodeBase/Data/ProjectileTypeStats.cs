@@ -5,7 +5,7 @@
     {
         public StatItem AverageDamage = new StatItem(15f);
         public StatItem Speed = new StatItem(10f);
-        public StatItem Range = new StatItem(7f);
+        public StatItem Range = new StatItem(6f);
 
         public void SetDefaults(float baseDamage, float baseSpeed, float baseRange)
         {

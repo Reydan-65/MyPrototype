@@ -128,7 +128,7 @@ namespace CodeBase.UI.Elements
                     break;
                 case SettingItemID.Resolution:
                     slider.minValue = 0;
-                    slider.maxValue = Screen.resolutions.Length - 1;
+                    slider.maxValue = settings.SupportedResolutions.Count - 1;
                     slider.wholeNumbers = true;
                     slider.value = settings.ResolutionIndex;
                     break;
@@ -156,27 +156,32 @@ namespace CodeBase.UI.Elements
             {
                 case SettingItemID.FullScreen:
                     newSettings.IsFullscreen = value > 0.5f;
+                    newSettings.ApplySettings();
                     break;
                 case SettingItemID.Resolution:
                     newSettings.ResolutionIndex = Mathf.RoundToInt(value);
                     break;
                 case SettingItemID.GraphicsQuality:
                     newSettings.GraphicsQuality = Mathf.RoundToInt(value);
+                    newSettings.ApplySettings();
                     break;
                 case SettingItemID.MusicVolume:
                     newSettings.MusicVolume = value;
+                    newSettings.ApplySettings();
                     break;
                 case SettingItemID.SFXVolume:
                     newSettings.SfxVolume = value;
+                    newSettings.ApplySettings();
                     break;
             }
 
             newSettings.UpdateChangedState(currentSettings);
-            newSettings.ApplySettings();
             newSettings.IsChanged();
 
             UpdateAllItemsDisplay(newSettings);
         }
+
+        
 
         private void UpdateAllItemsDisplay(Settings settings)
         {
@@ -202,8 +207,9 @@ namespace CodeBase.UI.Elements
                     item.UpdateCurrentValue(settings.IsFullscreen ? "ON" : "OFF");
                     break;
                 case SettingItemID.Resolution:
-                    var resolutions = Screen.resolutions;
-                    item.UpdateCurrentValue($"{resolutions[settings.ResolutionIndex].width}x{resolutions[settings.ResolutionIndex].height}");
+                    int index = Mathf.Clamp(Mathf.RoundToInt(GetSettingValue(id, settings)), 0, settings.SupportedResolutions.Count - 1);
+                    var res = settings.SupportedResolutions[index];
+                    item.UpdateCurrentValue($"{res.x}x{res.y}");
                     break;
                 case SettingItemID.GraphicsQuality:
                     item.UpdateCurrentValue(QualitySettings.names[settings.GraphicsQuality]);

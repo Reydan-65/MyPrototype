@@ -80,7 +80,14 @@ namespace CodeBase.Data
         public void ResetProgress() => CopyFrom(GetDefaultProgress());
         public bool WasLootPicked(string id) => PickedLootItems.Contains(id);
         public bool TryGetInteractiveState(string id, out bool state) => InteractiveStates.TryGetValue(id, out state);
-        public void ClearInteractiveStates() => InteractiveStates.Clear();
+        public void ClearObjectsStates()
+        {
+            PickedLootItems.Clear();
+
+            InteractiveStates.Clear();
+            InteractiveValues.Clear();
+            InteractiveKeys.Clear();
+        }
 
         // Picked Loot
         public void AddPickedLoot(string id)

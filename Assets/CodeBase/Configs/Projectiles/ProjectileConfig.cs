@@ -15,12 +15,9 @@ namespace CodeBase.Configs
         [Header("Type")]
         public ProjectileType ProjectileType;
 
-        [Header("Movement")]
-        public float MovementSpeed;
-        public float MaxDistance;
-
-        [Header("Offensive")]
-        public float Distance;
+        [Header("Projectile Settings")]
+        public float Speed;
+        public float Range;
         public float MinDamage;
         public float MaxDamage;
 

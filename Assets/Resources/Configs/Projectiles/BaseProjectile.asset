@@ -16,9 +16,8 @@ MonoBehaviour:
   MissSFXPrefab: {fileID: 7710401144981938989, guid: b816a21ccd365d04eae699039a9c0861, type: 3}
   HitSFXPrefab: {fileID: 7710401144981938989, guid: a21ea693c90ff77479c95836caad337a, type: 3}
   ProjectileType: 0
-  MovementSpeed: 10
-  MaxDistance: 7
-  Distance: 10
+  Speed: 10
+  Range: 8
   MinDamage: 10
   MaxDamage: 20
   DamageScalePerLevel: 0.5

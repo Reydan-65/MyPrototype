@@ -52,6 +52,7 @@ namespace CodeBase.GamePlay.UI
             this.window.CleanUped += OnCleanUp;
             this.window.Container.PendingStats.Changed += UpdateButtonsState;
             this.window.Container.PendingProjectileStats.Changed += UpdateButtonsState;
+
             this.window.AcceptButton.interactable = false;
 
             OnNoButtonClicked();
@@ -80,7 +81,7 @@ namespace CodeBase.GamePlay.UI
         {
             gameFactory.PrototypeObject.GetComponent<PrototypeHealth>().Initialize(currentStats.Health.Value);
             gameFactory.PrototypeObject.GetComponent<PrototypeEnergy>().Initialize(currentStats.Energy.Value);
-            gameFactory.PrototypeObject.GetComponent<PrototypeTurret>().Initialize(currentStats.ShootingRate.Value);
+            gameFactory.PrototypeObject.GetComponent<PrototypeTurret>().Initialize(currentStats.FireRate.Value);
             gameFactory.PrototypeObject.GetComponent<PrototypeMovement>().Initialize(currentStats.MovementSpeed.Value, currentStats.DashRange.Value);
 
             progressProvider.PlayerProgress.PrototypeStats.IsChanged();

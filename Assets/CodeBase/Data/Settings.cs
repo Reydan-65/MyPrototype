@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace CodeBase.Data
@@ -7,6 +8,15 @@ namespace CodeBase.Data
     public class Settings
     {
         public event UnityAction Changed;
+
+        public List<Vector2Int> SupportedResolutions = new List<Vector2Int>
+        {
+            new Vector2Int(800, 600),
+            new Vector2Int(1024, 768),
+            new Vector2Int(1280, 720),
+            new Vector2Int(1920, 1080),
+            new Vector2Int(2560, 1440)
+        };
 
         public bool WasChanged;
 
@@ -26,7 +36,7 @@ namespace CodeBase.Data
 
             settings.HasSavedSettings = false;
             settings.IsFullscreen = true;
-            settings.ResolutionIndex = 20;
+            settings.ResolutionIndex = 3;
             settings.GraphicsQuality = 5;
             settings.MusicVolume = 10;
             settings.SfxVolume = 10;
@@ -47,8 +57,14 @@ namespace CodeBase.Data
         public void ApplySettings()
         {
             QualitySettings.SetQualityLevel(GraphicsQuality);
-            var resolution = Screen.resolutions[ResolutionIndex];
-            Screen.SetResolution(resolution.width, resolution.height, IsFullscreen);
+
+            if (ResolutionIndex >= 0 && ResolutionIndex < SupportedResolutions.Count)
+            {
+                var res = SupportedResolutions[ResolutionIndex];
+                Screen.SetResolution(res.x, res.y, IsFullscreen);
+            }
+            else
+                Screen.SetResolution(2560, 1440, IsFullscreen);
 
             // Музыка и звук
 
