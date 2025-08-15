@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -11,10 +12,15 @@ namespace CodeBase.GamePlay.UI
         public event UnityAction MainMenuButtonClicked;
         public event UnityAction QuitGameButtonClicked;
 
+        [Header("Difficulty Info")]
+        [SerializeField] private TextMeshProUGUI difficultyInfoText;
+
         [SerializeField] private Button continueButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button quitGameButton;
+
+        public TextMeshProUGUI DifficultyInfoText => difficultyInfoText;
 
         private void Start()
         {
@@ -24,9 +30,7 @@ namespace CodeBase.GamePlay.UI
             quitGameButton.onClick.AddListener(() => QuitGameButtonClicked?.Invoke());
         }
 
-        protected override void OnClose()
-        {
-            Destroy(gameObject);
-        }
+        public void SetDifficultyInfoText(string text) => difficultyInfoText.text = $"DIFFICULTY: {text}";
+        protected override void OnClose() => Destroy(gameObject);
     }
 }

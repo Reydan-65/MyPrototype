@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Audio
+  m_EditorClassIdentifier: 
+  m_GroupName: Audio
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 5ff2a639ff10bf545a2555e4df7306af
+  m_SerializeEntries:
+  - m_GUID: 0cc7d55501229084eb6fdcd20edfbfc7
+    m_Address: MainMenuMusic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f17160f682e3e34e9fe450043772b44
+    m_Address: ShootSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3401d7822d2815847a58d753087e1d8c
+    m_Address: GameplayMusic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3efd168ffab1a9f4db6edade08205531
+    m_Address: GateOpenSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3fe93a129da61bd4b8c9cd246e77ad61
+    m_Address: HitSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 498aee3f432f9e24ea87c7117f027afd
+    m_Address: TeleportationSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c1af5039dc2f274287661bc8516a335
+    m_Address: ClickButtonSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c1357717df393e4abe923d98acb6247
+    m_Address: PlatformButtonPressedSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac87a364ebf240541842c757775e625d
+    m_Address: PlatformIsActiveSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd9f4e623becd104eb905959082d4d78
+    m_Address: DashSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc707cd674b2d394cb25e8ab5cbb793e
+    m_Address: CoinPickupItemSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d9eaec08956fba04198d0d2594103f55
+    m_Address: ExplosionSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e2e67409e56453e47aa16cf6d0e0cdff
+    m_Address: KeyPickupItemSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e54ccbc250d4f1a408166c2ef0f1d2c6
+    m_Address: UsePotionSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef2b4a5936ec34e4792334da090c2f70
+    m_Address: PotionPickupItemSound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 31cfcaf5b6f1fa44383659d100055d59, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: de320f176884ab54598bb8b870601226, type: 2}
+    - {fileID: 11400000, guid: 484ab4342c79e8f4cbc19de0ddf053ce, type: 2}

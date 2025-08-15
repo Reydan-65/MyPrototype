@@ -1,5 +1,4 @@
 using CodeBase.Configs;
-using CodeBase.Data;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 

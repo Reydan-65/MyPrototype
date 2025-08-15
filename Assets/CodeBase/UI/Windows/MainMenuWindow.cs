@@ -1,4 +1,3 @@
-using CodeBase.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +11,7 @@ namespace CodeBase.GamePlay.UI
         public event UnityAction NewGameButtonClicked;
         public event UnityAction SettingsButtonClicked;
         public event UnityAction QuitGameButtonClicked;
+        public event UnityAction ResetGameButtonClicked;
 
         public event UnityAction YesButtonClicked;
         public event UnityAction NoButtonClicked;
@@ -31,6 +31,7 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] private Button newGameButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button quitGameButton;
+        [SerializeField] private Button resetGameButton;
 
         [Header("Warning Panel")]
         [SerializeField] private Button yesButton;
@@ -44,6 +45,7 @@ namespace CodeBase.GamePlay.UI
             newGameButton.onClick.AddListener(() => NewGameButtonClicked?.Invoke());
             settingsButton.onClick.AddListener(() => SettingsButtonClicked?.Invoke());
             quitGameButton.onClick.AddListener(() => QuitGameButtonClicked?.Invoke());
+            resetGameButton.onClick.AddListener(() => ResetGameButtonClicked?.Invoke());
 
             yesButton.onClick.AddListener(() => YesButtonClicked?.Invoke());
             noButton.onClick.AddListener(() => NoButtonClicked?.Invoke());

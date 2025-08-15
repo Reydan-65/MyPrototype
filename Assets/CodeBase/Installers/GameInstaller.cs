@@ -50,8 +50,6 @@ namespace CodeBase.Infrastructure
             container.RegisterSingle<IUIFactory, UIFactory>();
             container.RegisterSingle<ILootService, LootService>();
             container.RegisterSingle<IWindowsProvider, WindowsProvider>();
-            //container.RegisterSingle<IAdsService, AdsService>();
-            container.RegisterSingle<IIApService, IApService>();
             container.RegisterSingle<IHealingService, HealingService>();
             container.RegisterSingle<IEntityActivityController, EntityActivityController>();
         }

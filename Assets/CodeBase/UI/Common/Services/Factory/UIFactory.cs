@@ -2,7 +2,8 @@ using CodeBase.Configs;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.ConfigProvider;
-using CodeBase.Infrastructure.Services.SettingsSaver;
+using CodeBase.Sounds;
+using CodeBase.UI;
 using CodeBase.UI.Elements;
 using System;
 using System.Threading.Tasks;
@@ -20,18 +21,15 @@ namespace CodeBase.GamePlay.UI.Services
         private DIContainer container;
         private IAssetProvider assetProvider;
         private IConfigsProvider configProvider;
-        private ISettingsSaver settingsSaver;
 
         public UIFactory(
             DIContainer container,
             IAssetProvider assetProvider,
-            IConfigsProvider configProvider,
-            ISettingsSaver settingsSaver)
+            IConfigsProvider configProvider)
         {
             this.container = container;
             this.assetProvider = assetProvider;
             this.configProvider = configProvider;
-            this.settingsSaver = settingsSaver;
         }
 
         public Transform UIRoot { get; set; }
@@ -51,7 +49,6 @@ namespace CodeBase.GamePlay.UI.Services
             var windowConfigs = new[]
             {
                 WindowID.MainMenuWindow,
-                WindowID.ShopWindow,
                 WindowID.EndGameWindow,
                 WindowID.DeathWindow,
                 WindowID.ShrineWindow,
@@ -98,12 +95,6 @@ namespace CodeBase.GamePlay.UI.Services
             return PausePresenter;
         }
 
-        // Shop
-        public async Task<ShopPresenter> CreateShopWindowAsync(WindowConfig config) =>
-            await CreateWindowAsync<ShopWindow, ShopPresenter>(config);
-        public async Task<ShopItem> CreateShopItemAsync() =>
-            await CreateUIItemAsync<ShopItem>(AssetAddress.ShopItemPath);
-
         // Shrine
         public async Task<ShrinePresenter> CreateShrineWindowAsync(WindowConfig config)
         {
@@ -138,6 +129,11 @@ namespace CodeBase.GamePlay.UI.Services
                 var item = await CreateUIItemAsync<SettingsItem>(AssetAddress.SettingsItemPath);
                 if (item == null)
                     Debug.LogError("SettingsItem prefab is null!");
+
+                UIClickSound[] clickSounds = item.GetComponentsInChildren<UIClickSound>();
+                if (clickSounds != null && clickSounds.Length > 0)
+                    foreach (var clickSound in clickSounds)
+                        clickSound.SetWindow(SettingsWindow);
                 return item;
             }
             catch (Exception e)
@@ -158,6 +154,8 @@ namespace CodeBase.GamePlay.UI.Services
             if (config.Title != null) window.SetTitle(config.Title);
             TPresenter presenter = container.CreateAndInject<TPresenter>();
             presenter.SetWindow(window);
+            window.SetSFXPlayer(FindSFXPlayer());
+            presenter.AssignWindowToClickSounds(window);
             return presenter;
         }
 
@@ -181,6 +179,15 @@ namespace CodeBase.GamePlay.UI.Services
                 targetTransform.anchoredPosition = Vector2.zero;
                 targetTransform.sizeDelta = sourceTransform.sizeDelta;
             }
+        }
+
+        private SFXPlayer FindSFXPlayer()
+        {
+            MusicPlayer mp = GameObject.FindObjectOfType<MusicPlayer>();
+            if (mp == null) return null;
+            SFXPlayer sfxPlayer = mp.GetComponent<SFXPlayer>();
+            if (sfxPlayer == null) return null;
+            return sfxPlayer;
         }
     }
 }

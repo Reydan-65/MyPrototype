@@ -22,14 +22,7 @@ namespace CodeBase.GamePlay.Prototype
             }
         }
 
-        public void Initialize(float value)
-        {
-            fireRate = value;
-        }
-
-        public void LoadProgress(PlayerProgress progress)
-        {
-            Initialize(progress.PrototypeStats.FireRate.Value);
-        }
+        public void Initialize(float value) =>fireRate = value;
+        public void LoadProgress(PlayerProgress progress) => Initialize(progress.PrototypeStats.FireRate.Value);
     }
 }

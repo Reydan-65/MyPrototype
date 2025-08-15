@@ -1,4 +1,3 @@
-using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +5,9 @@ namespace CodeBase.GamePlay.UI
 {
     public class HUDWindow : WindowBase
     {
+        [SerializeField] private Animator controlsAnimator;
+        public Animator ControlsAnimator => controlsAnimator;
+
         [SerializeField] private HealthBar healthBar;
         public HealthBar HealthBar => healthBar;
 

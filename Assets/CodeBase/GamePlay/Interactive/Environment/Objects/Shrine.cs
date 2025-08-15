@@ -2,7 +2,6 @@ using CodeBase.Infrastructure.Services;
 using CodeBase.GamePlay.UI;
 using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.DependencyInjection;
-using UnityEngine;
 using CodeBase.Infrastructure.Services.Factory;
 
 namespace CodeBase.GamePlay.Interactive

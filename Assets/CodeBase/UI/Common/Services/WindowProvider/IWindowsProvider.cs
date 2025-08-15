@@ -7,6 +7,5 @@ namespace CodeBase.GamePlay.UI.Services
         WindowID SourceWindowID {  get; }
         void Open(WindowID id);
         void SetSourceWindow(WindowID id);
-
     }
 }

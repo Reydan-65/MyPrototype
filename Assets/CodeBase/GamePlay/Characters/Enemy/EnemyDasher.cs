@@ -1,5 +1,8 @@
 using CodeBase.Configs;
 using CodeBase.GamePlay.Prototype;
+using CodeBase.Infrastructure.AssetManagment;
+using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Sounds;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +10,8 @@ namespace CodeBase.GamePlay.Enemies
 {
     public class EnemyDasher : MonoBehaviour, IEnemyConfigInstaller
     {
+        public SFXEvent PlaySFX;
+
         private float dashDistance;
         private float dashDuration;
         private float dashCooldown;
@@ -22,6 +27,11 @@ namespace CodeBase.GamePlay.Enemies
         private DashController dashController;
 
         public bool IsDashing => dashController?.IsDashing ?? false;
+
+        private IAssetProvider assetProvider;
+
+        [Inject]
+        public void Construct(IAssetProvider assetProvider) => this.assetProvider = assetProvider;
 
         private void Awake()
         {
@@ -68,7 +78,7 @@ namespace CodeBase.GamePlay.Enemies
             );
         }
 
-        public void TryDashIfAimed()
+        public async void TryDashIfAimed()
         {
             if (Time.frameCount % 2 != 0) return;
 
@@ -81,7 +91,11 @@ namespace CodeBase.GamePlay.Enemies
 
             float angleToEnemy = Vector3.Angle(target.forward, toEnemy.normalized);
             if (angleToEnemy < aimDetectionAngle)
+            {
+                PlaySFX?.Invoke(await assetProvider.Load<AudioClip>(AssetAddress.DashSound), 1, 1, 1);
+
                 dashController.StartDash(CalculateDashDirection(toEnemy));
+            }
         }
 
         private Vector3 CalculateDashDirection(Vector3 toEnemy)

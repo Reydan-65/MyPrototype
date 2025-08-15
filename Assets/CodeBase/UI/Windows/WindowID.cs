@@ -6,12 +6,11 @@
         MainMenuWindow = 1,
         EndGameWindow = 2,
         DeathWindow = 3,
-        ShopWindow = 4,
-        ShrineWindow = 5,
-        UpgradesWindow = 6,
-        HUDWindow = 7,
-        PauseWindow = 8,
-        SettingsWindow = 9
+        ShrineWindow = 4,
+        UpgradesWindow = 5,
+        HUDWindow = 6,
+        PauseWindow = 7,
+        SettingsWindow = 8
     }
 
 }

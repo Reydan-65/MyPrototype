@@ -1,6 +1,5 @@
 ﻿using CodeBase.Data;
 using CodeBase.Infrastructure.DependencyInjection;
-using UnityEngine;
 
 namespace CodeBase.Infrastructure.Services.SettingsSaver
 {

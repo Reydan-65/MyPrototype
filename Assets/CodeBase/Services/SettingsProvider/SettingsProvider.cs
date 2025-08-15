@@ -5,6 +5,11 @@ namespace CodeBase.Infrastructure.Services.SettingsProvider
 {
     public class SettingsProvider : ISettingsProvider, IDisposable
     {
+        public event Action Initialized;
+
+        private bool isInitialized;
+        public bool IsInitialized => isInitialized;
+
         private Settings settings;
         public Settings Settings
         {
@@ -13,14 +18,14 @@ namespace CodeBase.Infrastructure.Services.SettingsProvider
             {
                 if (value == null) return;
 
+                if (!isInitialized)
+                    Initialized?.Invoke();
+
                 settings = value;
                 settings?.IsChanged();
             }
         }
 
-        public void Dispose()
-        {
-            Settings = null;
-        }
+        public void Dispose() => Settings = null;
     }
 }

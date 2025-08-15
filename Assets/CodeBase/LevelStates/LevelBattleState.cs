@@ -37,15 +37,8 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             });
         }
 
-        private void OnPrototypeDie()
-        {
-            levelStateSwitcher.Enter<LevelDeathState>();
-        }
-
-        private void OnPersuitTarget()
-        {
-            activePersuersCount++;
-        }
+        private void OnPrototypeDie() => levelStateSwitcher.Enter<LevelDeathState>();
+        private void OnPersuitTarget() => activePersuersCount++;
 
         private void OnLostTarget()
         {

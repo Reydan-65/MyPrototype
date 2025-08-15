@@ -61,9 +61,7 @@ namespace CodeBase.GamePlay.Prototype
         }
 
         private void UpdatePrototypeStats()
-        {
-            PrototypeStats = progressProvider.PlayerProgress.PrototypeStats;
-        }
+            => PrototypeStats = progressProvider.PlayerProgress.PrototypeStats;
 
         private void UpdateProjectileStats()
         {

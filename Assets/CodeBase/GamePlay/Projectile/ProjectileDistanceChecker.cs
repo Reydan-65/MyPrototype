@@ -20,10 +20,7 @@ namespace CodeBase.GamePlay.Projectile
             destroyer = GetComponent<ProjectileDestroyer>();
         }
 
-        private void Update()
-        {
-            CheckDistance();
-        }
+        private void Update() => CheckDistance();
 
         private void CheckDistance()
         {

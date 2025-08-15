@@ -46,12 +46,14 @@ namespace CodeBase.GamePlay.Enemies
 
             if (isInRange && !hasTarget)
                 StartPersuit();
-            else if (!isInRange && hasTarget)
+            else if (!isInRange && hasTarget || gameFactory.PrototypeObject.GetComponent<IHealth>().Current == 0)
                 StopPersuit();
         }
 
         private void StartPersuit()
         {
+            if (gameFactory.PrototypeObject.GetComponent<IHealth>().Current == 0) return;
+
             followToTarget.enabled = true;
             callAssist.CallAssistToPersuitTarget(viewDistance);
             hasTarget = true;

@@ -19,6 +19,7 @@ namespace CodeBase.GamePlay.UI
         {
             this.window = window;
             this.window.LockImage.fillAmount = 0;
+            this.window.ControlsAnimator.enabled = true;
             UpdateResourcesDisplay();
         }
 

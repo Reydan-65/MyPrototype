@@ -15,15 +15,14 @@ namespace CodeBase.UI.Elements
     {
         [SerializeField] private Transform parent;
 
-        private Settings currentSettings;
+        private SettingsWindow window;
         private Settings newSettings;
         private List<SettingsItem> items = new List<SettingsItem>();
 
-        public Settings CurrentSettings => currentSettings;
-        public Settings NewSettings => newSettings;
-
         private bool settingsInitialized = false;
         private bool isInitialized;
+
+        public Settings NewSettings => newSettings;
 
         private IUIFactory uiFactory;
         private ISettingsSaver settingsSaver;
@@ -42,6 +41,7 @@ namespace CodeBase.UI.Elements
 
         public void Initialize()
         {
+            window = GetComponent<SettingsWindow>();
             if (isInitialized) return;
 
             isInitialized = true;
@@ -54,7 +54,7 @@ namespace CodeBase.UI.Elements
 
             UpdateElements();
             InitializeSettings();
-            UpdateAllItemsDisplay(currentSettings);
+            UpdateAllItemsDisplay(settingsProvider.Settings);
         }
 
         private void OnDestroy()
@@ -75,14 +75,8 @@ namespace CodeBase.UI.Elements
 
             var savedSettings = settingsSaver.GetSettings();
 
-            if (savedSettings == null)
-                savedSettings = Settings.GetDefaultSettings();
-
-            currentSettings = new Settings();
-            currentSettings.CopyFrom(savedSettings);
-
             newSettings = new Settings();
-            newSettings.CopyFrom(savedSettings);
+            newSettings.CopyFrom(settingsProvider.Settings);
 
             settingsInitialized = true;
         }
@@ -105,7 +99,7 @@ namespace CodeBase.UI.Elements
         private void InitializeItem(SettingsItem item, SettingItemID id, Settings settings)
         {
             item.Initialize(id, GetTitleForSetting(id));
-
+            item.SetWindow(window);
             Slider slider = item.GetSettingSlider();
 
             if (slider != null)
@@ -143,14 +137,24 @@ namespace CodeBase.UI.Elements
                     slider.minValue = 0;
                     slider.maxValue = 10;
                     slider.wholeNumbers = true;
-                    slider.value = Mathf.RoundToInt(GetSettingValue(id, settings) * 10);
+                    slider.value = Mathf.RoundToInt(GetSettingValue(id, settings));
                     break;
             }
         }
 
         private void OnSliderValueChanged(SettingItemID id, float value)
         {
-            if (currentSettings == null || newSettings == null) return;
+            if (newSettings == null) return;
+
+            foreach (var item in items)
+            {
+                if (item.ID == id)
+                {
+                    var sound = item.GetComponentInChildren<UIClickSound>();
+                    sound?.PlaySound();
+                    break;
+                }
+            }
 
             switch (id)
             {
@@ -170,18 +174,16 @@ namespace CodeBase.UI.Elements
                     newSettings.ApplySettings();
                     break;
                 case SettingItemID.SFXVolume:
-                    newSettings.SfxVolume = value;
+                    newSettings.SFXVolume = value;
                     newSettings.ApplySettings();
                     break;
             }
 
-            newSettings.UpdateChangedState(currentSettings);
+            newSettings.UpdateChangedState(settingsProvider.Settings);
             newSettings.IsChanged();
-
+            
             UpdateAllItemsDisplay(newSettings);
         }
-
-        
 
         private void UpdateAllItemsDisplay(Settings settings)
         {
@@ -229,7 +231,7 @@ namespace CodeBase.UI.Elements
                 SettingItemID.Resolution => settings.ResolutionIndex,
                 SettingItemID.GraphicsQuality => settings.GraphicsQuality,
                 SettingItemID.MusicVolume => settings.MusicVolume,
-                SettingItemID.SFXVolume => settings.SfxVolume,
+                SettingItemID.SFXVolume => settings.SFXVolume,
                 _ => 0
             };
         }
@@ -256,11 +258,11 @@ namespace CodeBase.UI.Elements
 
         public void ApplyChanges()
         {
-            if (currentSettings == null || newSettings == null) return;
+            if (newSettings == null) return;
 
-            currentSettings.CopyFrom(newSettings);
-            currentSettings.ApplySettings();
-            settingsSaver.SaveSettings(currentSettings);
+            settingsProvider.Settings.CopyFrom(newSettings);
+            settingsProvider.Settings.ApplySettings();
+            settingsSaver.SaveSettings(settingsProvider.Settings);
         }
 
         public void ResetToDefaults()
@@ -269,7 +271,7 @@ namespace CodeBase.UI.Elements
 
             var defaultSettings = Settings.GetDefaultSettings();
             newSettings.CopyFrom(defaultSettings);
-            newSettings.WasChanged = !Settings.SettingsAreEqual(newSettings, currentSettings);
+            newSettings.WasChanged = !Settings.SettingsAreEqual(newSettings, settingsProvider.Settings);
             newSettings.ApplySettings();
 
             UpdateAllItemsDisplay(newSettings);
@@ -277,9 +279,9 @@ namespace CodeBase.UI.Elements
 
         public void RevertChanges()
         {
-            if (newSettings == null || currentSettings == null) return;
+            if (newSettings == null) return;
 
-            newSettings.CopyFrom(currentSettings);
+            newSettings.CopyFrom(settingsProvider.Settings);
             settingsSaver.SaveSettings(newSettings);
             newSettings.ApplySettings();
             newSettings.WasChanged = false;

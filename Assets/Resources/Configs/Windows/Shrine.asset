@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c637081698cd7a428fd1ae891da92ba, type: 3}
   m_Name: Shrine
   m_EditorClassIdentifier: 
-  WindowID: 5
+  WindowID: 4
   Title: SHRINE
   PrefabReference:
     m_AssetGUID: 8a00d5799ca5edd4581068f67dbc1023

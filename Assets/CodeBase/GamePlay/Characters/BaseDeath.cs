@@ -1,11 +1,15 @@
+using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.Factory;
+using CodeBase.Sounds;
 using UnityEngine;
 
 namespace CodeBase.GamePlay
 {
     public class BaseDeath : MonoBehaviour
     {
+        public SFXEvent PlaySFX;
+
         [Header("Destroy Effect Settings")]
         [SerializeField] protected GameObject destroySFX;
         [SerializeField] protected Transform visualModel;
@@ -18,9 +22,17 @@ namespace CodeBase.GamePlay
         protected Transform[] parts;
 
         protected IGameFactory gameFactory;
+        protected IAssetProvider assetProvider;
+
         [Inject]
-        public void Construct(IGameFactory gameFactory) => this.gameFactory = gameFactory;
-        
+        public void Construct(
+            IGameFactory gameFactory,
+            IAssetProvider assetProvider)
+        {
+            this.gameFactory = gameFactory;
+            this.assetProvider = assetProvider;
+        }
+
         protected virtual void Awake()
         {
             health = gameObject.GetComponent<IHealth>();
@@ -28,12 +40,16 @@ namespace CodeBase.GamePlay
         }
 
         protected void Start() => health.Depleted += OnDie;
-        protected void OnDestroy() =>health.Depleted -= OnDie;
+        protected void OnDestroy() => health.Depleted -= OnDie;
 
-        protected virtual void OnDie()
+        protected virtual async void OnDie()
         {
             DisableComponents();
             ScatterParts();
+
+            gameFactory.CreateImpactEffectObjectFromPrefab(destroySFX, visualModel.transform.position, Quaternion.identity);
+            PlaySFX?.Invoke(await assetProvider.Load<AudioClip>(AssetAddress.ExplosionSound), 1.25f, 1, 1);
+
             Destroy(gameObject, destroyDelay);
         }
 
@@ -66,7 +82,6 @@ namespace CodeBase.GamePlay
                 }
 
                 parts[i].SetParent(null);
-
                 Destroy(parts[i].gameObject, Random.Range(destroyDelay * 0.5f, destroyDelay * 1.5f));
             }
         }

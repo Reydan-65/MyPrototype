@@ -17,6 +17,7 @@ namespace CodeBase.GamePlay.Enemies
         private EnemyShooter shooter;
         private EnemyTargetPersuer persuer;
         private Collider enemyCollider;
+
         private ILootService lootService;
 
         [Inject]
@@ -35,7 +36,6 @@ namespace CodeBase.GamePlay.Enemies
 
         protected override async void OnDie()
         {
-            gameFactory.CreateImpactEffectObjectFromPrefab(destroySFX, visualModel.transform.position, Quaternion.identity);
             base.OnDie();
             Destroy(healthBar.gameObject);
             if (inventory != null) await DropAllLoot();

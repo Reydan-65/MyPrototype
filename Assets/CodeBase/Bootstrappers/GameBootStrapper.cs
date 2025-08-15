@@ -8,7 +8,7 @@ namespace CodeBase.Infrastructure
     {
         private IGameStateSwitcher gameStateSwitcher;
         private GameBootStrapState gameBootStrappState;
-        private LoadLevelState loadNextLevelState;
+        private LoadLevelState loadLevelState;
         private LoadMainMenuState loadMainMenuState;
 
         [Inject]
@@ -20,7 +20,7 @@ namespace CodeBase.Infrastructure
         {
             this.gameStateSwitcher = gameStateSwitcher;
             this.gameBootStrappState = gameBootStrappState;
-            this.loadNextLevelState = loadLevelState;
+            this.loadLevelState = loadLevelState;
             this.loadMainMenuState = loadMainMenuState;
         }
 
@@ -29,7 +29,7 @@ namespace CodeBase.Infrastructure
         private void InitGameStateMachine()
         {
             gameStateSwitcher.AddState(gameBootStrappState);
-            gameStateSwitcher.AddState(loadNextLevelState);
+            gameStateSwitcher.AddState(loadLevelState);
             gameStateSwitcher.AddState(loadMainMenuState);
 
             gameStateSwitcher.Enter<GameBootStrapState>();

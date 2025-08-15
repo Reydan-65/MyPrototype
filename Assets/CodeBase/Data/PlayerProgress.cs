@@ -89,6 +89,28 @@ namespace CodeBase.Data
             InteractiveKeys.Clear();
         }
 
+        public bool IsDefaultProgress()
+        {
+            var defaultProgress = GetDefaultProgress();
+
+            if (DifficultyLevel != defaultProgress.DifficultyLevel)
+                return false;
+
+            if (!PrototypeStats.Equals(defaultProgress.PrototypeStats) ||
+                !ProjectileStats.Equals(defaultProgress.ProjectileStats))
+                return false;
+
+            if (!PrototypeInventoryData.Equals(defaultProgress.PrototypeInventoryData))
+                return false;
+
+            if (PickedLootItems.Count != 0 ||
+                InteractiveKeys.Count != 0 ||
+                InteractiveValues.Count != 0)
+                return false;
+
+            return true;
+        }
+
         // Picked Loot
         public void AddPickedLoot(string id)
         {

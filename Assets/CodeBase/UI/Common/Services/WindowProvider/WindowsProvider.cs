@@ -30,9 +30,6 @@ namespace CodeBase.GamePlay.UI.Services
             if (id == WindowID.MainMenuWindow)
                 factory.CreateMainMenuWindowAsync(config);
 
-            if (id == WindowID.ShopWindow)
-                factory.CreateShopWindowAsync(config);
-
             if (id == WindowID.ShrineWindow)
                 factory.CreateShrineWindowAsync(config);
 

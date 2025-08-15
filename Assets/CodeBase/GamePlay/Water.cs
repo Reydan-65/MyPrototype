@@ -1,4 +1,3 @@
-using CodeBase.Infrastructure.DependencyInjection;
 using UnityEngine;
 
 namespace CodeBase.GamePlay

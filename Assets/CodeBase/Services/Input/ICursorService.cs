@@ -7,9 +7,8 @@ namespace CodeBase.Infrastructure.Services
     {
         bool IsVisible { get; set; }
         Vector2 ScreenPosition { get; }
-        //Vector2 WorldPosition { get; }
-        void SetCamera(Camera camera);
         Vector3 GetWorldPositionOnPlane(Vector3 planeOrigin, Vector3 planeNormal);
+        void SetCamera(Camera camera);
         void Lock(bool locked);
     }
 }

@@ -41,7 +41,7 @@ namespace CodeBase.Data
 
         public void SetDefaultInventoryData()
         {
-            CoinAmount = 100;
+            CoinAmount = 0;
             healingPotionAmount = 0;
             keys.Clear();
         }
@@ -110,6 +110,13 @@ namespace CodeBase.Data
                 healingPotionAmount -= amount;
                 HealingPotionValueChanged?.Invoke(healingPotionAmount);
             }
+        }
+
+        public static bool InventiriesAreEqual(PrototypeInventoryData a, PrototypeInventoryData b)
+        {
+            return a.coinAmount == b.coinAmount &&
+                   a.healingPotionAmount == b.healingPotionAmount &&
+                   a.keys == b.keys;
         }
     }
 }

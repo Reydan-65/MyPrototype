@@ -1,6 +1,5 @@
 using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
-using UnityEngine;
 
 namespace CodeBase.GamePlay.Prototype
 {

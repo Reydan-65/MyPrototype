@@ -1,5 +1,7 @@
 using CodeBase.Configs;
 using CodeBase.GamePlay.Projectile.Installer;
+using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Services.Factory;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Projectile
@@ -8,11 +10,19 @@ namespace CodeBase.GamePlay.Projectile
     {
         private GameObject missSFX;
         private GameObject hitSFX;
-        
+
+        private IGameFactory gameFactory;
+
+        [Inject]
+        public void Construct(IGameFactory gameFactory)
+        {
+            this.gameFactory = gameFactory;
+        }
+
         public void CreateMissedImpactEffect()
         {
             if (missSFX != null)
-                Instantiate(missSFX, transform.position, Quaternion.identity);
+                 gameFactory.CreateImpactEffectObjectFromPrefab(missSFX, transform.position, Quaternion.identity);
 
             Destroy(gameObject);
         }
@@ -20,7 +30,7 @@ namespace CodeBase.GamePlay.Projectile
         public GameObject CreateHitedImpactEffect()
         {
             if (hitSFX != null)
-                return Instantiate(hitSFX, transform.position, Quaternion.identity);
+                return gameFactory.CreateImpactEffectObjectFromPrefab(hitSFX, transform.position, Quaternion.identity);
 
             return null;
         }

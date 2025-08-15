@@ -10,26 +10,21 @@ namespace CodeBase.GamePlay.Projectile
         private float movementSpeed = 0;
         private bool isPlayerProjectile;
 
-        private void Update()
-        {
-            MoveProjectile();
-        }
+        private void Update() => MoveProjectile();
 
         private void MoveProjectile()
-        {
-            transform.position += transform.forward * (movementSpeed * Time.deltaTime);
-        }
+            => transform.position += transform.forward * (movementSpeed * Time.deltaTime);
 
         public void InstallProjectileConfig(ProjectileConfig config)
         {
             if (!isPlayerProjectile)
-                    movementSpeed = config.Speed;
+                movementSpeed = config.Speed;
         }
 
         public void InstallProjectileStats(ProjectileTypeStats stats, bool isPlayerProjectile)
         {
             if (isPlayerProjectile)
-                    movementSpeed = stats.Speed.Value;
+                movementSpeed = stats.Speed.Value;
         }
     }
 }

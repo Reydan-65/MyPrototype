@@ -1,7 +1,6 @@
 using CodeBase.Infrastructure.Services.GameStateMachine;
 using CodeBase.Infrastructure.Services.GameStates;
-using CodeBase.Infrastructure.Services.PlayerProgressProvider;
-using CodeBase.Infrastructure.Services.PlayerProgressSaver;
+using CodeBase.UI;
 
 namespace CodeBase.GamePlay.UI
 {
@@ -9,20 +8,10 @@ namespace CodeBase.GamePlay.UI
     {
         private EndGameWindow window;
 
-        private IProgressProvider progressProvider;
-        private IProgressSaver progressSaver;
         private IGameStateSwitcher gameStateSwitcher;
 
-        public EndGamePresenter(
-            IGameStateSwitcher gameStateSwitcher,
-            IProgressProvider progressProvider,
-            IProgressSaver progressSaver)
-        {
-            this.gameStateSwitcher = gameStateSwitcher;
-            this.progressProvider = progressProvider;
-            this.progressSaver = progressSaver;
-
-        }
+        public EndGamePresenter(IGameStateSwitcher gameStateSwitcher)
+            => this.gameStateSwitcher = gameStateSwitcher;
 
         public override void SetWindow(EndGameWindow window)
         {

@@ -29,9 +29,6 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             }
         }
 
-        protected void CleanEnemiesList()
-        {
-            gameFactory.EnemiesObject.RemoveAll(enemy => enemy == null);
-        }
+        protected void CleanEnemiesList() => gameFactory.EnemiesObject.RemoveAll(enemy => enemy == null);
     }
 }

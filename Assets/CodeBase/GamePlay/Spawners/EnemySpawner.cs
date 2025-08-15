@@ -30,9 +30,7 @@ namespace CodeBase.GamePlay.Spawners
         }
 
         private void Awake()
-        {
-            lootDistributor = GetComponent<LootDistributor>();
-        }
+            => lootDistributor = GetComponent<LootDistributor>();
 
         public async Task Spawn()
         {

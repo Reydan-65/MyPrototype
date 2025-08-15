@@ -15,6 +15,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using CodeBase.GamePlay.Projectile.Installer;
+using CodeBase.Sounds;
 
 namespace CodeBase.Infrastructure.Services.Factory
 {
@@ -45,6 +46,7 @@ namespace CodeBase.Infrastructure.Services.Factory
         public GameObject PrototypeObject { get; private set; }
         public VirtualJoystick VirtualJoystick { get; private set; }
         public FollowCamera FollowCamera { get; private set; }
+        public AudioPlayer AudioPlayer { get; private set; }
         public PrototypeHealth PrototypeHealth { get; private set; }
         public PrototypeEnergy PrototypeEnergy { get; private set; }
         public PrototypeInventory PrototypeInventory { get; private set; }
@@ -58,6 +60,8 @@ namespace CodeBase.Infrastructure.Services.Factory
 
             for (int i = 0; i < enemyConfigs.Length; i++)
                 await assetProvider.Load<GameObject>(enemyConfigs[i].PrefabReference);
+
+            await assetProvider.Load<GameObject>(AssetAddress.AudioPlayerPath);
         }
 
         public async Task<GameObject> InstantiateAndInject(string address)
@@ -70,9 +74,7 @@ namespace CodeBase.Infrastructure.Services.Factory
         #region Create Prototype
         public async Task<GameObject> CreatePrototypeAsync(Vector3 position, Quaternion rotation)
         {
-            string prototypePath = AssetAddress.BaseSkinPath;
-
-            PrototypeObject = await InstantiateAndInject(prototypePath);
+            PrototypeObject = await InstantiateAndInject(AssetAddress.BaseSkinPath);
             PrototypeObject.transform.SetPositionAndRotation(position, rotation);
             PrototypeObject.name = "Prototype";
 
@@ -90,6 +92,9 @@ namespace CodeBase.Infrastructure.Services.Factory
             PrototypeInventory = PrototypeObject.GetComponent<PrototypeInventory>();
             PrototypeInventory.SyncWithData(inventoryData);
 
+            SFXPlayer sfxPlayer = PrototypeObject.GetComponent<SFXPlayer>();
+            sfxPlayer?.UpdateAudioVolume();
+
             progressSaver.AddObject(PrototypeObject);
 
             PrototypeCreated?.Invoke();
@@ -104,6 +109,17 @@ namespace CodeBase.Infrastructure.Services.Factory
             FollowCamera = followCameraObject.GetComponent<FollowCamera>();
             return FollowCamera;
         }
+
+        public async Task<AudioPlayer> CreateAudioPlayerAsync()
+        {
+            if (AudioPlayer != null)
+                Object.Destroy(AudioPlayer);
+
+            GameObject audioPlayerObject = await InstantiateAndInject(AssetAddress.AudioPlayerPath);
+            AudioPlayer = audioPlayerObject.GetComponent<AudioPlayer>();
+            return AudioPlayer;
+        }
+
         #endregion
 
         #region Create Loot Item
@@ -164,6 +180,9 @@ namespace CodeBase.Infrastructure.Services.Factory
                     followToTarget.Initialize(enemyConfig);
             }
 
+            SFXPlayer sfxPlayer = enemy.GetComponent<SFXPlayer>();
+            sfxPlayer?.UpdateAudioVolume();
+
             EnemiesObject.Add(enemy);
 
             enemySpawnManager.RegisterEnemy(enemy);
@@ -192,6 +211,9 @@ namespace CodeBase.Infrastructure.Services.Factory
             foreach (var installer in statsInstallers)
                 installer.InstallProjectileStats(typeStats, isPlayerProjectile);
 
+            SFXPlayer sfxPlayer = projectileObject.GetComponent<SFXPlayer>();
+            sfxPlayer?.UpdateAudioVolume();
+
             ProjectilesObject.Add(projectileObject);
             return projectileObject;
         }
@@ -203,21 +225,12 @@ namespace CodeBase.Infrastructure.Services.Factory
             GameObject impact = container.Instantiate(impactobject);
             impact.transform.position = position;
             impact.transform.rotation = rotation;
+
+            SFXPlayer sfxPlayer = impact.GetComponent<SFXPlayer>();
+            sfxPlayer?.UpdateAudioVolume();
+
             return impact;
         }
         #endregion
-
-        //private GameObject CreateGameObjectFromPrefab(string prefabPath)
-        //{
-        //    GameObject prefab = assetProvider.GetPrefab<GameObject>(prefabPath);
-        //    return container.Instantiate(prefab);
-        //}
-
-        //private T CreateComponentFromPrefab<T>(string prefabPath) where T : Component
-        //{
-        //    GameObject prefab = assetProvider.GetPrefab<GameObject>(prefabPath);
-        //    GameObject obj = container.Instantiate(prefab);
-        //    return obj.GetComponent<T>();
-        //}
     }
 }

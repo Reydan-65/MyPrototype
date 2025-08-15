@@ -1,14 +1,24 @@
 ﻿using CodeBase.Data;
+using CodeBase.Infrastructure.AssetManagment;
+using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Sounds;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Interactive
 {
     public class Platform : SavableInteractable
     {
+        public SFXEvent PlaySFX;
+
         [SerializeField] private Animator platformAnimator;
         [SerializeField] private string uniqueID = "platform_";
 
         private bool isActivated;
+
+        private IAssetProvider assetProvider;
+
+        [Inject]
+        public void Construct(IAssetProvider assetProvider) => this.assetProvider = assetProvider;
 
         public override bool IsActivated
         {
@@ -23,14 +33,24 @@ namespace CodeBase.GamePlay.Interactive
             }
         }
 
+        protected override void Start()
+        {
+            base.Start();
+
+            SFXPlayer sfxPlayer = GetComponent<SFXPlayer>();
+            sfxPlayer?.UpdateAudioVolume();
+        }
+
         private void ActivatedVisual()
         {
             if (platformAnimator != null)
                 platformAnimator.enabled = true;
         }
 
-        public override void Interact()
+        public override async void Interact()
         {
+            PlaySFX?.Invoke(await assetProvider.Load<AudioClip>(AssetAddress.PlatformIsActiveSound), 0.5f, 1f,1f);
+
             base.Interact();
             if (isActivated) return;
             isActivated = true;
@@ -52,8 +72,6 @@ namespace CodeBase.GamePlay.Interactive
         }
 
         public override void UpdateProgressBeforeSave(PlayerProgress progress)
-        {
-            progress.SetInteractiveState(UniqueID, IsActivated);
-        }
+            => progress.SetInteractiveState(UniqueID, IsActivated);
     }
 }

@@ -46,6 +46,9 @@ namespace CodeBase.GamePlay.Enemies
                 if (turret.CanFire() && IsTargetInShootingRange())
                     turret.Fire();
             }
+
+            if (target.GetComponent<IHealth>().Current == 0)
+                target = null;
         }
 
         public bool IsTargetInShootingRange()

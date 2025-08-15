@@ -1,6 +1,7 @@
 using CodeBase.Data;
+using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
-using CodeBase.Infrastructure.Services.PlayerProgressProvider;
+using CodeBase.Sounds;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace CodeBase.GamePlay.Interactive
 {
     public class Gate : SavableInteractable, IInputInteractable
     {
+        public SFXEvent PlaySFX;
+
         [SerializeField] private Animator gateAnimator;
         [SerializeField] private string requiredKeyID;
         [SerializeField] private GameObject keyRequiredMessage;
@@ -16,6 +19,11 @@ namespace CodeBase.GamePlay.Interactive
         private Coroutine messageCoroutine;
         private Coroutine loadStateCoroutine;
         private bool isActivated;
+
+        private IAssetProvider assetProvider;
+
+        [Inject]
+        public void Construct(IAssetProvider assetProvider) => this.assetProvider = assetProvider;
 
         public override bool IsActivated
         {
@@ -32,22 +40,19 @@ namespace CodeBase.GamePlay.Interactive
 
         public override string UniqueID => uniqueID;
 
-        private IProgressProvider progressProvider;
-
-        [Inject]
-        public void Counstruct(IProgressProvider progressProvider)
-        {
-            this.progressProvider = progressProvider;
-        }
-
         protected override void Start()
         {
             base.Start();
             keyRequiredMessage?.SetActive(false);
+
+            SFXPlayer sfxPlayer = GetComponent<SFXPlayer>();
+            sfxPlayer?.UpdateAudioVolume();
         }
 
-        public override void Interact()
+        public override async void Interact()
         {
+            PlaySFX?.Invoke(await assetProvider.Load<AudioClip>(AssetAddress.GateOpenSound), 0.5f, 1, 1);
+
             base.Interact();
             if (IsActivated) return;
 
@@ -63,9 +68,7 @@ namespace CodeBase.GamePlay.Interactive
         }
 
         private bool HasRequiredKey()
-        {
-            return progressProvider?.PlayerProgress?.PrototypeInventoryData?.Keys.Contains(requiredKeyID) ?? false;
-        }
+            => progressProvider?.PlayerProgress?.PrototypeInventoryData?.Keys.Contains(requiredKeyID) ?? false;
 
         private void ShowKeyRequiredMessage()
         {
@@ -87,7 +90,7 @@ namespace CodeBase.GamePlay.Interactive
 
         private void Process()
         {
-            progressProvider.PlayerProgress.PrototypeInventoryData.RemoveKey(requiredKeyID);
+            //progressProvider.PlayerProgress.PrototypeInventoryData.RemoveKey(requiredKeyID);
             interactAmount--;
             OpenGateVisual();
         }
@@ -145,6 +148,7 @@ namespace CodeBase.GamePlay.Interactive
             if (interactableTracker != null)
                 interactableTracker.RegisterInteractable(this);
         }
+
         public override void LoadProgress(PlayerProgress progress)
         {
             if (progress == null) return;
@@ -157,8 +161,6 @@ namespace CodeBase.GamePlay.Interactive
         }
 
         public override void UpdateProgressBeforeSave(PlayerProgress progress)
-        {
-            progress.SetInteractiveState(UniqueID, IsActivated);
-        }
+            => progress.SetInteractiveState(UniqueID, IsActivated);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using CodeBase.GamePlay.Enemies;
+using CodeBase.GamePlay.Projectile;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.Factory;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,12 +33,11 @@ namespace CodeBase.Services.EntityActivityController
 
             SetEnemyActiveState(isActive);
             SetLootItemsActiveState(isActive);
+            SetProjectilesActiveStat(isActive);
         }
 
         private void SetLootItemsActiveState(bool isActive)
-        {
-            lootService?.SetPauseVisualEffects(isActive);
-        }
+            => lootService?.SetPauseVisualEffects(isActive);
 
         private void SetEnemyActiveState(bool isActive)
         {
@@ -74,6 +73,23 @@ namespace CodeBase.Services.EntityActivityController
                 var agent = enemy.GetComponent<NavMeshAgent>();
                 if (agent != null)
                     agent.enabled = isActive;
+            }
+        }
+
+        private void SetProjectilesActiveStat(bool isActive)
+        {
+            if (gameFactory?.ProjectilesObject == null) return;
+
+            foreach (var projectile in gameFactory?.ProjectilesObject)
+            {
+                if (projectile == null) continue;
+
+                var projectileMovement = projectile.GetComponent<ProjectileMovement>();
+                if (projectileMovement != null)
+                    projectileMovement.enabled = isActive;
+                var trailRenderer = projectile.GetComponentInChildren<TrailRenderer>();
+                if (trailRenderer != null)
+                    trailRenderer.time = isActive ? 0.1f : float.MaxValue;
             }
         }
 

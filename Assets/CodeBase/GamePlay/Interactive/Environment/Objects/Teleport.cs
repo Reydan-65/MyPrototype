@@ -1,5 +1,7 @@
-﻿using CodeBase.Infrastructure.DependencyInjection;
+﻿using CodeBase.Infrastructure.AssetManagment;
+using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Services.EntityActivityController;
+using CodeBase.Sounds;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +10,8 @@ namespace CodeBase.GamePlay.Interactive
     [RequireComponent(typeof(Collider))]
     public class Teleport : SavableInteractable, ITriggerInteractable
     {
+        public SFXEvent PlaySFX;
+
         [SerializeField] private Teleport connectedTeleport;
         [SerializeField] private string uniqueID = "teleport_";
         [SerializeField] private bool isActivated;
@@ -22,10 +26,22 @@ namespace CodeBase.GamePlay.Interactive
         public Collider TriggerCollider => triggerCollider;
 
         private IEntityActivityController entityActivityController;
+        private IAssetProvider assetProvider;
 
         [Inject]
-        public void Construct(IEntityActivityController entityActivityController)
-            => this.entityActivityController = entityActivityController;
+        public void Construct(IEntityActivityController entityActivityController, IAssetProvider assetProvider)
+        {
+            this.entityActivityController = entityActivityController;
+            this.assetProvider = assetProvider;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+
+            SFXPlayer sfxPlayer = GetComponent<SFXPlayer>();
+            sfxPlayer?.UpdateAudioVolume();
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -38,7 +54,6 @@ namespace CodeBase.GamePlay.Interactive
         private void OnTriggerExit(Collider other)
         {
             if (other.gameObject != triggerCollider.gameObject) return;
-
             isTeleporting = false;
         }
 
@@ -62,6 +77,7 @@ namespace CodeBase.GamePlay.Interactive
             yield return new WaitForSeconds(1f);
 
             actionUser.transform.position = connectedTeleport.transform.position + Vector3.up * 0.1f;
+            connectedTeleport.PlayTeleportSound();
             entityActivityController.MoveCameraToTarget(actionUser.transform);
             isTeleporting = false;
             yield return new WaitForSeconds(1f);
@@ -70,10 +86,12 @@ namespace CodeBase.GamePlay.Interactive
             if (characterController != null) characterController.enabled = true;
         }
 
+        private async void PlayTeleportSound()
+            => PlaySFX?.Invoke(await assetProvider.Load<AudioClip>(AssetAddress.TeleportationSound),1,1,1);
+
         protected override void OnPrototypeCreated()
         {
             base.OnPrototypeCreated();
-
             triggerCollider = actionUser?.GetComponent<CharacterController>();
         }
     }

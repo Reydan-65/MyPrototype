@@ -17,7 +17,6 @@ namespace CodeBase.Infrastructure.Services.ConfigProvider
         LevelConfig GetLevelConfig(int index);
         LevelConfig GetLevelConfig(string name);
         WindowConfig GetWindowConfig(WindowID id);
-
         ProjectileConfig GetProjectileConfig(ProjectileType type);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using CodeBase.Data;
+using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Services.EntityActivityController;
+using CodeBase.Sounds;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +11,10 @@ namespace CodeBase.GamePlay.Interactive
     [RequireComponent(typeof(Collider))]
     public class PlatformButton : SavableInteractable, ITriggerInteractable
     {
+        [Space(10)]
+        public SFXEvent PlaySFX;
+        [Space(10)]
+
         [SerializeField] private Platform connectedPlatform;
         [SerializeField] private Transform platformButtonTransform;
         [SerializeField] private Animator platformButtonAnimator;
@@ -37,11 +43,15 @@ namespace CodeBase.GamePlay.Interactive
         public Collider TriggerCollider => triggerCollider;
 
         private IEntityActivityController entityActivityController;
+        private IAssetProvider assetProvider;
 
         [Inject]
-        public void Construct(IEntityActivityController entityActivityController)
+        public void Construct(
+            IEntityActivityController entityActivityController,
+            IAssetProvider assetProvider)
         {
             this.entityActivityController = entityActivityController;
+            this.assetProvider = assetProvider;
         }
 
         protected override void Start()
@@ -54,6 +64,9 @@ namespace CodeBase.GamePlay.Interactive
 
             if (meshRenderers != null)
                 SetButtonColor(Color.red);
+
+            SFXPlayer sfxPlayer = GetComponent<SFXPlayer>();
+            sfxPlayer?.UpdateAudioVolume();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -69,8 +82,10 @@ namespace CodeBase.GamePlay.Interactive
             triggerCollider = actionUser?.GetComponent<CharacterController>();
         }
 
-        public override void Interact()
+        public override async void Interact()
         {
+            PlaySFX?.Invoke(await assetProvider.Load<AudioClip>(AssetAddress.PlatformButtonPressedSound), 0.5f, 1, 1);
+
             base.Interact();
             if (isActivated) return;
             if (connectedPlatform == null) return;
@@ -125,8 +140,6 @@ namespace CodeBase.GamePlay.Interactive
         }
 
         public override void UpdateProgressBeforeSave(PlayerProgress progress)
-        {
-            progress.SetInteractiveState(UniqueID, isActivated);
-        }
+            => progress.SetInteractiveState(UniqueID, isActivated);
     }
 }

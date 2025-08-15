@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CodeBase.GamePlay.Interactive
+﻿namespace CodeBase.GamePlay.Interactive
 {
     public interface IInputInteractable : IInteractable
     {

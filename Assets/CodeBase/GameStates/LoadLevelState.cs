@@ -28,7 +28,6 @@ namespace CodeBase.Infrastructure.Services.GameStates
             levelIndex = Mathf.Clamp(levelIndex, 0, configProvider.LevelAmount - 1);
 
             string sceneName = configProvider.GetLevelConfig(levelIndex).SceneName;
-
             sceneLoader.Load(sceneName);
         }
     }

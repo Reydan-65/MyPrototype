@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c637081698cd7a428fd1ae891da92ba, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  WindowID: 9
+  WindowID: 8
   Title: SETTINGS
   PrefabReference:
     m_AssetGUID: 432a8081ebf805c4180d7758a12f7b5e

@@ -7,7 +7,6 @@ using CodeBase.GamePlay.UI.Services;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using UnityEngine;
-using CodeBase.Data;
 
 namespace CodeBase.Infrastructure.Services.GameStates
 {

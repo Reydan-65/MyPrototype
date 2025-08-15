@@ -17,7 +17,7 @@ namespace CodeBase.Infrastructure.Services
         private IGameFactory gameFactory;
         private IProgressProvider progressProvider;
 
-        private readonly List<LootItem> activeLootItems = new List<LootItem>();
+        private List<LootItem> activeLootItems = new List<LootItem>();
 
         public LootService(IGameFactory gameFactory, IProgressProvider progressProvider)
         {
@@ -30,9 +30,7 @@ namespace CodeBase.Infrastructure.Services
             var tasks = new List<Task>();
 
             for (int i = 0; i < count; i++)
-            {
                 tasks.Add(DropSingleLoot(position, lootType, keyID));
-            }
 
             await Task.WhenAll(tasks);
         }
@@ -48,6 +46,7 @@ namespace CodeBase.Infrastructure.Services
                 lootItem.SetColliderEnabled(false);
                 lootItem.transform.position = spawnPosition;
                 lootItem.GenerateID();
+
                 if (lootItem.TryGetComponent(out KeyLoot key))
                     key.KeyID = keyID;
 
@@ -97,11 +96,8 @@ namespace CodeBase.Infrastructure.Services
 
             foreach (var lootItem in lootItems)
             {
-                // Проверяем, был ли предмет уже подобран
                 if (progress.WasLootPicked(lootItem.UniqueID))
-                {
                     Object.Destroy(lootItem.gameObject);
-                }
             }
         }
 
@@ -110,9 +106,7 @@ namespace CodeBase.Infrastructure.Services
             var lootItems = GameObject.FindObjectsOfType<LootItem>(true);
 
             foreach (var lootItem in lootItems)
-            {
                 lootItem.Rotator.enabled = isActive;
-            }
         }
     }
 }

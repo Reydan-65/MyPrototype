@@ -7,9 +7,6 @@ namespace CodeBase.GamePlay.Interactive
         [SerializeField] private Transform targetTransdorm;
         [SerializeField] private Vector3 speed;
 
-        private void Update()
-        {
-            targetTransdorm.Rotate(speed * Time.deltaTime);
-        }
+        private void Update() => targetTransdorm.Rotate(speed * Time.deltaTime);
     }
 }

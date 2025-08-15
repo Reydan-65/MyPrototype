@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5237052586137427356}
   - component: {fileID: 2493465473920479391}
   - component: {fileID: 2136785114884683907}
+  - component: {fileID: 6033131443629219316}
   m_Layer: 5
   m_Name: PlusButton
   m_TagString: Untagged
@@ -137,6 +138,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &6033131443629219316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43572957415476034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c9959efc4af42478fdea9dd5f7a483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &561016629378243052
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,6 +418,7 @@ GameObject:
   - component: {fileID: 210075327468363392}
   - component: {fileID: 895122714185388777}
   - component: {fileID: 7172734513075506070}
+  - component: {fileID: 5767061921008971267}
   m_Layer: 5
   m_Name: MinusButton
   m_TagString: Untagged
@@ -529,6 +543,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &5767061921008971267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887804451395392330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c9959efc4af42478fdea9dd5f7a483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2302088728377393308
 GameObject:
   m_ObjectHideFlags: 0

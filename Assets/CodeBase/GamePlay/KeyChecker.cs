@@ -58,10 +58,7 @@ namespace CodeBase.GamePlay
             inventoryData.KeyRemoved -= OnKeyChanged;
         }
 
-        private void OnPrototypeCreated()
-        {
-            UpdateKeyVisual();
-        }
+        private void OnPrototypeCreated() => UpdateKeyVisual();
 
         private void OnKeyChanged(string keyId)
         {
@@ -78,10 +75,7 @@ namespace CodeBase.GamePlay
             infoImage.color = hasKey ? infoColors[1] : infoColors[0];
         }
 
-        private void OnDestroy()
-        {
-            UnsubscribeFromEvents();
-        }
+        private void OnDestroy() => UnsubscribeFromEvents();
 
         public void RefreshKeyCheck(string newKeyID = null)
         {

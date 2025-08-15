@@ -68,17 +68,9 @@ MonoBehaviour:
   m_text: 'I sincerely appreciate the time and attention you''ve given to my game.
     I hope you enjoyed this adventure and had a great time.
 
-    Your support inspires
-    me to create new and exciting projects. If you have any suggestions or feedback,
-    please share them with me. I am always happy to hear from you and strive to make
-    my games even better.
 
-    Thank you for being with me! I look forward to seeing
-    you in my future projects!
-
-
-    You can continue game on next difficulty from
-    menu!'
+    You can continue
+    game on next difficulty from menu!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

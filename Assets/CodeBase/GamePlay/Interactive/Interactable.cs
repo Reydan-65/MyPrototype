@@ -38,12 +38,12 @@ namespace CodeBase.GamePlay.Interactive
             IGameFactory gameFactory,
             IInputService inputService,
             ICoroutineRunner coroutineRunner,
-            IUIFactory uiIFactory)
+            IUIFactory uiFactory)
         {
             this.gameFactory = gameFactory;
             this.inputService = inputService;
             this.coroutineRunner = coroutineRunner;
-            this.uiFactory = uiIFactory;
+            this.uiFactory = uiFactory;
         }
 
         protected virtual void Start()
@@ -89,10 +89,7 @@ namespace CodeBase.GamePlay.Interactive
             return distance <= interactRadius;
         }
 
-        public virtual void Interact()
-        {
-            StartCoroutine();
-        }
+        public virtual void Interact() => StartCoroutine();
 
         protected virtual IEnumerator InteractionProcess()
         {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c637081698cd7a428fd1ae891da92ba, type: 3}
   m_Name: Upgrades
   m_EditorClassIdentifier: 
-  WindowID: 6
+  WindowID: 5
   Title: UPGRADES
   PrefabReference:
     m_AssetGUID: 32b75537b94d90b46b9200976e5e9ee4

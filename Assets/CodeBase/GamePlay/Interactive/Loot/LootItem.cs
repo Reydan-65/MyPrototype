@@ -43,6 +43,7 @@ namespace CodeBase.GamePlay.Interactive
             {
                 OnPickup();
                 progressProvider.PlayerProgress.AddPickedLoot(uniqueID);
+                progressProvider.PlayerProgress.HasSavedGame = true;
                 progressSaver.SaveProgress();
                 Destroy(gameObject);
             }

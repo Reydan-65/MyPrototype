@@ -17,7 +17,6 @@ namespace CodeBase.GamePlay.UI
         [Header("Panels")]
         [SerializeField] private GameObject mainBottomPanel;
         [SerializeField] private GameObject confirmBottomPanel;
-        [SerializeField] private GameObject lockContainerPanel;
 
         [Header("Main Panel Buttons")]
         [SerializeField] private Button acceptButton;
@@ -31,7 +30,6 @@ namespace CodeBase.GamePlay.UI
         private UpgradesPresenter statsPresenter;
         public GameObject MainBottomPanel => mainBottomPanel;
         public GameObject ConfirmBottomPanel => confirmBottomPanel;
-        public GameObject LockContainerPanel => lockContainerPanel;
         public Button AcceptButton => acceptButton;
         private IInputService inputService;
         public UpgradeStatsContainer Container => statsContainer;

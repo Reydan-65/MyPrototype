@@ -37,10 +37,6 @@ namespace CodeBase.GamePlay.UI
         protected virtual void SubscribeToValueChanges() { }
         protected virtual void UnsubscribeFromInventory() { }
         protected virtual void UpdateAmountText() { }
-
-        private void OnDestroy()
-        {
-            UnsubscribeFromInventory();
-        }
+        private void OnDestroy() => UnsubscribeFromInventory();
     }
 }

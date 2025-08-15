@@ -20,9 +20,6 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressProvider
             }
         }
 
-        public void Dispose()
-        {
-            PlayerProgress = null;
-        }
+        public void Dispose() => PlayerProgress = null;
     }
 }

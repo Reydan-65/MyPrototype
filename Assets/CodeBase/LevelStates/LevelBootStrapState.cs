@@ -1,13 +1,15 @@
+using CodeBase.Configs;
+using CodeBase.GamePlay.Spawners;
+using CodeBase.GamePlay.UI;
+using CodeBase.GamePlay.UI.Services;
+using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Services.ConfigProvider;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
-using CodeBase.Infrastructure.Services.ConfigProvider;
-using CodeBase.Configs;
-using UnityEngine.SceneManagement;
+using CodeBase.Sounds;
 using UnityEngine;
-using CodeBase.GamePlay.UI.Services;
-using CodeBase.GamePlay.UI;
-using CodeBase.GamePlay.Spawners;
+using UnityEngine.SceneManagement;
 
 namespace CodeBase.Infrastructure.Services.LevelStates
 {
@@ -21,6 +23,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
         private IConfigsProvider configsProvider;
         private IWindowsProvider windowsProvider;
         private ILootService lootService;
+        private IAssetProvider assetProvider;
 
         public LevelBootStrapState(
             IGameFactory gameFactory,
@@ -30,7 +33,8 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             IProgressSaver progressSaver,
             IConfigsProvider configsProvider,
             IWindowsProvider windowsProvider,
-            ILootService lootService)
+            ILootService lootService,
+            IAssetProvider assetProvider)
         {
             this.gameFactory = gameFactory;
             this.levelStateSwitcher = levelStateSwitcher;
@@ -40,6 +44,7 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             this.configsProvider = configsProvider;
             this.windowsProvider = windowsProvider;
             this.lootService = lootService;
+            this.assetProvider = assetProvider;
         }
 
         public async void EnterAsync()
@@ -60,6 +65,18 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             lootService.CleanUpPickedLoot();
             windowsProvider.Open(WindowID.HUDWindow);
             inputService.Enable = true;
+
+            AudioPlayer audioPlayer = await gameFactory.CreateAudioPlayerAsync();
+            if (audioPlayer != null)
+            {
+                MusicPlayer musicPlayer = audioPlayer.GetComponent<MusicPlayer>();
+                SFXPlayer sfxPlayer = audioPlayer.GetComponent<SFXPlayer>();
+
+                musicPlayer?.UpdateAudioVolume();
+                sfxPlayer?.UpdateAudioVolume();
+
+                musicPlayer?.PlayMusic(await assetProvider.Load<AudioClip>(AssetAddress.GameplayMusic));
+            }
 
             levelStateSwitcher.Enter<LevelResearchState>();
         }

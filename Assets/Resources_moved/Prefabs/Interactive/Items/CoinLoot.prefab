@@ -83,6 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueID: 
+  coinLootImpact: {fileID: 6750163788362210871, guid: 4145f9967b12e4347840bbba7765d2ea, type: 3}
 --- !u!1001 &3925869592181668363
 PrefabInstance:
   m_ObjectHideFlags: 0

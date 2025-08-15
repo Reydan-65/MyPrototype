@@ -14,12 +14,12 @@ namespace CodeBase.GamePlay.Enemies
         private FirePointStabilizer firePointStabilizer;
         private EnemyCombatMovement combatMovement;
         private EnemyDasher dasher;
+        private EnemyConfig enemyConfig;
 
         private float movementSpeed;
         private float stopDistance;
         private Vector3 lastDirection;
         private bool isInitialized;
-        private EnemyConfig enemyConfig;
 
         private IGameFactory gameFactory;
 

@@ -1,5 +1,6 @@
 using CodeBase.Configs;
 using CodeBase.Data;
+using CodeBase.GamePlay.Enemies;
 using CodeBase.GamePlay.Projectile.Installer;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
@@ -71,8 +72,18 @@ namespace CodeBase.GamePlay.Projectile
         }
 
         private bool ShouldProcessCollision(Collider other)
-            => other != null && other.transform.root != parent && !other.isTrigger;
+        {
+            if (other == null || other.isTrigger || other.transform.root == parent)
+                return false;
 
+            if (!isPlayerProjectile)
+            {
+                if (other.transform.root.TryGetComponent(out EnemyHealth health))
+                    return false;
+            }
+
+            return true;
+        }
 
         public void InstallProjectileConfig(ProjectileConfig config)
         {

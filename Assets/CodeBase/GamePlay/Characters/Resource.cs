@@ -32,14 +32,7 @@ namespace CodeBase.GamePlay
             InvokeChangedEvent();
         }
 
-        public void SetImmune(bool enable)
-        {
-            isImmune = enable;
-        }
-
-        protected void InvokeChangedEvent()
-        {
-            Changed?.Invoke();
-        }
+        public void SetImmune(bool enable) => isImmune = enable;
+        protected void InvokeChangedEvent() => Changed?.Invoke();
     }
 }

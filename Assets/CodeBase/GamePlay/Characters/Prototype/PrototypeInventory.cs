@@ -1,6 +1,7 @@
 using CodeBase.Data;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
+using CodeBase.Sounds;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,12 +9,15 @@ namespace CodeBase.GamePlay.Prototype
 {
     public class PrototypeInventory : MonoBehaviour
     {
-        private IProgressProvider progressProvider;
+        public SFXEvent PlaySFX;
 
-        private PrototypeInventoryData inventoryData;
         public event UnityAction<int> OnCoinAmountChanged;
         public event UnityAction<string> KeyAdded;
         public event UnityAction<string> KeyRemoved;
+        
+        private PrototypeInventoryData inventoryData;
+
+        private IProgressProvider progressProvider;
 
         [Inject]
         public void Construct(IProgressProvider progressProvider)
@@ -30,23 +34,13 @@ namespace CodeBase.GamePlay.Prototype
             inventoryData.CoinValueChanged += OnCoinChanged;
             inventoryData.KeyAdded += OnKeyAddedHandler;
             inventoryData.KeyRemoved += OnKeyRemovedHandler;
+
             OnCoinChanged(inventoryData.CoinAmount);
         }
 
-        private void OnCoinChanged(int newValue)
-        {
-            OnCoinAmountChanged?.Invoke(newValue);
-        }
-
-        private void OnKeyAddedHandler(string keyId)
-        {
-            KeyAdded?.Invoke(keyId);
-        }
-
-        private void OnKeyRemovedHandler(string keyId)
-        {
-            KeyRemoved?.Invoke(keyId);
-        }
+        private void OnCoinChanged(int newValue) => OnCoinAmountChanged?.Invoke(newValue);
+        private void OnKeyAddedHandler(string keyId) => KeyAdded?.Invoke(keyId);
+        private void OnKeyRemovedHandler(string keyId) => KeyRemoved?.Invoke(keyId);
 
         private void OnDestroy()
         {
@@ -65,24 +59,18 @@ namespace CodeBase.GamePlay.Prototype
             int oldCoins = inventoryData.CoinAmount;
             
             if (oldCoins != inventoryData.CoinAmount)
-            {
                 OnCoinChanged(inventoryData.CoinAmount);
-            }
 
             foreach (var keyId in newInventoryData.Keys)
             {
                 if (!inventoryData.HasKey(keyId))
-                {
                     OnKeyAddedHandler(keyId);
-                }
             }
 
             foreach (var keyId in inventoryData.Keys)
             {
                 if (!newInventoryData.HasKey(keyId))
-                {
                     OnKeyRemovedHandler(keyId);
-                }
             }
         }
 

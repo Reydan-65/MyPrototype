@@ -60,7 +60,7 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
                 progressProvider.PlayerProgress.CopyFrom(tempProgress);
 
                 Debug.Log($"PROGRESS LOADED FROM SAVE!");
-                Debug.LogWarning(json);
+                //Debug.LogWarning(json);
             }
             else
                 progressProvider.PlayerProgress = PlayerProgress.GetDefaultProgress();
@@ -76,17 +76,13 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
         {
             foreach (IProgressBeforeSaveHandler saveHandler in progressBeforeSaveHandlers)
                 saveHandler?.UpdateProgressBeforeSave(progressProvider.PlayerProgress);
-            progressProvider.PlayerProgress.HasSavedGame = true;
             PlayerPrefs.SetString(ProgressKey, JsonUtility.ToJson(progressProvider.PlayerProgress));
 
             Debug.Log($"PROGRESS SAVED!");
-            string json = PlayerPrefs.GetString(ProgressKey);
-            Debug.LogWarning(json);
+            //string json = PlayerPrefs.GetString(ProgressKey);
+            //Debug.LogWarning(json);
         }
 
-        public PlayerProgress GetProgress()
-        {
-            return progressProvider.PlayerProgress;
-        }
+        public PlayerProgress GetProgress() => progressProvider.PlayerProgress;
     }
 }

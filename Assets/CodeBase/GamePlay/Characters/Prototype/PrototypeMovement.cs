@@ -1,7 +1,10 @@
 using CodeBase.Data;
+using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
+using CodeBase.Sounds;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Prototype
@@ -9,6 +12,8 @@ namespace CodeBase.GamePlay.Prototype
     [RequireComponent(typeof(CharacterController))]
     public class PrototypeMovement : MonoBehaviour, IProgressLoadHandler
     {
+        public SFXEvent PlaySFX;
+
         [SerializeField] private CharacterController characterController;
         [SerializeField] private Transform viewTransform;
         [SerializeField] private float gravity = 30f;
@@ -37,6 +42,7 @@ namespace CodeBase.GamePlay.Prototype
 
         private IInputService inputService;
         private ICursorService cursorService;
+        private IAssetProvider assetProvider;
 
         private void Awake()
         {
@@ -56,10 +62,12 @@ namespace CodeBase.GamePlay.Prototype
         [Inject]
         public void Construct(
             IInputService inputService,
-            ICursorService cursorService)
+            ICursorService cursorService,
+            IAssetProvider assetProvider)
         {
             this.inputService = inputService;
             this.cursorService = cursorService;
+            this.assetProvider = assetProvider;
         }
 
         public void Initialize(float movementSpeed, float dashRange)
@@ -108,12 +116,13 @@ namespace CodeBase.GamePlay.Prototype
                 characterController.Move(moveDirection * Time.deltaTime);
         }
 
-        public bool TryDash()
+        public async Task<bool> TryDash()
         {
             if (!CanDash()) return false;
 
             prototypeEnergy.Consume(dashCost);
             dashController.StartDash(directionControl);
+            PlaySFX?.Invoke(await assetProvider.Load<AudioClip>(AssetAddress.DashSound), 1, 1, 1);
 
             return true;
         }

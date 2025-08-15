@@ -1,6 +1,6 @@
 using CodeBase.Data;
 using CodeBase.GamePlay.UI.Services;
-using CodeBase.Infrastructure.Services.SettingsSaver;
+using CodeBase.Infrastructure.Services.SettingsProvider;
 
 namespace CodeBase.GamePlay.UI
 {
@@ -12,10 +12,12 @@ namespace CodeBase.GamePlay.UI
         private SettingsWindow window;
 
         private IWindowsProvider windowsProvider;
+        private ISettingsProvider settingsProvider;
 
-        public SettingsPresenter(IWindowsProvider windowsProvider, ISettingsSaver settingsSaver)
+        public SettingsPresenter(IWindowsProvider windowsProvider, ISettingsProvider settingsProvider)
         {
             this.windowsProvider = windowsProvider;
+            this.settingsProvider = settingsProvider;
         }
 
         public override void SetWindow(SettingsWindow window)
@@ -45,7 +47,7 @@ namespace CodeBase.GamePlay.UI
 
         private void OnAdvancedCloseButtonClicked()
         {
-            if (!Settings.SettingsAreEqual(window.Container.NewSettings, window.Container.CurrentSettings))
+            if (!Settings.SettingsAreEqual(window.Container.NewSettings, settingsProvider.Settings))
                 window.SetConfirmPanelState(window.MainBottomPanel, window.ConfirmBottomPanel, true);
             else
                 Close();
@@ -66,14 +68,10 @@ namespace CodeBase.GamePlay.UI
 
         private void UpdateButtonsState()
         {
-            Settings newSettings = window.Container.NewSettings;
-            Settings currentSettings = window.Container.CurrentSettings;
-            Settings defaultSettings = Settings.GetDefaultSettings();
-
             window.AcceptButton.interactable =
-                !Settings.SettingsAreEqual(newSettings, currentSettings);
+                !Settings.SettingsAreEqual(window.Container.NewSettings, settingsProvider.Settings);
             window.DefaultButton.interactable =
-                !Settings.SettingsAreEqual(newSettings, defaultSettings);
+                !Settings.SettingsAreEqual(window.Container.NewSettings, Settings.GetDefaultSettings());
         }
 
         private void Close()

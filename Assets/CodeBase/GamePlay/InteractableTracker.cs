@@ -11,10 +11,7 @@ namespace CodeBase.GamePlay.UI
 
         private bool previousState;
 
-        private void Update()
-        {
-            CheckInteractables();
-        }
+        private void Update() => CheckInteractables();
 
         public void RegisterInteractable(IInputInteractable interactable)
         {

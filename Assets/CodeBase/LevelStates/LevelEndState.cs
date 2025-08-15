@@ -38,14 +38,14 @@ namespace CodeBase.Infrastructure.Services.LevelStates
             UpdateDifficultyLevel();
 
             progressProvider.PlayerProgress.ClearObjectsStates();
+            progressProvider.PlayerProgress.PrototypeInventoryData.Keys.Clear();
             progressSaver.ClearObjects();
-            progressSaver.SaveProgress();
+            progressProvider.PlayerProgress.HasSavedGame = true;
+            progressSaver.SaveProgress(); 
             windowsProvider.Open(WindowID.EndGameWindow);
         }
 
         private void UpdateDifficultyLevel()
-        {
-            progressProvider.PlayerProgress.DifficultyLevel++;
-        }
+            => progressProvider.PlayerProgress.DifficultyLevel++;
     }
 }

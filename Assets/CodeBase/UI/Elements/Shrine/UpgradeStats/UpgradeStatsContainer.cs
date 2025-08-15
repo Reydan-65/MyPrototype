@@ -1,8 +1,12 @@
 ﻿using CodeBase.Data;
 using CodeBase.GamePlay.Projectile;
 using CodeBase.GamePlay.UI.Services;
+using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
+using CodeBase.Sounds;
+using CodeBase.UI;
 using CodeBase.UI.Elements;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,9 +30,9 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] private Transform parent;
         [SerializeField] private Scrollbar scrollbar;
 
+        private SFXPlayer sfxPlayer;
         private List<UpgradesItem> statItems = new List<UpgradesItem>();
         private ProjectileStats pendingProjectileStats;
-
         private UpgradesWindow window;
         private PrototypeStats pendingStats;
         private bool isInitialized;
@@ -39,12 +43,20 @@ namespace CodeBase.GamePlay.UI
 
         private IUIFactory uiFactory;
         private IProgressProvider progressProvider;
+        private IGameFactory gameFactory;
+        private IAssetProvider assetProvider;
 
         [Inject]
-        public void Construct(IUIFactory uiFactory, IProgressProvider progressProvider)
+        public void Construct(
+            IUIFactory uiFactory,
+            IProgressProvider progressProvider,
+            IGameFactory gameFactory,
+            IAssetProvider assetProvider)
         {
             this.uiFactory = uiFactory;
             this.progressProvider = progressProvider;
+            this.gameFactory = gameFactory;
+            this.assetProvider = assetProvider;
         }
 
         public void Initialize(UpgradesWindow window)
@@ -52,7 +64,7 @@ namespace CodeBase.GamePlay.UI
             if (isInitialized) return;
 
             this.window = window;
-
+            sfxPlayer = gameFactory.AudioPlayer.GetComponent<SFXPlayer>();
             isInitialized = true;
 
             pendingStats = new PrototypeStats();
@@ -108,13 +120,13 @@ namespace CodeBase.GamePlay.UI
             }
             progressProvider.PlayerProgress.PrototypeStats.CopyFrom(pendingStats);
             progressProvider.PlayerProgress.ProjectileStats.CopyFrom(pendingProjectileStats);
+            progressProvider.PlayerProgress.HasSavedGame = true;
         }
 
         public void ResetAllUpgrades()
         {
             foreach (var item in statItems)
                 item.ResetUpgrades();
-
             pendingStats.CopyFrom(progressProvider.PlayerProgress.PrototypeStats);
         }
 
@@ -167,6 +179,8 @@ namespace CodeBase.GamePlay.UI
             element.transform.localScale = Vector3.one;
             element.Initialize(name, baseValue, bonus, price, currentLevel, () => OnStatUpgraded(), () => OnStatDowngraded());
 
+            AssingClickSoundToWindow();
+
             statItems.Add(element);
         }
 
@@ -181,7 +195,17 @@ namespace CodeBase.GamePlay.UI
             var stats = pendingProjectileStats.GetStatsForType(type);
             element.Initialize(name, baseValue, bonus, price, currentLevel, () => OnProjectileStatUpgraded(type), () => OnProjectileStatDowngraded(type));
 
+            AssingClickSoundToWindow();
+
             statItems.Add(element);
+        }
+
+        private void AssingClickSoundToWindow()
+        {
+            UIClickSound[] clickSounds = GetComponentsInChildren<UIClickSound>();
+            if (clickSounds != null && clickSounds.Length > 0)
+                foreach (var clickSound in clickSounds)
+                    clickSound.SetWindow(window);
         }
 
         private void UpdateExistingElements()
@@ -222,19 +246,20 @@ namespace CodeBase.GamePlay.UI
             int totalPrice = 0;
             foreach (var item in statItems)
                 totalPrice += item.TotalPrice;
-
             UpdateAvailableElements();
         }
 
-        private void OnStatUpgraded()
+        private async void OnStatUpgraded()
         {
+            sfxPlayer?.PlaySFX(await assetProvider.Load<AudioClip>(AssetAddress.ClickButtonSound), 0.5f, 1, 1);
             UpdatePendingStats();
             UpdatePrices();
             pendingStats.IsChanged();
         }
 
-        private void OnStatDowngraded()
+        private async void OnStatDowngraded()
         {
+            sfxPlayer?.PlaySFX(await assetProvider.Load<AudioClip>(AssetAddress.ClickButtonSound), 0.5f, 1, 1);
             UpdatePendingStats();
             UpdatePrices();
             pendingStats.IsChanged();
@@ -312,10 +337,8 @@ namespace CodeBase.GamePlay.UI
         {
             if (progressProvider?.PlayerProgress?.PrototypeStats != null)
                 progressProvider.PlayerProgress.PrototypeStats.Changed -= UpdateAvailableElements;
-
             if (progressProvider?.PlayerProgress?.PrototypeInventoryData != null)
                 progressProvider.PlayerProgress.PrototypeInventoryData.CoinValueChanged -= OnCoinValueChanged;
-
             ClearContainer();
         }
 
@@ -329,51 +352,11 @@ namespace CodeBase.GamePlay.UI
             {
                 if (IsPrototypeStat(item.StatName))
                 {
-                    int originalLevel = progressProvider.PlayerProgress.PrototypeStats.GetLevelForStat(item.StatName);
-
-                    if (item.PendingUpgrades > 0)
-                    {
-                        int firstUpgradeCost = originalLevel * item.BasePrice;
-                        int lastUpgradeCost = (originalLevel + item.PendingUpgrades - 1) * item.BasePrice;
-                        coinsToReturn += item.PendingUpgrades * (firstUpgradeCost + lastUpgradeCost) / 2;
-                    }
-
-                    float baseValue = GetCurrentBaseValue(item.StatName);
-
-                    item.Initialize(
-                        item.StatName,
-                        baseValue,
-                        item.BonusPerUpgrade,
-                        item.BasePrice,
-                        originalLevel,
-                        () => OnStatUpgraded(),
-                        () => OnStatDowngraded()
-                    );
+                    coinsToReturn = CalculateCoinsToReturnForPrototypeStats(coinsToReturn, item);
                 }
                 else
                 {
-                    ProjectileType type = ProjectileType.Bullet;
-
-                    int originalLevel = progressProvider.PlayerProgress.ProjectileStats.GetLevelForStat(type, item.StatName);
-
-                    if (item.PendingUpgrades > 0)
-                    {
-                        int firstUpgradeCost = originalLevel * item.BasePrice;
-                        int lastUpgradeCost = (originalLevel + item.PendingUpgrades - 1) * item.BasePrice;
-                        coinsToReturn += item.PendingUpgrades * (firstUpgradeCost + lastUpgradeCost) / 2;
-                    }
-
-                    float baseValue = GetCurrentBaseValue(item.StatName);
-
-                    item.Initialize(
-                        item.StatName,
-                        baseValue,
-                        item.BonusPerUpgrade,
-                        item.BasePrice,
-                        originalLevel,
-                        () => OnProjectileStatUpgraded(type),
-                        () => OnProjectileStatDowngraded(type)
-                    );
+                    coinsToReturn = CalculateCoinsToReturnForProjectileStats(coinsToReturn, item);
                 }
                 item.ResetUpgrades();
             }
@@ -384,6 +367,55 @@ namespace CodeBase.GamePlay.UI
             UpdateAvailableElements();
             pendingStats.IsChanged();
             pendingProjectileStats.IsChanged();
+        }
+
+        private int CalculateCoinsToReturnForProjectileStats(int coinsToReturn, UpgradesItem item)
+        {
+            ProjectileType type = ProjectileType.Bullet;
+
+            int originalLevel = progressProvider.PlayerProgress.ProjectileStats.GetLevelForStat(type, item.StatName);
+            float baseValue = ReturnStatsValue(ref coinsToReturn, item, originalLevel);
+
+            item.Initialize(
+                item.StatName,
+                baseValue,
+                item.BonusPerUpgrade,
+                item.BasePrice,
+                originalLevel,
+                () => OnProjectileStatUpgraded(type),
+                () => OnProjectileStatDowngraded(type)
+            );
+            return coinsToReturn;
+        }
+
+        private float ReturnStatsValue(ref int coinsToReturn, UpgradesItem item, int originalLevel)
+        {
+            if (item.PendingUpgrades > 0)
+            {
+                int firstUpgradeCost = originalLevel * item.BasePrice;
+                int lastUpgradeCost = (originalLevel + item.PendingUpgrades - 1) * item.BasePrice;
+                coinsToReturn += item.PendingUpgrades * (firstUpgradeCost + lastUpgradeCost) / 2;
+            }
+
+            float baseValue = GetCurrentBaseValue(item.StatName);
+            return baseValue;
+        }
+
+        private int CalculateCoinsToReturnForPrototypeStats(int coinsToReturn, UpgradesItem item)
+        {
+            int originalLevel = progressProvider.PlayerProgress.PrototypeStats.GetLevelForStat(item.StatName);
+            float baseValue = ReturnStatsValue(ref coinsToReturn, item, originalLevel);
+
+            item.Initialize(
+                item.StatName,
+                baseValue,
+                item.BonusPerUpgrade,
+                item.BasePrice,
+                originalLevel,
+                () => OnStatUpgraded(),
+                () => OnStatDowngraded()
+            );
+            return coinsToReturn;
         }
 
         private bool IsPrototypeStat(string statName)

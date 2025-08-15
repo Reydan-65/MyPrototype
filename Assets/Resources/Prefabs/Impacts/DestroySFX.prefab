@@ -9729,8 +9729,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4361801158873524}
   - component: {fileID: 198656289721292014}
+  - component: {fileID: 70431967863517732}
   - component: {fileID: 199514137936353666}
-  - component: {fileID: 2648955612339481558}
   m_Layer: 0
   m_Name: DestroySFX
   m_TagString: Untagged
@@ -14576,6 +14576,19 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &70431967863517732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828176872806910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f084f9a238a44ef458f7568493aa2adb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 5
 --- !u!199 &199514137936353666
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -14650,19 +14663,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2648955612339481558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1828176872806910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f084f9a238a44ef458f7568493aa2adb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifeTime: 3
 --- !u!1 &1834016579923706
 GameObject:
   m_ObjectHideFlags: 0

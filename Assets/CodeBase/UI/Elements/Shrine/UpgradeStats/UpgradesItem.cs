@@ -1,9 +1,7 @@
 ﻿using CodeBase.Infrastructure.DependencyInjection;
-using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 namespace CodeBase.UI.Elements
@@ -21,7 +19,7 @@ namespace CodeBase.UI.Elements
         private float baseValue;
         private float currentValue;
         private int currentLevel;
-
+        private bool isProcessingClick;
         private float bonusPerUpgrade;
         private int basePrice;
 
@@ -81,12 +79,17 @@ namespace CodeBase.UI.Elements
 
         private void OnPlusClicked()
         {
+            if (isProcessingClick) return;
+            isProcessingClick = true;
+
             PendingUpgrades++;
             currentLevel++;
             currentValue += bonusPerUpgrade;
             progress.PlayerProgress.PrototypeInventoryData.CoinAmount -= basePrice * (currentLevel - 1);
             onUpgrade?.Invoke();
             UpdateUI();
+
+            isProcessingClick = false;
         }
 
         private void OnMinusClicked()
@@ -105,8 +108,8 @@ namespace CodeBase.UI.Elements
         public void UpdateUI()
         {
             statNameText.text = StatName;
-            currentValueText.text = currentValue.ToString();
-            bonusValueText.text = TotalBonusValue > 0 ? $"+{TotalBonusValue}" : "0";
+            currentValueText.text = currentValue.ToString("F2");
+            bonusValueText.text = TotalBonusValue > 0 ? $"+{TotalBonusValue:F2}" : "0";
             costValueText.text = TotalPrice.ToString();
 
             minusButton.interactable = PendingUpgrades > 0;
@@ -127,7 +130,6 @@ namespace CodeBase.UI.Elements
             Image plusImage = plusButton.GetComponent<Image>();
             if (plusImage != null)
                 plusImage.color = plusButton.interactable ? itemButtonColors[0] : itemButtonColors[1];
-
             Image minusImage = minusButton.GetComponent<Image>();
             if (minusImage != null)
                 minusImage.color = minusButton.interactable ? itemButtonColors[0] : itemButtonColors[1];

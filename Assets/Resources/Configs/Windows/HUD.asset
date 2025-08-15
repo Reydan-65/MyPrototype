@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c637081698cd7a428fd1ae891da92ba, type: 3}
   m_Name: HUD
   m_EditorClassIdentifier: 
-  WindowID: 7
+  WindowID: 6
   Title: 
   PrefabReference:
     m_AssetGUID: 9eb56437ee41f9a4382b210c100f2aef

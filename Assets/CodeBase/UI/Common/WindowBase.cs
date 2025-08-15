@@ -1,3 +1,4 @@
+using CodeBase.Sounds;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +8,9 @@ namespace CodeBase.GamePlay.UI
 {
     public abstract class WindowBase : MonoBehaviour
     {
+        protected SFXPlayer sfxPlayer;
+        public SFXPlayer SFXPlayer => sfxPlayer;
+
         public event UnityAction CleanUped;
         public event UnityAction Closed;
 
@@ -50,5 +54,7 @@ namespace CodeBase.GamePlay.UI
             firstPanel.SetActive(!isActive);
             secondPanel.SetActive(isActive);
         }
+
+        public void SetSFXPlayer(SFXPlayer sfxPlayer) => this.sfxPlayer = sfxPlayer;
     }
 }

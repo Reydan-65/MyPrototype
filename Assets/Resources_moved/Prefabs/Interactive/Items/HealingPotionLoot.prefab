@@ -84,6 +84,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uniqueID: 
   amountHeal: 15
+  potionLootImpact: {fileID: 6750163788362210871, guid: 4b0e7629fd6152e4a9c8e26aff5ab042, type: 3}
 --- !u!1001 &8302576918932038824
 PrefabInstance:
   m_ObjectHideFlags: 0

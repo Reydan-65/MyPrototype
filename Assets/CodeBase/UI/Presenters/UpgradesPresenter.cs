@@ -55,7 +55,7 @@ namespace CodeBase.GamePlay.UI
 
             this.window.AcceptButton.interactable = false;
 
-            OnNoButtonClicked();
+            WindowAssigned += OnNoButtonClicked;
         }
 
         private void OnAcceptButtonClicked()
@@ -72,8 +72,11 @@ namespace CodeBase.GamePlay.UI
         }
 
         private void OnNoButtonClicked()
-            => window.SetConfirmPanelState(window.MainBottomPanel, window.ConfirmBottomPanel, false);
-        
+        {
+            window.SetConfirmPanelState(window.MainBottomPanel, window.ConfirmBottomPanel, false);
+            WindowAssigned -= OnNoButtonClicked;
+        }
+
         private void UpdateButtonsState()
             => window.AcceptButton.interactable = WasChanges();
 
@@ -114,6 +117,7 @@ namespace CodeBase.GamePlay.UI
             window.CleanUped -= OnCleanUp;
             window.Container.PendingStats.Changed -= UpdateButtonsState;
             window.Container.PendingProjectileStats.Changed -= UpdateButtonsState;
+            WindowAssigned -= OnNoButtonClicked;
         }
 
         private void OnClosed()

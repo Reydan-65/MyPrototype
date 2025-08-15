@@ -25,7 +25,7 @@ namespace CodeBase.Data
         public int ResolutionIndex;
         public int GraphicsQuality;
         public float MusicVolume;
-        public float SfxVolume;
+        public float SFXVolume;
 
         public void ResetSettings() => CopyFrom(GetDefaultSettings());
         public void IsChanged() => Changed?.Invoke();
@@ -39,7 +39,7 @@ namespace CodeBase.Data
             settings.ResolutionIndex = 3;
             settings.GraphicsQuality = 5;
             settings.MusicVolume = 10;
-            settings.SfxVolume = 10;
+            settings.SFXVolume = 10;
 
             return settings;
         }
@@ -51,7 +51,7 @@ namespace CodeBase.Data
             ResolutionIndex = settings.ResolutionIndex;
             GraphicsQuality = settings.GraphicsQuality;
             MusicVolume = settings.MusicVolume;
-            SfxVolume = settings.SfxVolume;
+            SFXVolume = settings.SFXVolume;
         }
 
         public void ApplySettings()
@@ -66,7 +66,7 @@ namespace CodeBase.Data
             else
                 Screen.SetResolution(2560, 1440, IsFullscreen);
 
-            // Музыка и звук
+            // Музыка и звук иначе
 
             WasChanged = false;
         }
@@ -80,7 +80,7 @@ namespace CodeBase.Data
                    a.ResolutionIndex == b.ResolutionIndex &&
                    a.GraphicsQuality == b.GraphicsQuality &&
                    a.MusicVolume == b.MusicVolume &&
-                   a.SfxVolume == b.SfxVolume;
+                   a.SFXVolume == b.SFXVolume;
         }
     }
 }

@@ -33,8 +33,5 @@ public class FollowCamera : MonoBehaviour
         if (customOffset.HasValue) Offset = customOffset.Value;
     }
 
-    public void SetTarget(Transform target)
-    {
-        this.target = target;
-    }
+    public void SetTarget(Transform target) => this.target = target;
 }

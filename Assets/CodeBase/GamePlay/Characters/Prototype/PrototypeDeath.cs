@@ -14,12 +14,6 @@ namespace CodeBase.GamePlay.Prototype
             input = GetComponent<PrototypeInput>();
         }
 
-        protected override void OnDie()
-        {
-            gameFactory.CreateImpactEffectObjectFromPrefab(destroySFX, visualModel.transform.position, Quaternion.identity);
-            base.OnDie();
-        }
-
         protected override void DisableComponents()
         {
             controller.enabled = false;

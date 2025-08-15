@@ -1,6 +1,8 @@
 using CodeBase.Configs;
 using CodeBase.GamePlay.Enemies;
+using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.ConfigProvider;
+using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Spawners
@@ -13,6 +15,11 @@ namespace CodeBase.GamePlay.Spawners
 
         private EnemyConfig enemyConfig;
         private EnemyID enemyId;
+
+        private IProgressSaver progressSaver;
+
+        [Inject]
+        public void Construct(IProgressSaver progressSaver) => this.progressSaver = progressSaver;
 
         public void Initialize(IConfigsProvider configsProvider, EnemyID enemyId)
         {
@@ -33,6 +40,8 @@ namespace CodeBase.GamePlay.Spawners
                 inventory.SetHealingPotionsAmount(enemyConfig.PotionLoot.RandomAmount);
             else
                 inventory.SetHealingPotionsAmount(0);
+
+            var progress = progressSaver.GetProgress();
 
             inventory.SetHasKey(hasKey);
         }

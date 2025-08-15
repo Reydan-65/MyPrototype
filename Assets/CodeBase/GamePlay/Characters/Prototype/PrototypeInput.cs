@@ -1,26 +1,31 @@
 using CodeBase.Data;
 using CodeBase.GamePlay.UI.Services;
+using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services;
+using CodeBase.Sounds;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.Prototype
 {
     public class PrototypeInput : MonoBehaviour
     {
+        public SFXEvent PlaySFX;
+
         [SerializeField] private PrototypeMovement movement;
         [SerializeField] private PrototypeHealth health;
         [SerializeField] private PrototypeEnergy energy;
         [SerializeField] private PrototypeTurret turret;
 
-        private Coroutine currentCoroutine;
+        private bool isPaused = false;
+        public bool IsPaused { get => isPaused; set => isPaused = value; }
 
         private IInputService inputService;
         private ICursorService cursorService;
         private IHealingService healingService;
         private IWindowsProvider windowsProvider;
-        private IUIFactory uiFactory;
         private ICoroutineRunner coroutineRunner;
+        private IAssetProvider assetProvider;
 
         [Inject]
         public void Construct(
@@ -29,14 +34,15 @@ namespace CodeBase.GamePlay.Prototype
             IHealingService healingService,
             IWindowsProvider windowsProvider,
             IUIFactory uiFactory,
-            ICoroutineRunner coroutineRunner)
+            ICoroutineRunner coroutineRunner,
+            IAssetProvider assetProvider)
         {
             this.inputService = inputService;
             this.cursorService = cursorService;
             this.healingService = healingService;
             this.windowsProvider = windowsProvider;
-            this.uiFactory = uiFactory;
             this.coroutineRunner = coroutineRunner;
+            this.assetProvider = assetProvider;
         }
 
         private void Update()
@@ -53,14 +59,15 @@ namespace CodeBase.GamePlay.Prototype
 
         private void HandlePause()
         {
-            if (uiFactory == null) return;
-
             if (inputService.EscapeInput)
             {
-                if (uiFactory.PauseWindow == null)
+                if (!isPaused)
+                {
+                    isPaused = true;
                     windowsProvider.Open(UI.WindowID.PauseWindow);
+                }
                 else
-                    uiFactory.PausePresenter.ContinueGame();
+                    return;
             }
         }
 
@@ -95,7 +102,7 @@ namespace CodeBase.GamePlay.Prototype
                 turret.Fire();
                 turret.IsFiring = true;
 
-                currentCoroutine = coroutineRunner.StartCoroutine(ResetFiringFlag());
+                coroutineRunner.StartCoroutine(ResetFiringFlag());
             }
         }
 
@@ -105,16 +112,21 @@ namespace CodeBase.GamePlay.Prototype
             turret.IsFiring = false;
         }
 
-        private void HandleHealing()
+        private async void HandleHealing()
         {
             if (inputService.HealInput && healingService != null && health.CanHeal)
-                healingService.TryHeal(LootItemID.HealingPotion);
+            {
+                bool healed = healingService.TryHeal(LootItemID.HealingPotion);
+
+                if (healed)
+                    PlaySFX?.Invoke(await assetProvider.Load<AudioClip>(AssetAddress.UsePotionSound), 0.5f, 1, 1);
+            }
         }
 
-        private void HandleDash()
+        private async void HandleDash()
         {
             if (inputService.DashInput && movement != null && energy != null)
-                movement.TryDash();
+                await movement.TryDash();
         }
     }
 }

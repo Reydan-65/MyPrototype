@@ -2,10 +2,7 @@ namespace CodeBase.GamePlay.UI
 {
     public class CoinItem : InventoryItem
     {
-        private void OnValueChanged(int coinsValue)
-        {
-            UpdateAmountText();
-        }
+        private void OnValueChanged(int coinsValue) => UpdateAmountText();
 
         protected override void UpdateAmountText()
         {

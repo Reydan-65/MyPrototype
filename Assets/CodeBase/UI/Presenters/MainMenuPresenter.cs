@@ -4,6 +4,9 @@ using CodeBase.Infrastructure.Services.GameStateMachine;
 using CodeBase.Infrastructure.Services.GameStates;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
+using CodeBase.Infrastructure.Services.SettingsProvider;
+using CodeBase.Infrastructure.Services.SettingsSaver;
+using CodeBase.UI;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.UI
@@ -11,7 +14,6 @@ namespace CodeBase.GamePlay.UI
     public class MainMenuPresenter : WindowPresenterBase<MainMenuWindow>
     {
         private MainMenuWindow window;
-        private GameObject warningPanel;
         private PlayerProgress progress;
         
         public MainMenuWindow Window => window;
@@ -20,17 +22,23 @@ namespace CodeBase.GamePlay.UI
         private IProgressProvider progressProvider;
         private IWindowsProvider windowsProvider;
         private IProgressSaver progressSaver;
+        private ISettingsProvider settingsProvider;
+        private ISettingsSaver settingsSaver;
 
         public MainMenuPresenter(
             IGameStateSwitcher gameStateSwitcher,
             IProgressProvider progressProvider,
             IWindowsProvider windowsProvider,
-            IProgressSaver progressSaver)
+            IProgressSaver progressSaver,
+            ISettingsProvider settingsProvider,
+            ISettingsSaver settingsSaver)
         {
             this.gameStateSwitcher = gameStateSwitcher;
             this.progressProvider = progressProvider;
             this.windowsProvider = windowsProvider;
             this.progressSaver = progressSaver;
+            this.settingsProvider = settingsProvider;
+            this.settingsSaver = settingsSaver;
         }
 
         public override void SetWindow(MainMenuWindow window)
@@ -41,6 +49,7 @@ namespace CodeBase.GamePlay.UI
             this.window.NewGameButtonClicked += OnNewGameButtonClicked;
             this.window.SettingsButtonClicked += OnSettingsButtonClicked;
             this.window.QuitGameButtonClicked += OnQuitGameButtonClicked;
+            this.window.ResetGameButtonClicked += OnResetButtonClicked;
             this.window.YesButtonClicked += OnYesButtonClicked;
             this.window.NoButtonClicked += OnNoButtonClicked;
             this.window.CleanUped += OnCleanUped;
@@ -49,13 +58,17 @@ namespace CodeBase.GamePlay.UI
 
             if (progress != null)
             {
-                this.window.SetContinueButtonState(progress.HasSavedGame);
+                window.SetContinueButtonState(progress.HasSavedGame);
                 this.window.SetDifficultyInfoText((progress.DifficultyLevel + 1).ToString());
             }
 
-            warningPanel.SetActive(false);
-        }
+            UIClickSound[] clickSounds = window.GetComponentsInChildren<UIClickSound>();
+            if (clickSounds != null && clickSounds.Length > 0)
+                foreach (UIClickSound clickSound in clickSounds)
+                    clickSound.SetWindow(window);
 
+            this.window.ConfirmPanel.SetActive(false);
+        }
 
         private void OnCleanUped()
         {
@@ -63,6 +76,7 @@ namespace CodeBase.GamePlay.UI
             window.NewGameButtonClicked -= OnNewGameButtonClicked;
             window.SettingsButtonClicked -= OnSettingsButtonClicked;
             window.QuitGameButtonClicked -= OnQuitGameButtonClicked;
+            window.ResetGameButtonClicked -= OnResetButtonClicked;
             window.YesButtonClicked -= OnYesButtonClicked;
             window.NoButtonClicked -= OnNoButtonClicked;
             window.CleanUped -= OnCleanUped;
@@ -77,6 +91,22 @@ namespace CodeBase.GamePlay.UI
             windowsProvider.Open(WindowID.SettingsWindow);
 
             window.Close();
+        }
+
+        private void OnResetButtonClicked()
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+
+            settingsProvider.Settings.ResetSettings();
+            settingsSaver.SaveSettings(settingsProvider.Settings);
+            progressProvider.PlayerProgress.ResetProgress();
+            window.SetContinueButtonState(progress.HasSavedGame);
+            window.SetDifficultyInfoText((progressProvider.PlayerProgress.DifficultyLevel + 1).ToString());
+            progressSaver.SaveProgress();
+
+            Debug.Log("PROGRESS DELETED!");
+            Debug.Log("SETTINGS RESET!");
         }
 
         private void OnNewGameButtonClicked()

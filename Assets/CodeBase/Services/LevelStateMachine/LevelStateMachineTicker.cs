@@ -8,12 +8,7 @@ public class LevelStateMachineTicker : MonoBehaviour, IService
 
     [Inject]
     public void Construct(ILevelStateSwitcher levelStateSwitcher)
-    {
-        this.levelStateSwitcher = levelStateSwitcher;
-    }
+        => this.levelStateSwitcher = levelStateSwitcher;
 
-    public void Update()
-    {
-        levelStateSwitcher.UpdateTick();
-    }
+    public void Update() => levelStateSwitcher.UpdateTick();
 }
