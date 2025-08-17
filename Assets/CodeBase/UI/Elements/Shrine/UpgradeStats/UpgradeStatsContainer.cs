@@ -109,6 +109,7 @@ namespace CodeBase.GamePlay.UI
             else
                 UpdateExistingElements();
             UpdateScrollbarVisibility();
+            AssingClickSoundToWindow();
         }
 
         public void ApplyAllUpgrades()
@@ -139,6 +140,10 @@ namespace CodeBase.GamePlay.UI
 
         private async void CreateStatElements()
         {
+            var canvasGroup = parent.GetComponent<CanvasGroup>();
+            if (canvasGroup == null) canvasGroup = parent.gameObject.AddComponent<CanvasGroup>();
+            canvasGroup.alpha = 0;
+
             await CreateHeaderElementAsync("PROTOTYPE");
             await CreateStatElementAsync("HEALTH", pendingStats.Health.Value, HEALTHBONUS, 1, pendingStats.Health.Level);
             await CreateStatElementAsync("ENERGY", pendingStats.Energy.Value, ENERGYBONUS, 2, pendingStats.Energy.Level);
@@ -155,7 +160,10 @@ namespace CodeBase.GamePlay.UI
             await CreateStatElements(ProjectileType.Bullet, "RANGE", stats.Range.Value, PPROJECTILERANGEBONUS, 4, stats.Range.Level);
 
             await Task.Yield();
-            scrollbar.value = 1f;
+
+            RectTransform rectTransform = parent.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, -75.5f);
+            canvasGroup.alpha = 1;
         }
 
         private async Task CreateHeaderElementAsync(string headerText)
@@ -179,8 +187,6 @@ namespace CodeBase.GamePlay.UI
             element.transform.localScale = Vector3.one;
             element.Initialize(name, baseValue, bonus, price, currentLevel, () => OnStatUpgraded(), () => OnStatDowngraded());
 
-            AssingClickSoundToWindow();
-
             statItems.Add(element);
         }
 
@@ -194,8 +200,6 @@ namespace CodeBase.GamePlay.UI
 
             var stats = pendingProjectileStats.GetStatsForType(type);
             element.Initialize(name, baseValue, bonus, price, currentLevel, () => OnProjectileStatUpgraded(type), () => OnProjectileStatDowngraded(type));
-
-            AssingClickSoundToWindow();
 
             statItems.Add(element);
         }
@@ -428,7 +432,8 @@ namespace CodeBase.GamePlay.UI
                 case "MOVE SPEED": return true;
                 case "DASH RANGE": return true;
                 default: return false;
-            };
+            }
+            ;
         }
     }
 }

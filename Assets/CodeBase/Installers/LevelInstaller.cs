@@ -22,7 +22,7 @@ namespace CodeBase.Infrastructure
             if (container == null) return;
 
             container.UnregisterSingle<LevelStateMachineTicker>();
-            
+
             UnregisterLevelStateMachine();
         }
 

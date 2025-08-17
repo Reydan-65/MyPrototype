@@ -1,6 +1,7 @@
 using CodeBase.Data;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Sounds;
 using System.Collections;
 using UnityEngine;
@@ -23,7 +24,10 @@ namespace CodeBase.GamePlay.Interactive
         private IAssetProvider assetProvider;
 
         [Inject]
-        public void Construct(IAssetProvider assetProvider) => this.assetProvider = assetProvider;
+        public void Construct(IAssetProvider assetProvider, IGameFactory gameFactory)
+        {
+            this.assetProvider = assetProvider;
+        }
 
         public override bool IsActivated
         {

@@ -1,4 +1,8 @@
 using CodeBase.GamePlay.Interactive;
+using CodeBase.GamePlay.Prototype;
+using CodeBase.Infrastructure.DependencyInjection;
+using CodeBase.Infrastructure.Services;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +12,59 @@ namespace CodeBase.GamePlay.UI
     {
         [SerializeField] private HUDWindow hudWindow;
         [SerializeField] private List<IInputInteractable> inputInteractables = new List<IInputInteractable>();
+        [SerializeField] private float checkInterval = 0.1f;
 
         private bool previousState;
+        private bool isInitialized;
 
-        private void Update() => CheckInteractables();
+        private PrototypeInput input;
+        private Coroutine checkCoroutine;
+
+        private ICoroutineRunner coroutineRunner;
+
+        [Inject]
+        public void Construct(ICoroutineRunner coroutineRunner) 
+        { 
+            this.coroutineRunner = coroutineRunner;
+            isInitialized = true;
+
+            if (isActiveAndEnabled)
+                StartChecking();
+        }
+
+        private void OnEnable()
+        {
+            if (isInitialized)
+                StartChecking();
+        }
+
+        private void OnDisable() => StopChecking();
+
+        public void StartChecking()
+        {
+            StopChecking();
+
+            if (coroutineRunner != null)
+                checkCoroutine = coroutineRunner.StartCoroutine(CheckInteractablesRoutine());
+        }
+
+        public void StopChecking()
+        {
+            if (checkCoroutine != null)
+            {
+                StopAllCoroutines();
+                checkCoroutine = null;
+            }
+        }
+
+        private IEnumerator CheckInteractablesRoutine()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(checkInterval);
+                CheckInteractables();
+            }
+        }
 
         public void RegisterInteractable(IInputInteractable interactable)
         {
@@ -40,6 +93,9 @@ namespace CodeBase.GamePlay.UI
                 {
                     if (interactable is Gate gate)
                         if (gate.IsActivated) return;
+
+                    if (input.HasOpenedWindow) return;
+
                     hasActiveInteractable = true;
                     break;
                 }
@@ -51,5 +107,7 @@ namespace CodeBase.GamePlay.UI
                 previousState = hasActiveInteractable;
             }
         }
+
+        public void SetInput(PrototypeInput input) => this.input = input;
     }
 }

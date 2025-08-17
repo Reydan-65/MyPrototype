@@ -105,6 +105,7 @@ namespace CodeBase.GamePlay.Projectile
                     stats.AverageDamage.Value - spread,
                     stats.AverageDamage.Value + spread
                 );
+                //Debug.Log($"AverageDamage.Value: {stats.AverageDamage.Value}, AverageDamage.Level:{stats.AverageDamage.Level}, damage: {damage}");
             }
         }
     }

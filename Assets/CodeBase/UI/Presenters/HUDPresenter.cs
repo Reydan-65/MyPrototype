@@ -8,25 +8,27 @@ namespace CodeBase.GamePlay.UI
     {
         private HUDWindow window;
         private PrototypeHealth prototypeHealth;
+
         private IGameFactory gameFactory;
 
         public HUDPresenter(IGameFactory gameFactory)
-        {
-            this.gameFactory = gameFactory;
-        }
+            => this.gameFactory = gameFactory;
 
         public override void SetWindow(HUDWindow window)
         {
             this.window = window;
             this.window.LockImage.fillAmount = 0;
             this.window.ControlsAnimator.enabled = true;
-            UpdateResourcesDisplay();
+
+            UpdateHUDDisplay();
         }
 
-        private void UpdateResourcesDisplay()
+        private void UpdateHUDDisplay()
         {
             if (window == null || gameFactory.PrototypeObject == null)
                 return;
+
+            window.GetComponent<InteractableTracker>().SetInput(gameFactory.PrototypeObject.GetComponent<PrototypeInput>());
 
             var prototypeHealth = gameFactory.PrototypeObject.GetComponent<IHealth>();
             var prototypeEnergy = gameFactory.PrototypeObject.GetComponent<IEnergy>();

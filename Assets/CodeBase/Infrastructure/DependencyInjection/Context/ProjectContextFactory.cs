@@ -13,9 +13,7 @@ namespace CodeBase.Infrastructure.DependencyInjection
             ProjectContext prefab = TryGetPrefab();
 
             if (prefab != null)
-            {
                 GameObject.Instantiate(prefab);
-            }
         }
 
         private static ProjectContext TryGetPrefab()
@@ -23,9 +21,7 @@ namespace CodeBase.Infrastructure.DependencyInjection
             var prefabs = Resources.LoadAll<ProjectContext>(ProjectContextResourcePath);
 
             if (prefabs.Length > 0)
-            {
                 return prefabs[0];
-            }
 
             return null;
         }

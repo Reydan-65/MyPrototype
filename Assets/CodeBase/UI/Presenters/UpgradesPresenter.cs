@@ -55,6 +55,8 @@ namespace CodeBase.GamePlay.UI
 
             this.window.AcceptButton.interactable = false;
 
+            gameFactory.PrototypeObject.GetComponent<PrototypeInput>().HasOpenedWindow = true;
+
             WindowAssigned += OnNoButtonClicked;
         }
 
@@ -118,11 +120,13 @@ namespace CodeBase.GamePlay.UI
             window.Container.PendingStats.Changed -= UpdateButtonsState;
             window.Container.PendingProjectileStats.Changed -= UpdateButtonsState;
             WindowAssigned -= OnNoButtonClicked;
+
         }
 
         private void OnClosed()
         {
             if (isClosed) return;
+            gameFactory.PrototypeObject.GetComponent<PrototypeInput>().HasOpenedWindow = false;
             isClosed = true;
             window.Close();
             windowsProvider.Open(WindowID.ShrineWindow);

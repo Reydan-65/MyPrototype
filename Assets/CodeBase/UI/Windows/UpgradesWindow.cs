@@ -28,17 +28,16 @@ namespace CodeBase.GamePlay.UI
 
         private UpgradeStatsContainer statsContainer;
         private UpgradesPresenter statsPresenter;
+
         public GameObject MainBottomPanel => mainBottomPanel;
         public GameObject ConfirmBottomPanel => confirmBottomPanel;
         public Button AcceptButton => acceptButton;
-        private IInputService inputService;
         public UpgradeStatsContainer Container => statsContainer;
 
+        private IInputService inputService;
+
         [Inject]
-        public void Construct(IInputService inputService)
-        {
-            this.inputService = inputService;
-        }
+        public void Construct(IInputService inputService) => this.inputService = inputService;
 
         private void Start()
         {

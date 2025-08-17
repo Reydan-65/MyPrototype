@@ -5,9 +5,7 @@ namespace CodeBase.Infrastructure.DependencyInjection
     public class ProjectContext : Context
     {
         private static ProjectContext Instance;
-
         public static bool Initialized => Instance != null;
-
         private DIContainer container;
 
         private void Awake()

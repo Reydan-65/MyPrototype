@@ -9,8 +9,7 @@ namespace CodeBase.GamePlay
         private IGameFactory gameFactory;
 
         [Inject]
-        public void Construct(IGameFactory gameFactory)
-            => this.gameFactory = gameFactory;
+        public void Construct(IGameFactory gameFactory) => this.gameFactory = gameFactory;
 
         private void Update()
         {

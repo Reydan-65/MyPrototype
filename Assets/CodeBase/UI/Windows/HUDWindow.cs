@@ -26,15 +26,10 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] private Image lockImage;
         public Image LockImage => lockImage;
 
-        private void Start()
-        {
-            SetSolutionActive(false);
-        }
+        private void Start() => SetSolutionActive(false);
 
         public void StartLockImageUpdate(float timer, float cooldown)
-        {
-            lockImage.fillAmount = timer / cooldown;
-        }
+            => lockImage.fillAmount = timer / cooldown;
 
         public void SetSolutionActive(bool active)
         {
@@ -44,9 +39,6 @@ namespace CodeBase.GamePlay.UI
                 solution.SetActive(active);
         }
 
-        protected override void OnClose()
-        {
-            Destroy(gameObject);
-        }
+        protected override void OnClose() => Destroy(gameObject);
     }
 }

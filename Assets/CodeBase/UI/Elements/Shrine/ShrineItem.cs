@@ -15,14 +15,10 @@ namespace CodeBase.GamePlay.UI
 
         [Inject]
         public void Construct(IWindowsProvider windowsProvider)
-        {
-            this.windowsProvider = windowsProvider;
-        }
+            => this.windowsProvider = windowsProvider;
 
         private void OnDestroy()
-        {
-            itemButton.onClick.RemoveListener(OnItemButtonClicked);
-        }
+            => itemButton.onClick.RemoveListener(OnItemButtonClicked);
 
         public void Initialize()
         {
@@ -33,8 +29,6 @@ namespace CodeBase.GamePlay.UI
         }
 
         private void OnItemButtonClicked()
-        {
-            windowsProvider.Open(WindowID.UpgradesWindow);
-        }
+            => windowsProvider.Open(WindowID.UpgradesWindow);
     }
 }

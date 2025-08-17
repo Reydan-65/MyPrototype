@@ -566,6 +566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hudWindow: {fileID: 7516321628026739148}
+  checkInterval: 0.1
 --- !u!95 &2403240962175247645
 Animator:
   serializedVersion: 5
@@ -743,7 +744,7 @@ GameObject:
   - component: {fileID: 5996046945093414749}
   - component: {fileID: 2156479180787444425}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: EnergyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -877,7 +878,7 @@ GameObject:
   - component: {fileID: 8742089295214534793}
   - component: {fileID: 6539719343889803826}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: InputKeyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1340,7 +1341,7 @@ GameObject:
   - component: {fileID: 1669811669606531704}
   - component: {fileID: 5044777220656951449}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: SolutionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1687,7 +1688,7 @@ GameObject:
   - component: {fileID: 1020475534446792371}
   - component: {fileID: 6507292246415532506}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: HealthText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2269,9 +2270,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8444986943345174989}
     m_Modifications:
+    - target: {fileID: 3288434504698543607, guid: 3b0488f9439b74c408828fd406bcfa90, type: 3}
+      propertyPath: m_Name
+      value: CoinCountText
+      objectReference: {fileID: 0}
     - target: {fileID: 6308953283248188212, guid: 3b0488f9439b74c408828fd406bcfa90, type: 3}
       propertyPath: m_Name
       value: CoinItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 7157190507487057596, guid: 3b0488f9439b74c408828fd406bcfa90, type: 3}
+      propertyPath: m_Name
+      value: Image
       objectReference: {fileID: 0}
     - target: {fileID: 7570500150560208451, guid: 3b0488f9439b74c408828fd406bcfa90, type: 3}
       propertyPath: m_Pivot.x
@@ -2371,6 +2380,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8444986943345174989}
     m_Modifications:
+    - target: {fileID: 3288434504698543607, guid: 8d6a8c103fe71db428cef002a8bc9d19, type: 3}
+      propertyPath: m_Name
+      value: HealingPotionCountText
+      objectReference: {fileID: 0}
     - target: {fileID: 6308953283248188212, guid: 8d6a8c103fe71db428cef002a8bc9d19, type: 3}
       propertyPath: m_Name
       value: HealingPotionItemView

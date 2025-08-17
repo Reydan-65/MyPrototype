@@ -1,6 +1,7 @@
 ﻿using CodeBase.Data;
 using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
@@ -8,6 +9,7 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
     public class ProgressSaver : IProgressSaver
     {
         public const string ProgressKey = "Progress";
+        private string SavePath => Path.Combine(Application.persistentDataPath, "progress_save.json");
 
         private IProgressProvider progressProvider;
 
@@ -51,9 +53,9 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
 
         public void LoadProgress()
         {
-            if (PlayerPrefs.HasKey(ProgressKey))
+            if (File.Exists(SavePath))
             {
-                string json = PlayerPrefs.GetString(ProgressKey);
+                string json = File.ReadAllText(SavePath);
                 var tempProgress = JsonUtility.FromJson<PlayerProgress>(json);
 
                 progressProvider.PlayerProgress = new PlayerProgress();
@@ -76,7 +78,9 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
         {
             foreach (IProgressBeforeSaveHandler saveHandler in progressBeforeSaveHandlers)
                 saveHandler?.UpdateProgressBeforeSave(progressProvider.PlayerProgress);
-            PlayerPrefs.SetString(ProgressKey, JsonUtility.ToJson(progressProvider.PlayerProgress));
+
+            string json = JsonUtility.ToJson(progressProvider.PlayerProgress);
+            File.WriteAllText(SavePath, json);
 
             Debug.Log($"PROGRESS SAVED!");
             //string json = PlayerPrefs.GetString(ProgressKey);
@@ -84,5 +88,14 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
         }
 
         public PlayerProgress GetProgress() => progressProvider.PlayerProgress;
+
+        public void ResetProgress()
+        {
+            if (File.Exists(SavePath))
+                File.Delete(SavePath);
+
+            progressProvider.PlayerProgress = PlayerProgress.GetDefaultProgress();
+            SaveProgress();
+        }
     }
 }

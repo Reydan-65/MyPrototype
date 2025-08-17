@@ -12,5 +12,4 @@
         PauseWindow = 7,
         SettingsWindow = 8
     }
-
 }

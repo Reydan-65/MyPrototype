@@ -1,15 +1,20 @@
+using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.UI.Services;
+using CodeBase.Infrastructure.Services.Factory;
 
 namespace CodeBase.GamePlay.UI
 {
     public class ShrinePresenter : WindowPresenterBase<ShrineWindow>
     {
-        private IWindowsProvider windowsProvider;
         private ShrineWindow window;
 
-        public ShrinePresenter(IWindowsProvider windowsProvider)
+        private IWindowsProvider windowsProvider;
+        private IGameFactory gameFactory;
+        
+        public ShrinePresenter(IWindowsProvider windowsProvider, IGameFactory gameFactory)
         {
             this.windowsProvider = windowsProvider;
+            this.gameFactory = gameFactory;
         }
 
         public override void SetWindow(ShrineWindow window)
@@ -18,7 +23,10 @@ namespace CodeBase.GamePlay.UI
 
             window.UpgradeStatsButtonClicked += OnUpgradeStatsButtonClicked;
 
+            gameFactory.PrototypeObject.GetComponent<PrototypeInput>().HasOpenedWindow = true;
+
             window.CleanUped += OnCleanUp;
+            this.window.Closed += OnClosed;
         }
 
         private void OnCleanUp()
@@ -26,14 +34,23 @@ namespace CodeBase.GamePlay.UI
             window.UpgradeStatsButtonClicked -= OnUpgradeStatsButtonClicked;
 
             window.CleanUped -= OnCleanUp;
+            window.Closed -= OnClosed;
         }
 
         public ShrineWindow GetWindow() => window;
 
         private void OnUpgradeStatsButtonClicked()
         {
-            window.Close();
+            OnClosed();
             windowsProvider.Open(WindowID.UpgradesWindow);
+        }
+
+        private void OnClosed()
+        {
+            window.Closed -= OnClosed;
+
+            gameFactory.PrototypeObject.GetComponent<PrototypeInput>().HasOpenedWindow = false;
+            window.Close();
         }
     }
 }

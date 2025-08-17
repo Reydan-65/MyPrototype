@@ -52,15 +52,17 @@ namespace CodeBase.GamePlay.Interactive
                 interactPoint = transform;
             if (gameFactory != null)
                 gameFactory.PrototypeCreated += OnPrototypeCreated;
-
-            uiFactory.HUDWindowCreated += OnHUDWindowCreated;
+            if (uiFactory != null)
+                uiFactory.HUDWindowCreated += OnHUDWindowCreated;
         }
 
         protected virtual void OnHUDWindowCreated()
         {
+            if (uiFactory == null) return;
             hudWindow = uiFactory.HUDWindow;
-            interactableTracker = hudWindow.GetComponent<InteractableTracker>();
-            uiFactory.HUDWindowCreated -= OnHUDWindowCreated;
+
+            if (hudWindow != null)
+                interactableTracker = hudWindow.GetComponent<InteractableTracker>();
         }
 
         protected virtual void OnDestroy()
@@ -69,6 +71,8 @@ namespace CodeBase.GamePlay.Interactive
 
             if (gameFactory != null)
                 gameFactory.PrototypeCreated -= OnPrototypeCreated;
+            if (uiFactory != null)
+                uiFactory.HUDWindowCreated -= OnHUDWindowCreated;
         }
 
         protected virtual void Update()
@@ -80,7 +84,10 @@ namespace CodeBase.GamePlay.Interactive
             if (CanInteract()) Interact();
         }
 
-        protected virtual void OnPrototypeCreated() => actionUser = gameFactory.PrototypeObject;
+        protected virtual void OnPrototypeCreated()
+        {
+            actionUser = gameFactory.PrototypeObject;
+        }
 
         public virtual bool CanInteract()
         {

@@ -11,5 +11,6 @@ namespace CodeBase.Infrastructure.Services.PlayerProgressSaver
         void LoadProgress();
         void SaveProgress();
         PlayerProgress GetProgress();
+        void ResetProgress();
     }
 }

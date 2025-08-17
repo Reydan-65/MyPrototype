@@ -1,5 +1,6 @@
 ﻿using CodeBase.Data;
 using CodeBase.Infrastructure.Services.SettingsProvider;
+using System.IO;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Services.SettingsSaver
@@ -7,7 +8,7 @@ namespace CodeBase.Infrastructure.Services.SettingsSaver
     public class SettingsSaver : ISettingsSaver
     {
         private const string SettingsKey = "Settings";
-
+        private string SavePath => Path.Combine(Application.persistentDataPath, "settings_save.json");
         private ISettingsProvider settingsProvider;
 
         public SettingsSaver(ISettingsProvider settingsProvider)
@@ -18,9 +19,9 @@ namespace CodeBase.Infrastructure.Services.SettingsSaver
 
         public void LoadSettings()
         {
-            if (PlayerPrefs.HasKey(SettingsKey))
+            if (File.Exists(SavePath))
             {
-                string json = PlayerPrefs.GetString(SettingsKey);
+                string json = File.ReadAllText(SavePath);
                 var loadedSettings = JsonUtility.FromJson<Settings>(json);
 
                 settingsProvider.Settings = loadedSettings;
@@ -35,7 +36,9 @@ namespace CodeBase.Infrastructure.Services.SettingsSaver
 
         public void SaveSettings(Settings settings)
         {
-            PlayerPrefs.SetString(SettingsKey, JsonUtility.ToJson(settings));
+            string json = JsonUtility.ToJson(settingsProvider.Settings);
+            File.WriteAllText(SavePath, json);
+
             settings.HasSavedSettings = true;
             settings.WasChanged = false;
 

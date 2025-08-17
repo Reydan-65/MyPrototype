@@ -39,8 +39,17 @@ namespace CodeBase.GamePlay
             parts = visualModel.GetComponentsInChildren<Transform>();
         }
 
-        protected void Start() => health.Depleted += OnDie;
-        protected void OnDestroy() => health.Depleted -= OnDie;
+        protected void Start()
+        {
+            if (health != null)
+                health.Depleted += OnDie;
+        }
+
+        protected void OnDestroy()
+        {
+            if (health != null)
+                health.Depleted -= OnDie;
+        }
 
         protected virtual async void OnDie()
         {

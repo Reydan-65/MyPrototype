@@ -6,18 +6,16 @@ using CodeBase.Infrastructure.Services.PlayerProgressProvider;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 using CodeBase.Infrastructure.Services.SettingsProvider;
 using CodeBase.Infrastructure.Services.SettingsSaver;
-using CodeBase.UI;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.UI
 {
     public class MainMenuPresenter : WindowPresenterBase<MainMenuWindow>
     {
-        private MainMenuWindow window;
         private PlayerProgress progress;
-        
+        private MainMenuWindow window;
         public MainMenuWindow Window => window;
-        
+
         private IGameStateSwitcher gameStateSwitcher;
         private IProgressProvider progressProvider;
         private IWindowsProvider windowsProvider;
@@ -56,17 +54,8 @@ namespace CodeBase.GamePlay.UI
 
             progress = progressSaver.GetProgress();
 
-            if (progress != null)
-            {
-                window.SetContinueButtonState(progress.HasSavedGame);
-                this.window.SetDifficultyInfoText((progress.DifficultyLevel + 1).ToString());
-            }
-
-            UIClickSound[] clickSounds = window.GetComponentsInChildren<UIClickSound>();
-            if (clickSounds != null && clickSounds.Length > 0)
-                foreach (UIClickSound clickSound in clickSounds)
-                    clickSound.SetWindow(window);
-
+            this.window.SetContinueButtonState(progress.HasSavedGame);
+            this.window.SetDifficultyInfoText((progress.DifficultyLevel + 1).ToString());
             this.window.ConfirmPanel.SetActive(false);
         }
 
@@ -100,10 +89,12 @@ namespace CodeBase.GamePlay.UI
 
             settingsProvider.Settings.ResetSettings();
             settingsSaver.SaveSettings(settingsProvider.Settings);
-            progressProvider.PlayerProgress.ResetProgress();
-            window.SetContinueButtonState(progress.HasSavedGame);
+
+            progressSaver.ResetProgress();
+            progress.HasSavedGame = false;
+
             window.SetDifficultyInfoText((progressProvider.PlayerProgress.DifficultyLevel + 1).ToString());
-            progressSaver.SaveProgress();
+            window.SetContinueButtonState(progress.HasSavedGame);
 
             Debug.Log("PROGRESS DELETED!");
             Debug.Log("SETTINGS RESET!");
@@ -115,7 +106,11 @@ namespace CodeBase.GamePlay.UI
                 window.SetConfirmPanelState(window.ContainerPanel, window.ConfirmPanel, true);
             else
             {
+                progressProvider.PlayerProgress.HasSavedGame = true;
+                progressSaver.SaveProgress();
+
                 Debug.Log("NEW GAME STARTED!");
+
                 gameStateSwitcher.Enter<LoadLevelState>();
             }
         }
@@ -126,6 +121,7 @@ namespace CodeBase.GamePlay.UI
             PlayerPrefs.Save();
 
             progressProvider.PlayerProgress.ResetProgress();
+            progressProvider.PlayerProgress.HasSavedGame = true;
             progressSaver.SaveProgress();
 
             Debug.Log("PROGRESS DELETED!");

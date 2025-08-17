@@ -17,14 +17,11 @@ namespace CodeBase.GamePlay.UI
 
         [Inject]
         public void Construct(IInputService inputService)
-        {
-            this.inputService = inputService;
-        }
+            => this.inputService = inputService;
 
         private void Start()
         {
             inputService.Enable = false;
-
             updateStatsButton.onClick.AddListener(() => UpgradeStatsButtonClicked?.Invoke());
         }
 

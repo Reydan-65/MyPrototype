@@ -2,7 +2,6 @@ using CodeBase.Configs;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.ConfigProvider;
-using CodeBase.Sounds;
 using CodeBase.UI;
 using CodeBase.UI.Elements;
 using System;
@@ -154,8 +153,8 @@ namespace CodeBase.GamePlay.UI.Services
             if (config.Title != null) window.SetTitle(config.Title);
             TPresenter presenter = container.CreateAndInject<TPresenter>();
             presenter.SetWindow(window);
-            window.SetSFXPlayer(FindSFXPlayer());
             presenter.AssignWindowToClickSounds(window);
+            window.SetSFXPlayer();
             return presenter;
         }
 
@@ -179,15 +178,6 @@ namespace CodeBase.GamePlay.UI.Services
                 targetTransform.anchoredPosition = Vector2.zero;
                 targetTransform.sizeDelta = sourceTransform.sizeDelta;
             }
-        }
-
-        private SFXPlayer FindSFXPlayer()
-        {
-            MusicPlayer mp = GameObject.FindObjectOfType<MusicPlayer>();
-            if (mp == null) return null;
-            SFXPlayer sfxPlayer = mp.GetComponent<SFXPlayer>();
-            if (sfxPlayer == null) return null;
-            return sfxPlayer;
         }
     }
 }

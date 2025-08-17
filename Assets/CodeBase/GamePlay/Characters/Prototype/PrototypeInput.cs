@@ -17,8 +17,8 @@ namespace CodeBase.GamePlay.Prototype
         [SerializeField] private PrototypeEnergy energy;
         [SerializeField] private PrototypeTurret turret;
 
-        private bool isPaused = false;
-        public bool IsPaused { get => isPaused; set => isPaused = value; }
+        private bool hasOpenedWindow = false;
+        public bool HasOpenedWindow { get => hasOpenedWindow; set => hasOpenedWindow = value; }
 
         private IInputService inputService;
         private ICursorService cursorService;
@@ -61,9 +61,9 @@ namespace CodeBase.GamePlay.Prototype
         {
             if (inputService.EscapeInput)
             {
-                if (!isPaused)
+                if (!hasOpenedWindow)
                 {
-                    isPaused = true;
+                    hasOpenedWindow = true;
                     windowsProvider.Open(UI.WindowID.PauseWindow);
                 }
                 else

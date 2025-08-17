@@ -1,6 +1,5 @@
 using CodeBase.Infrastructure.Services.GameStateMachine;
 using CodeBase.Infrastructure.Services.GameStates;
-using CodeBase.UI;
 
 namespace CodeBase.GamePlay.UI
 {

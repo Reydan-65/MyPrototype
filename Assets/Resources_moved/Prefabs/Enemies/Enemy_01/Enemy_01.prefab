@@ -207,6 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6c1e83e29b07d4ca8b1131b8257c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlaySFX:
+    m_PersistentCalls:
+      m_Calls: []
   destroySFX: {fileID: 0}
   visualModel: {fileID: 7745142422968672992}
   scatterForce: 3
@@ -238,6 +241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbd4dd529a2a99b40add3f155e977f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlaySFX:
+    m_PersistentCalls:
+      m_Calls: []
   firePoint: {fileID: 9193807986003877390}
   projectileType: 0
   IsFiring: 0
@@ -330,6 +336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c0e91872804b24999f54732dc2f8ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlaySFX:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8977187001301124517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,6 +558,10 @@ PrefabInstance:
     - target: {fileID: 7009476831823508409, guid: 3d8ec73a837b09848bcec7013dabe3a6, type: 3}
       propertyPath: m_Name
       value: EnemyHitPointBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 7009476831823508409, guid: 3d8ec73a837b09848bcec7013dabe3a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

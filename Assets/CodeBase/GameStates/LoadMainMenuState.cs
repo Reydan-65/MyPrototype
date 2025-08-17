@@ -2,7 +2,6 @@ using CodeBase.GamePlay.UI;
 using CodeBase.GamePlay.UI.Services;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
-using CodeBase.Infrastructure.Scene;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Sounds;
 using System.Threading.Tasks;
@@ -12,18 +11,19 @@ namespace CodeBase.Infrastructure.Services.GameStates
 {
     public class LoadMainMenuState : IEnterableState, IService
     {
-        private ISceneLoader sceneLoader;
+        private ISceneTransition sceneTransition;
+
         private IWindowsProvider windowsProvider;
         private IAssetProvider assetProvider;
         private IGameFactory gameFactory;
 
         public LoadMainMenuState(
-            ISceneLoader sceneLoader,
+            ISceneTransition sceneTransition,
             IWindowsProvider windowsProvider,
             IAssetProvider assetProvider,
             IGameFactory gameFactory)
         {
-            this.sceneLoader = sceneLoader;
+            this.sceneTransition = sceneTransition;
             this.windowsProvider = windowsProvider;
             this.assetProvider = assetProvider;
             this.gameFactory = gameFactory;
@@ -32,13 +32,12 @@ namespace CodeBase.Infrastructure.Services.GameStates
         public void EnterAsync()
         {
             assetProvider.CleanUp();
-
-            sceneLoader.Load(Constants.MainMenuSceneName,
-                onLoaded: async () =>
-                {
-                    windowsProvider.Open(WindowID.MainMenuWindow);
-                    await CreateAudioPlayer();
-                });
+            sceneTransition.LoadSceneWithTransition(Constants.MainMenuSceneName,
+                    onLoaded: async () =>
+                    {
+                        windowsProvider.Open(WindowID.MainMenuWindow);
+                        await CreateAudioPlayer();
+                    });
         }
 
         private async Task CreateAudioPlayer()

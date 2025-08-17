@@ -59,7 +59,8 @@ namespace CodeBase.Infrastructure.DependencyInjection
 
                 if (parameters[i] == null)
                 {
-                    Debug.LogError("Зависимость для сервиса ещё не была создана!");
+                    Debug.LogError($"Не удалось разрешить зависимость {parameterInfos[i].ParameterType.Name} для {type.Name}");
+                    return null;
                 }
             }
 

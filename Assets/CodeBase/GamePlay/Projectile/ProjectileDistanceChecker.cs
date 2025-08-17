@@ -8,9 +8,7 @@ namespace CodeBase.GamePlay.Projectile
     public class ProjectileDistanceChecker : MonoBehaviour, IProjectileConfigInstaller, IProjectileStatsInstaller, IProjectileDistanceChecker
     {
         private bool isPlayerProjectile;
-
         private float maxDistance = 0;
-
         private Vector3 spawnPosition;
         private ProjectileDestroyer destroyer;
 

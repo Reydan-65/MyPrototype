@@ -37,8 +37,6 @@ namespace CodeBase.GamePlay.UI
         [SerializeField] private Button yesButton;
         [SerializeField] private Button noButton;
 
-        //[SerializeField] private TextMeshProUGUI levelIndex;
-
         private void Start()
         {
             continueButton.onClick.AddListener(() => ContinueButtonClicked?.Invoke());

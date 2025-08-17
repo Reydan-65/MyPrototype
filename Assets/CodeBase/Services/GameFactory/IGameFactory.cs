@@ -1,9 +1,9 @@
 using CodeBase.Data;
+using CodeBase.Sounds;
 using CodeBase.GamePlay.Enemies;
 using CodeBase.GamePlay.Projectile;
 using CodeBase.GamePlay.Prototype;
 using CodeBase.Infrastructure.DependencyInjection;
-using CodeBase.Sounds;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -16,6 +16,8 @@ namespace CodeBase.Infrastructure.Services.Factory
         Task WarmUp();
 
         event UnityAction PrototypeCreated;
+        event UnityAction AudioPlayerCreated;
+
         GameObject PrototypeObject { get; }
         PrototypeHealth PrototypeHealth { get; }
         PrototypeInventory PrototypeInventory { get; }

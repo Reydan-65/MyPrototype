@@ -12,15 +12,19 @@ using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 using CodeBase.Infrastructure.Services.SettingsProvider;
 using CodeBase.Infrastructure.Services.SettingsSaver;
 using CodeBase.Services.EntityActivityController;
+using UnityEngine;
 
 namespace CodeBase.Infrastructure
 {
     public class GameInstaller : MonoInstaller
     {
+        [SerializeField] private SceneTransition sceneTransition;
+
         public override void InstallBindings()
         {
             //UnityEngine.Debug.Log("GLOBAL: Install");
 
+            RegisterSceneTransition();
             RegisterGameServices();
             RegisterGameStateMachine();
         }
@@ -38,11 +42,11 @@ namespace CodeBase.Infrastructure
             container.RegisterSingle<IConfigsProvider, ConfigsProvider>();
             container.RegisterSingle<ICoroutineRunner, CoroutineRunner>();
             container.RegisterSingle<IAssetProvider, AssetProvider>();
+            container.RegisterSingle<ISceneLoader, SceneLoader>();
             container.RegisterSingle<IProgressProvider, ProgressProvider>();
             container.RegisterSingle<IProgressSaver, ProgressSaver>();
             container.RegisterSingle<ISettingsProvider, SettingsProvider>();
             container.RegisterSingle<ISettingsSaver, SettingsSaver>();
-            container.RegisterSingle<ISceneLoader, SceneLoader>();
             container.RegisterSingle<IInputService, InputService>();
             container.RegisterSingle<ICursorService, CursorService>();
             container.RegisterSingle<IEnemySpawnManager, EnemySpawnManager>();
@@ -52,6 +56,11 @@ namespace CodeBase.Infrastructure
             container.RegisterSingle<IWindowsProvider, WindowsProvider>();
             container.RegisterSingle<IHealingService, HealingService>();
             container.RegisterSingle<IEntityActivityController, EntityActivityController>();
+        }
+
+        private void RegisterSceneTransition()
+        {
+            container.RegisterSingle<ISceneTransition>(sceneTransition);
         }
     }
 }

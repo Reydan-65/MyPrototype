@@ -10,8 +10,6 @@ namespace CodeBase.GamePlay
         [SerializeField] private AudioClip hitEnvironmentClip;
         [SerializeField] private AudioClip hitClip;
 
-        // Временно
-
         private void Start()
         {
             if (hitClip == null || hitEnvironmentClip == null) return;

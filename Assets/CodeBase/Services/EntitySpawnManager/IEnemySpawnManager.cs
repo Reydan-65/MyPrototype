@@ -1,5 +1,4 @@
 ﻿using CodeBase.Infrastructure.DependencyInjection;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Services

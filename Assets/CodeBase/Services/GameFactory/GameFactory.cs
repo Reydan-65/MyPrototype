@@ -1,10 +1,12 @@
 using CodeBase.Configs;
 using CodeBase.Data;
+using CodeBase.Sounds;
 using CodeBase.GamePlay.Enemies;
 using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.Interactive;
-using CodeBase.GamePlay.Projectile;
 using CodeBase.GamePlay.UI;
+using CodeBase.GamePlay.Projectile;
+using CodeBase.GamePlay.Projectile.Installer;
 using CodeBase.Infrastructure.AssetManagment;
 using CodeBase.Infrastructure.DependencyInjection;
 using CodeBase.Infrastructure.Services.ConfigProvider;
@@ -14,14 +16,13 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
-using CodeBase.GamePlay.Projectile.Installer;
-using CodeBase.Sounds;
 
 namespace CodeBase.Infrastructure.Services.Factory
 {
     public class GameFactory : IGameFactory
     {
         public event UnityAction PrototypeCreated;
+        public event UnityAction AudioPlayerCreated;
 
         private DIContainer container;
         private IAssetProvider assetProvider;
@@ -117,6 +118,7 @@ namespace CodeBase.Infrastructure.Services.Factory
 
             GameObject audioPlayerObject = await InstantiateAndInject(AssetAddress.AudioPlayerPath);
             AudioPlayer = audioPlayerObject.GetComponent<AudioPlayer>();
+            AudioPlayerCreated?.Invoke();
             return AudioPlayer;
         }
 

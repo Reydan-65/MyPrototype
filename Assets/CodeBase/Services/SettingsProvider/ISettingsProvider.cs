@@ -4,11 +4,13 @@ using System;
 
 namespace CodeBase.Infrastructure.Services.SettingsProvider
 {
-    public interface ISettingsProvider : IService
+    public interface ISettingsProvider :IService
     {
-        event Action Initialized;
         bool IsInitialized { get; }
         Settings Settings { get; set; }
+
+        event Action Initialized;
+
         void Dispose();
     }
 }

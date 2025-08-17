@@ -1,13 +1,11 @@
 using CodeBase.Data;
 using CodeBase.GamePlay.Prototype;
 using CodeBase.GamePlay.UI.Services;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Infrastructure.Services.Factory;
 using CodeBase.Infrastructure.Services.GameStateMachine;
 using CodeBase.Infrastructure.Services.GameStates;
 using CodeBase.Infrastructure.Services.PlayerProgressSaver;
 using CodeBase.Services.EntityActivityController;
-using TMPro;
 using UnityEngine;
 
 namespace CodeBase.GamePlay.UI
@@ -59,19 +57,13 @@ namespace CodeBase.GamePlay.UI
             entityActivityController?.SetEntitiesActive(false);
         }
 
-        private void OnContinue()
-        {
-            ContinueGame();
-        }
+        private void OnContinue() => ContinueGame();
 
         public void ContinueGame()
         {
             window.Close();
 
-            PrototypeInput prototypeInput = gameFactory.PrototypeObject.GetComponent<PrototypeInput>();
-
-            if (prototypeInput != null)
-                prototypeInput.IsPaused = false;
+            gameFactory.PrototypeObject.GetComponent<PrototypeInput>().HasOpenedWindow = false;
 
             entityActivityController?.SetEntitiesActive(true);
 
@@ -94,11 +86,7 @@ namespace CodeBase.GamePlay.UI
             gameStateSwitcher.Enter<LoadMainMenuState>();
         }
 
-        private void OnQuitGameButtonClicked()
-        {
-            Application.Quit();
-        }
-
+        private void OnQuitGameButtonClicked() => Application.Quit();
         public PauseWindow GetWindow() => window;
 
         private void OnCleanUp()
